@@ -1,7 +1,4 @@
-import array
 import random
-
-import numpy
 
 from deap import algorithms
 from deap import base
