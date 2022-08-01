@@ -8,6 +8,7 @@
     - jobs distribution
     - work ethic - team workflow (git, devOps, deployment, etc...)
     - work schedule
+    - python venv
 
 
 ## Tools of the trade:
