@@ -45,7 +45,7 @@ def main():
     hof = tools.HallOfFame(5)
 
     pop, log = algorithms.eaSimple(
-        pop, toolbox, cxpb=0.5, mutpb=0.3, ngen=100, halloffame=hof)
+        pop, toolbox, cxpb=0.5, mutpb=0.3, ngen=50, halloffame=hof)
 
     return pop  # , log, hof
 
