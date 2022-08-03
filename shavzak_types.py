@@ -11,21 +11,24 @@ class Person():
     status: int
     team_id: int
 
+
 @dataclass
-class task():
+class Task():
     id: int
     name: str
     score: int
-    shift_duration: int # in minutes
+    shift_duration: int  # in minutes
     team_id: int
 
+
 @dataclass
-class team():
+class Team():
     id: int
     name: str
 
+
 @dataclass
-class time_table():
+class Time_table():
     id: int
     date: int
     person_id: int
