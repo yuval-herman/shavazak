@@ -1,19 +1,16 @@
-from dataclasses import dataclass
-from typing import List
+from typing import TypedDict
 
 
-@dataclass
-class Person():
+class Person(TypedDict):
     id: int
     name: str
-    roles: List[str]
+    roles: str
     score: float
     status: int
     team_id: int
 
 
-@dataclass
-class Task():
+class Task(TypedDict):
     id: int
     name: str
     score: int
@@ -21,14 +18,12 @@ class Task():
     team_id: int
 
 
-@dataclass
-class Team():
+class Team(TypedDict):
     id: int
     name: str
 
 
-@dataclass
-class Time_table():
+class Time_table(TypedDict):
     id: int
     date: int
     person_id: int
