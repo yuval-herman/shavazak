@@ -31,6 +31,6 @@ class Team(TypedDict):
 
 class Time_table(TypedDict):
     id: int
-    date: int
+    date: float
     person_id: int
     task_id: int
