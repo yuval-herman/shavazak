@@ -1,7 +1,7 @@
 from pprint import pprint
 from random import choice, randint, random, randrange, sample
 from faker import Faker
-from src.server.database_types import *
+from database_types import *
 
 fake = Faker(use_weighting=False)
 roles = ['driver', 'medic', 'officer', 'commander']
@@ -23,7 +23,7 @@ def fake_task() -> Task:
     fake_task.id_counter += 1
     return {'id': fake_task.id_counter,
             'name': choice(tasks),
-            'required_people_per_shift': [{'role': choice(roles), 'num': randint(1, 2)}],
+            'required_people_per_shift': [{'role': 'any', 'num': 1}, {'role': choice(roles), 'num': randint(1, 2)}],
             'score': random(),
             'shift_duration': randrange(0, 61, 5),
             'team_id': 0}
