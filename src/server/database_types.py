@@ -4,8 +4,8 @@ from typing import Dict, List, Tuple, TypedDict
 class Person(TypedDict):
     id: int
     name: str
-    roles: str
-    score: float
+    roles: List[str]
+    score: float  # Lower means life is easier :)
     status: int
     team_id: int
 
@@ -19,7 +19,7 @@ class Task(TypedDict):
     id: int
     name: str
     required_people_per_shift: List[RoleNum]
-    score: int
+    score: float  # Lower means task is easier
     shift_duration: int  # in minutes
     team_id: int
 
