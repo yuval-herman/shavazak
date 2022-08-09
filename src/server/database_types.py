@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import Dict, List, Tuple, TypedDict
 
 
 class Person(TypedDict):
@@ -10,9 +10,15 @@ class Person(TypedDict):
     team_id: int
 
 
+class RoleNum(TypedDict):
+    role: str
+    num: int
+
+
 class Task(TypedDict):
     id: int
     name: str
+    required_people_per_shift: List[RoleNum]
     score: int
     shift_duration: int  # in minutes
     team_id: int
