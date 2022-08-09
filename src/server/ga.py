@@ -101,7 +101,7 @@ def mutate(individual: individual_type, indpb: float):
 # toolbox.register("map", multiprocessing.Pool(processes=50).map)
 
 
-def generate_time_table(tasks: List[Task], people: List[Person]):
+def generate_time_table(tasks: List[Task], people: List[Person]) -> individual_type:
     toolbox.register("evaluate", lambda x: evaluate(x, tasks))
     toolbox.register("mate", mate)
     toolbox.register("mutate", mutate, indpb=0.05)
