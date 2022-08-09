@@ -1,4 +1,3 @@
-from pprint import pprint
 from random import choice, randint, random, randrange, sample
 from faker import Faker
 from database_types import *

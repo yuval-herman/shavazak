@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple, TypedDict
+from typing import List, TypedDict
 
 
 class Person(TypedDict):
