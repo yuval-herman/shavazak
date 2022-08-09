@@ -1,19 +1,17 @@
 from copy import deepcopy
 from json import JSONEncoder
 from random import random, seed, randrange
-from deap import algorithms
-from deap import base
-from deap import creator
-from deap import tools
+from statistics import mean
+from deap import algorithms, base, creator, tools
 from datetime import datetime, timedelta
 from typing import List
 from fake_data import fake_person, fake_task
+import multiprocessing
 
 from database_types import *
 
 
 START_TIME = datetime.today().replace(hour=10)
-END_TIME = datetime.today().replace(hour=18)
 
 
 class Time_table(TypedDict):
@@ -54,7 +52,7 @@ def generate_random_table():
 toolbox.register("population", tools.initRepeat, list, generate_random_table)
 
 
-def calc_required_roles_fullfield(individual: individual_type):
+def calc_required_roles_fulfilled(individual: individual_type):
     roles_nums = []
     for task in tasks:
         for role in task["required_people_per_shift"]:
@@ -73,14 +71,14 @@ def calc_required_roles_fullfield(individual: individual_type):
 def calc_score_difference(individual: individual_type):
     scores = []
     for table_row in individual:
-        # calculate difference between scores, higer is better
+        # calculate difference between scores, higher is better
         scores.append(
             abs(table_row["person"]["score"] - table_row["task"]["score"]))
     return sum(scores)/len(scores)
 
 
 def evaluate(individual: individual_type):
-    return calc_required_roles_fullfield(individual)+calc_score_difference(individual),
+    return calc_required_roles_fulfilled(individual)+calc_score_difference(individual),
 
 
 def mate(a: individual_type, b: individual_type, indpb: float = 0.1):
@@ -113,6 +111,7 @@ toolbox.register("evaluate", evaluate)
 toolbox.register("mate", mate)
 toolbox.register("mutate", mutate, indpb=0.05)
 toolbox.register("select", tools.selTournament, tournsize=3)
+# toolbox.register("map", multiprocessing.Pool(processes=50).map)
 
 
 def main():
@@ -120,11 +119,12 @@ def main():
 
     pop = toolbox.population(n=100)
     hof = tools.HallOfFame(1)
-    stats = tools.Statistics(lambda ind: ind.fitness.values)
+    stats = tools.Statistics(lambda ind: ind.fitness.values[0])
+    stats.register("mean", mean)
     stats.register("max", max)
 
     pop, log = algorithms.eaSimple(
-        pop, toolbox, cxpb=0.5, mutpb=0.3, ngen=100, halloffame=hof, stats=stats)
+        pop, toolbox, cxpb=0.5, mutpb=0.3, ngen=10, halloffame=hof, stats=stats)
 
     return pop
 
