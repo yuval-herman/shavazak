@@ -22,10 +22,6 @@ class Time_table(TypedDict):
 
 individual_type = List[Time_table]
 
-tasks: List[Task] = [fake_task() for i in range(3)]
-
-people: List[Person] = [fake_person() for i in range(10)]
-
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMax)
@@ -33,7 +29,7 @@ creator.create("Individual", list, fitness=creator.FitnessMax)
 toolbox = base.Toolbox()
 
 
-def generate_random_table():
+def generate_random_table(tasks: List[Task], people: List[Person]):
     ind: individual_type = creator.Individual()
     remaining_people = people[:]
     curr_time = {task["id"]: START_TIME for task in tasks}
@@ -47,9 +43,6 @@ def generate_random_table():
                 {"date": curr_time[task["id"]], "person": rand_pip, "task": task})
             curr_time[task["id"]] = curr_time[task["id"]] + \
                 timedelta(minutes=task["shift_duration"])
-
-
-toolbox.register("population", tools.initRepeat, list, generate_random_table)
 
 
 def calc_required_roles_fulfilled(individual: individual_type):
@@ -114,8 +107,10 @@ toolbox.register("select", tools.selTournament, tournsize=3)
 # toolbox.register("map", multiprocessing.Pool(processes=50).map)
 
 
-def main():
+def generate_time_table(tasks: List[Task], people: List[Person]):
     seed(64)
+    toolbox.register("population", tools.initRepeat, list,
+                     lambda: generate_random_table(tasks, people))
 
     pop = toolbox.population(n=100)
     hof = tools.HallOfFame(1)
@@ -123,17 +118,17 @@ def main():
     stats.register("mean", mean)
     stats.register("max", max)
 
-    pop, log = algorithms.eaSimple(
-        pop, toolbox, cxpb=0.5, mutpb=0.3, ngen=10, halloffame=hof, stats=stats)
+    pop, _ = algorithms.eaSimple(
+        pop, toolbox, cxpb=0.5, mutpb=0.3, ngen=10, halloffame=hof, stats=stats, verbose=False)
 
-    return pop
-
-
-if __name__ == "__main__":
-    pop: List[individual_type] = main()
     best = pop[-1]
     for i, item in enumerate(best):
         best[i] = {"task": item["task"],
                    "person": item["person"], "date": item["date"].timestamp()}
-    best.sort(key=lambda x: x["date"])
-    print(JSONEncoder().encode(best))
+    return JSONEncoder().encode(best)
+
+
+if __name__ == "__main__":
+    tasks: List[Task] = [fake_task() for i in range(3)]
+    people: List[Person] = [fake_person() for i in range(10)]
+    print(generate_time_table(tasks, people))
