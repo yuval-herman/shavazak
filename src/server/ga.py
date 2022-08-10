@@ -12,13 +12,7 @@ from database_types import *
 START_TIME = datetime.today().replace(hour=10)
 
 
-class Time_table(TypedDict):
-    date: int
-    person: Person
-    task: Task
-
-
-individual_type = List[Time_table]
+individual_type = List[Time_table_nosql]
 
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))

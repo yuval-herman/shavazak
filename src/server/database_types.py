@@ -34,3 +34,9 @@ class Time_table(TypedDict):
     date: float
     person_id: int
     task_id: int
+
+
+class Time_table_nosql(TypedDict):
+    date: int
+    person: Person
+    task: Task
