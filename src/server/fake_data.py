@@ -1,3 +1,5 @@
+from json import JSONEncoder
+from pprint import pprint
 from random import choice, randint, random, randrange, sample
 from faker import Faker
 from database_types import *
@@ -5,7 +7,7 @@ from database_types import *
 fake = Faker(use_weighting=False)
 roles = ['driver', 'medic', 'officer', 'commander']
 tasks = ['guard', 'kitchen', 'patrol',
-         'operation', 'pill box', 'free', 'rasar service']
+         'operation', 'pill box', 'free', 'rasar service', 'hamal']
 
 
 def fake_person() -> Person:
@@ -30,3 +32,7 @@ def fake_task() -> Task:
 
 fake_person.id_counter = 0
 fake_task.id_counter = 0
+
+if __name__ == "__main__":
+    print(JSONEncoder().encode(
+        [[fake_task() for i in range(3)], [fake_person() for i in range(10)]]))
