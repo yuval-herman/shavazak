@@ -1,5 +1,5 @@
 from typing import List
-from flask import Flask
+from flask import Flask, request, abort
 import ga
 from fake_data import fake_person, fake_task
 from database_types import Task, Time_table_nosql
@@ -24,6 +24,40 @@ def sql_table_to_json(time_table: List[Time_table_nosql]):
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
+
+
+@app.route("/generate", methods=['POST'])
+def generate_table():
+    """
+    accepts json formatted as follows:
+    {
+        "tasks": [{
+            "name": string,
+            "required_people_per_shift": [
+                {
+                    "num": int,
+                    "role": string
+                }
+            ],
+            "score": float,
+            "shift_duration": int
+        }],
+        "people": [{
+            "date": float,
+            "person": {
+                "name": string,
+                "roles": [string],
+                "score": float,
+                "status": int,
+            }}]
+    }
+    """
+    if (not request.is_json):
+        abort(400, 'this endpoint can only accept json')
+    try:
+        return sql_table_to_json(ga.generate_time_table(request.json['tasks'], request.json['people']))
+    except KeyError:
+        abort(400, 'json in incorrect format')
 
 
 @app.route('/randomtable')
