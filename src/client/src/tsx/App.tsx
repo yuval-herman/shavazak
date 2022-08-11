@@ -3,37 +3,49 @@ import React, { useEffect, useRef, useState } from "react";
 import style from "./App.module.scss";
 import { PropsBasicWithKey } from "./components/baseComponentsTypes";
 import List from "./components/List";
-import { TimeTable } from "./interface";
+import { Task } from "./interface";
+
+const server = "http://localhost:5000";
 
 function App() {
-  const firstRender = useRef(true);
-  const [state, setState] = useState<TimeTable[]>([]);
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      fetch("/randomtable")
-        .then((res) => res.json().then(setState))
-        .catch(console.log);
-    }
-  }, []);
+	const firstRender = useRef(true);
+	const [state, setState] = useState<Task[]>([]);
+	useEffect(() => {
+		if (firstRender.current) {
+			firstRender.current = false;
 
-  function LI<T extends PropsBasicWithKey>(el: TimeTable) {
-    return (
-      <li key={el.person.id}>
-        {" "}
-        {new Date(el.date * 1000).toLocaleTimeString()}
-      </li>
-    );
-  }
+			fetch(server + "/randomtable")
+				.then((res) => res.json().then(setState))
+				.catch(console.log);
+		}
+	}, []);
 
-  return (
-    <div className={style.app}>
-      <List
-        dataArray={state.map((el) => ({ key: `${el.person.id}`, ...el }))}
-        LI={LI}
-      ></List>
-    </div>
-  );
+	/*
+	[[0,1,2,3],
+	 [0,1,2,3],
+	 [0,1,2,3],
+	 [0,1,2,3],]
+	*/
+	const tableTasks: JSX.Element[] = [];
+	const longestTask = Math.max(...state.map((task) => task.shifts.length));
+
+	for (let i = 0; i < state.length; i++) {
+		const tableRow = [];
+		for (let k = 0; k < longestTask; k++) {
+			if (state[i].shifts.length <= k) {
+				tableRow.push(<td></td>);
+				break;
+			}
+			tableRow.push(<td>{state[i].shifts[k].person.name}</td>);
+		}
+		tableTasks.push(<tr>{tableRow}</tr>);
+	}
+
+	return (
+		<div className={style.app}>
+			<table className={style.table}>{tableTasks}</table>
+		</div>
+	);
 }
 
 export default App;

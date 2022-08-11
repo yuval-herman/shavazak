@@ -1,10 +1,12 @@
 from typing import List
 from flask import Flask, request, abort
+from flask_cors import CORS
 import ga
 from fake_data import fake_person, fake_task
 from database_types import Task, Time_table_nosql
 
 app = Flask(__name__)
+CORS(app)
 
 
 def sql_table_to_json(time_table: List[Time_table_nosql]):
