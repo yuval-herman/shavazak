@@ -1,0 +1,178 @@
+{
+	"tasks": [
+		{
+			"id": 0,
+			"name": "free time",
+			"required_people_per_shift": [
+				{
+					"num": 0,
+					"role": "any"
+				}
+			],
+			"score": 0,
+			"shift_duration": 480
+		},
+		{
+			"id": 1,
+			"name": "gate guard",
+			"required_people_per_shift": [
+				{
+					"num": 1,
+					"role": "any"
+				},
+				{
+					"num": 1,
+					"role": "commander"
+				}
+			],
+			"score": 0.2,
+			"shift_duration": 60
+		},
+		{
+			"id": 2,
+			"name": "hamal",
+			"required_people_per_shift": [
+				{
+					"num": 1,
+					"role": "any"
+				}
+			],
+			"score": 0.1,
+			"shift_duration": 15,
+			"team_id": 0
+		},
+		{
+			"id": 3,
+			"name": "patrol",
+			"required_people_per_shift": [
+				{
+					"num": 4,
+					"role": "any"
+				},
+				{
+					"num": 2,
+					"role": "driver"
+				},
+				{
+					"num": 1,
+					"role": "commander"
+				},
+				{
+					"num": 1,
+					"role": "officer"
+				}
+			],
+			"score": 0.8,
+			"shift_duration": 0,
+			"team_id": 0
+		},
+		{
+			"id": 4,
+			"name": "kitchen",
+			"required_people_per_shift": [
+				{
+					"num": 1,
+					"role": "any"
+				}
+			],
+			"score": 0.9,
+			"shift_duration": 0,
+			"team_id": 0
+		},
+		{
+			"id": 5,
+			"name": "back station guard",
+			"required_people_per_shift": [
+				{
+					"num": 1,
+					"role": "any"
+				}
+			],
+			"score": 0.5,
+			"shift_duration": 0,
+			"team_id": 0
+		}
+	],
+	"people": [
+		{
+			"id": 1,
+			"name": "Miss Alice Mercer PhD",
+			"roles": ["driver"],
+			"score": 0.318216062949257,
+			"status": 1,
+			"team_id": 0
+		},
+		{
+			"id": 2,
+			"name": "Ms. Jessica Shah",
+			"roles": ["driver"],
+			"score": 0.665692016982983,
+			"status": 1,
+			"team_id": 0
+		},
+		{
+			"id": 3,
+			"name": "Dr. Alejandra Sexton DVM",
+			"roles": [],
+			"score": 0.00370913597463762,
+			"status": 1,
+			"team_id": 0
+		},
+		{
+			"id": 4,
+			"name": "Dr. Kyle Lewis V",
+			"roles": [],
+			"score": 0.415131436874766,
+			"status": 1,
+			"team_id": 0
+		},
+		{
+			"id": 5,
+			"name": "Mr. Brett Sanford",
+			"roles": ["medic", "driver"],
+			"score": 0.041852390234935,
+			"status": 1,
+			"team_id": 0
+		},
+		{
+			"id": 6,
+			"name": "Ms. Autumn Luna DVM",
+			"roles": ["officer"],
+			"score": 0.230133750065382,
+			"status": 1,
+			"team_id": 0
+		},
+		{
+			"id": 7,
+			"name": "Heidi Pearson",
+			"roles": ["commander", "medic"],
+			"score": 0.825495590114626,
+			"status": 1,
+			"team_id": 0
+		},
+		{
+			"id": 8,
+			"name": "Brendan Mclaughlin DVM",
+			"roles": [],
+			"score": 0.01075060176758,
+			"status": 1,
+			"team_id": 0
+		},
+		{
+			"id": 9,
+			"name": "Dr. Laurie Edwards",
+			"roles": [],
+			"score": 0.847217900872276,
+			"status": 1,
+			"team_id": 0
+		},
+		{
+			"id": 10,
+			"name": "Dr. Jose Gay PhD",
+			"roles": ["officer"],
+			"score": 0.133447254818105,
+			"status": 1,
+			"team_id": 0
+		}
+	]
+}
