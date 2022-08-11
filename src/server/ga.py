@@ -1,109 +1,149 @@
-from copy import deepcopy
-from pprint import pprint
-from random import random, seed, randrange
-from statistics import mean
-from deap import algorithms, base, creator, tools
-from datetime import datetime, timedelta
-from typing import List
-
 from database_types import *
+from typing import Dict, List, Tuple
+from datetime import datetime, timedelta
+from deap import algorithms, base, creator, tools
+from statistics import mean
+from random import random, seed, randrange, shuffle
+from pprint import pprint
+from copy import deepcopy
+import multiprocessing
 
 
 START_TIME = datetime.today().replace(hour=10)
 
 
-individual_type = List[Time_table_nosql]
+class Shift(TypedDict):
+    person: Person
+    date: int
 
 
-creator.create("FitnessMax", base.Fitness, weights=(1.0, 1.0))
+class Task(TypedDict):
+    id: int
+    name: str
+    required_people_per_shift: List[RoleNum]
+    score: float  # Lower means task is easier
+    shift_duration: int  # in minutes
+    shifts: List[Shift]
+
+
+individual_type = List[Task]
+
+
+creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 
 
 def generate_random_table(tasks: List[Task], people: List[Person]):
-    ind: individual_type = creator.Individual()
     remaining_people = people[:]
     curr_time = {task["id"]: START_TIME for task in tasks}
+    for task in tasks:
+        task['shifts'] = []
     while True:
         for task in tasks:
             if not remaining_people:
-                return ind
+                return creator.Individual(tasks)
             rand_pip = remaining_people.pop(
                 randrange(len(remaining_people)))
-            ind.append(
-                {"date": curr_time[task["id"]], "person": rand_pip, "task": task})
+            task['shifts'].append(
+                {"person": rand_pip, "date": curr_time[task["id"]].timestamp()})
             curr_time[task["id"]] = curr_time[task["id"]] + \
                 timedelta(minutes=task["shift_duration"])
 
 
-def calc_required_roles_fulfilled(individual: individual_type, tasks: List[Task]):
+def calc_required_roles_fulfilled(individual: individual_type, tasks: List[Task]) -> Tuple[float, bool]:
     roles_nums = []
-    for task in tasks:
+    for task in individual:
         for role in task["required_people_per_shift"]:
             role_num = role["num"]
-            for table_row in individual:
-                if table_row["task"]["id"] == task["id"]:
-                    if role["role"] == 'any' or \
-                            role["role"] in table_row["person"]["roles"]:
-                        role_num -= 1
-                        if role_num == 0:
-                            break
+            if role_num == 0:
+                continue
+            pips_roles = [shift["person"]["roles"] for shift in task["shifts"]]
+            for pip_roles in pips_roles:
+                if role["role"] == 'any' or \
+                        role["role"] in pip_roles:
+                    if role_num < 1:
+                        continue
+                    pips_roles.remove(pip_roles)
+                    role_num -= 1
             roles_nums.append(role_num)
-    return 1/(max(sum(roles_nums), 1))
+    if not bool([i for i in roles_nums if i != 0]):
+        print(1)
+    return 1/(sum(roles_nums)+1), not bool([i for i in roles_nums if float(i) != 0.0])
 
 
 def calc_score_difference(individual: individual_type):
     scores = []
-    for table_row in individual:
-        # calculate difference between scores, higher is better
-        scores.append(
-            abs(table_row["person"]["score"] - table_row["task"]["score"]))
+    for task in individual:
+        for shift in task["shifts"]:
+            # calculate difference between scores, higher is better
+            scores.append(
+                abs(shift["person"]["score"] - task["score"]))
     return sum(scores)/len(scores)
 
 
 def evaluate(individual: individual_type, tasks: List[Task]):
-    return calc_required_roles_fulfilled(individual, tasks), calc_score_difference(individual)
+    fitness, fulfilled = calc_required_roles_fulfilled(individual, tasks)
+    if not fulfilled:  # ignore scores if rules are not fulfilled
+        return fitness,
+    return fitness + calc_score_difference(individual),
 
 
-def mate(a: individual_type, b: individual_type, indpb: float = 0.1):
+def mate(a: individual_type, b: individual_type, indpb):
     '''
     There can be two types of exchanges between individuals.
     Either you switch task, or you switch date
     '''
     ind_a = deepcopy(a)
     ind_b = deepcopy(b)
-    for i, ind_a_row in enumerate(a):
+    for task_index in range(len(a)):
         if random() > indpb:
             continue
-        pip_id = ind_a_row["person"]["id"]
-        for k, ind_b_row in enumerate(ind_b):
-            if ind_b_row["person"]["id"] == pip_id:
-                ind_a[i]["person"], ind_b[k]["person"] = ind_b[k]["person"], ind_a[i]["person"]
+        try:
+            pip_a_index = randrange(len(a[task_index]["shifts"]))
+            pip_b_index = randrange(len(b[task_index]["shifts"]))
+        except ValueError:
+            continue
+        ind_a[task_index]["shifts"][pip_a_index], ind_b[task_index]["shifts"][pip_b_index] = \
+            ind_b[task_index]["shifts"][pip_b_index], ind_a[task_index]["shifts"][pip_a_index]
     return ind_a, ind_b
 
 
 def mutate(individual: individual_type, indpb: float, tasks: List[Task]):
     for i in range(len(individual)):
-        if random() > indpb:
-            continue
-        if random() < 0.5:
-            k = randrange(len(individual))
-            individual[i]["person"], individual[k]["person"] = individual[k]["person"], individual[i]["person"]
-        # else:
-        #     individual[i]["task"] = choice(tasks)
+        for shiftI in range(len(individual[i]["shifts"])):
+            if random() > indpb:
+                continue
+            tasks_index = list(range(len(individual)))
+            shuffle(tasks_index)
+            while tasks_index:
+                k = tasks_index.pop()
+                if len(individual[k]["shifts"]):
+                    shiftK = randrange(
+                        len(individual[k]["shifts"]))
+                    break
+            else:  # if there are people there is nothing to do
+                individual
+            if random() < 0.5:
+                individual[i]["shifts"][shiftI]["person"], individual[k]["shifts"][shiftK]["person"] = \
+                    individual[k]["shifts"][shiftK]["person"], individual[i]["shifts"][shiftI]["person"]
+            else:
+                new_time = (datetime.fromtimestamp(individual[i]["shifts"][-1]["date"]) +
+                            timedelta(minutes=individual[i]["shift_duration"])).timestamp()
+                person = individual[k]["shifts"].pop(shiftK)["person"]
+                individual[i]["shifts"].append(
+                    {"date": new_time, "person": person})
     return individual,
 
 
-# toolbox.register("map", multiprocessing.Pool(processes=50).map)
-
-
 def generate_time_table(tasks: List[Task], people: List[Person]) -> individual_type:
-    toolbox.register("evaluate", lambda x: evaluate(x, tasks))
-    toolbox.register("mate", mate)
+    seed(64)
+    # toolbox.register("map", multiprocessing.Pool().map)
+    toolbox.register("evaluate", evaluate, tasks=tasks)
+    toolbox.register("mate", mate, indpb=0.2)
     toolbox.register("mutate", mutate, indpb=0.2, tasks=tasks)
     toolbox.register("select", tools.selTournament, tournsize=3)
-    seed(64)
     toolbox.register("population", tools.initRepeat, list,
                      lambda: generate_random_table(tasks, people))
 
@@ -116,9 +156,6 @@ def generate_time_table(tasks: List[Task], people: List[Person]) -> individual_t
         pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=100, halloffame=hof, stats=stats, verbose=False)
 
     best = pop[-1]
-    for i, item in enumerate(best):
-        best[i] = {"task": item["task"],
-                   "person": item["person"], "date": item["date"].timestamp()}
     return best
 
 

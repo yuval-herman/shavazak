@@ -55,7 +55,7 @@ def generate_table():
     if (not request.is_json):
         abort(400, 'this endpoint can only accept json')
     try:
-        return sql_table_to_json(ga.generate_time_table(request.json['tasks'], request.json['people']))
+        return ga.generate_time_table(request.json['tasks'], request.json['people'])
     except KeyError:
         abort(400, 'json in incorrect format')
 
@@ -67,4 +67,4 @@ def random_table():
     time_table = ga.generate_time_table([fake_task() for i in range(NUM_OF_TASKS)], [
                                         fake_person() for i in range(NUM_OF_PIPS)])
 
-    return sql_table_to_json(time_table)
+    return time_table
