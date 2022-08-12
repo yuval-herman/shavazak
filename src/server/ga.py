@@ -68,8 +68,6 @@ def calc_required_roles_fulfilled(individual: individual_type, tasks: List[Task]
                     pips_roles.remove(pip_roles)
                     role_num -= 1
             roles_nums.append(role_num)
-    if not bool([i for i in roles_nums if i != 0]):
-        print(1)
     return 1/(sum(roles_nums)+1), not bool([i for i in roles_nums if float(i) != 0.0])
 
 
