@@ -1,39 +1,53 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import style from "./App.module.scss";
-import { PropsBasicWithKey } from "./components/baseComponentsTypes";
-import List from "./components/List";
-import { TimeTable } from "./interface";
+import { Task } from "./interface";
 
 function App() {
-  const firstRender = useRef(true);
-  const [state, setState] = useState<TimeTable[]>([]);
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      fetch("/randomtable")
-        .then((res) => res.json().then(setState))
-        .catch(console.log);
-    }
-  }, []);
+	const firstRender = useRef(true);
+	const [tasks, setState] = useState<Task[]>([]);
+	useEffect(() => {
+		if (firstRender.current) {
+			firstRender.current = false;
+			fetch("/randomtable")
+				.then((res) => res.json().then(setState))
+				.catch(console.log);
+		}
+	}, []);
 
-  function LI<T extends PropsBasicWithKey>(el: TimeTable) {
-    return (
-      <li key={el.person.id}>
-        {" "}
-        {new Date(el.date * 1000).toLocaleTimeString()}
-      </li>
-    );
-  }
+	console.log(tasks);
 
-  return (
-    <div className={style.app}>
-      <List
-        dataArray={state.map((el) => ({ key: `${el.person.id}`, ...el }))}
-        LI={LI}
-      ></List>
-    </div>
-  );
+	const rows = [];
+	const maxLength = Math.max(...tasks.map((task) => task.shifts.length));
+	for (let i = 0; i < maxLength; i++) {
+		const row = [];
+		for (let k = 0; k < tasks.length; k++) {
+			row.push(tasks[k].shifts[i]);
+		}
+		rows.push(row);
+	}
+	return (
+		<div className={style.app}>
+			<table className={style.table}>
+				<thead>
+					<tr>
+						{tasks.map((task) => (
+							<th>{task.name}</th>
+						))}
+					</tr>
+				</thead>
+				<tbody>
+					{rows.map((row) => (
+						<tr>
+							{row.map((cell) => (
+								<td>{cell?.person.name}</td>
+							))}
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</div>
+	);
 }
 
 export default App;
