@@ -1,3 +1,4 @@
+from json import JSONDecoder
 from typing import List
 from flask import Flask, request, abort
 from flask_cors import CORS
@@ -68,5 +69,16 @@ def random_table():
     NUM_OF_PIPS = 20
     time_table = ga.generate_time_table([fake_task() for i in range(NUM_OF_TASKS)], [
                                         fake_person() for i in range(NUM_OF_PIPS)])
+
+    return time_table
+
+
+@app.route('/test')
+def test_table():
+    with open('../../test-data.json') as file:
+        test_json = JSONDecoder().decode(file.read())
+
+    time_table = ga.generate_time_table(
+        test_json["tasks"], test_json["people"])
 
     return time_table
