@@ -128,32 +128,28 @@ def evaluate(individual: individual_type, tasks: List[Task]):
     return fitness + calc_score_difference(individual),
 
 
-def mate(a: individual_type, b: individual_type, indpb):
+def mate(a: individual_type, b: individual_type, swap_amount: int):
     '''
     There can be two types of exchanges between individuals.
     Either you switch task, or you switch date
     '''
     ind_a = deepcopy(a)
     ind_b = deepcopy(b)
-    if has_duplicates(ind_a) or has_duplicates(ind_b):
-        print('before')
-    shift_a, pip_a = choose_random_pip(ind_a)
-    shift_b, pip_b = choose_random_pip(ind_b)
-    shift_a_2, pip_a_2 = find_pip_index(ind_a, shift_b["people"][pip_b])
-    shift_b_2, pip_b_2 = find_pip_index(ind_b, shift_a["people"][pip_a])
-    shift_a["people"][pip_a], shift_b["people"][pip_b] = \
-        shift_b["people"][pip_b], shift_a["people"][pip_a]
-    shift_a_2["people"][pip_a_2], shift_b_2["people"][pip_b_2] = \
-        shift_b_2["people"][pip_b_2], shift_a_2["people"][pip_a_2]
-    if has_duplicates(ind_a) or has_duplicates(ind_b):
-        print('after')
+    for _ in range(swap_amount):
+        shift_a, pip_a = choose_random_pip(ind_a)
+        shift_b, pip_b = choose_random_pip(ind_b)
+        shift_a_2, pip_a_2 = find_pip_index(ind_a, shift_b["people"][pip_b])
+        shift_b_2, pip_b_2 = find_pip_index(ind_b, shift_a["people"][pip_a])
+        shift_a["people"][pip_a], shift_b["people"][pip_b] = \
+            shift_b["people"][pip_b], shift_a["people"][pip_a]
+        shift_a_2["people"][pip_a_2], shift_b_2["people"][pip_b_2] = \
+            shift_b_2["people"][pip_b_2], shift_a_2["people"][pip_a_2]
+
     return ind_a, ind_b
 
 
-def mutate(individual: individual_type, indpb: float, tasks: List[Task]):
-    for i in range(len(individual)):
-        if random() > indpb:
-            continue
+def mutate(individual: individual_type, swap_amount: int):
+    for _ in range(swap_amount):
         shift_a, pip_a = choose_random_pip(individual)
         shift_b, pip_b = choose_random_pip(individual)
         shift_a['people'][pip_a], shift_b['people'][pip_b] = \
@@ -162,11 +158,11 @@ def mutate(individual: individual_type, indpb: float, tasks: List[Task]):
 
 
 def generate_time_table(tasks: List[Task], people: List[Person]) -> individual_type:
-    seed(64)
+    seed(64)  # TODO: remove before deployment!
     # toolbox.register("map", multiprocessing.Pool().map)
     toolbox.register("evaluate", evaluate, tasks=tasks)
-    toolbox.register("mate", mate, indpb=0.2)
-    toolbox.register("mutate", mutate, indpb=0.2, tasks=tasks)
+    toolbox.register("mate", mate, swap_amount=len(people)//2)
+    toolbox.register("mutate", mutate, swap_amount=len(people)//10)
     toolbox.register("select", tools.selTournament, tournsize=3)
     toolbox.register("population", tools.initRepeat, list,
                      lambda: generate_random_table(tasks, people))
