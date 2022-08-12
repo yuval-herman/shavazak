@@ -14,7 +14,7 @@ export interface Person {
 
 export interface Shift {
 	date: number;
-	person: Person;
+	people: Person[];
 }
 
 export interface Task {

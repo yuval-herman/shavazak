@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import style from "./App.module.scss";
-import { Task } from "./interface";
+import { Shift, Task } from "./interface";
 
 function App() {
 	const firstRender = useRef(true);
@@ -17,35 +17,31 @@ function App() {
 
 	console.log(tasks);
 
-	const rows = [];
-	const maxLength = Math.max(...tasks.map((task) => task.shifts.length));
-	for (let i = 0; i < maxLength; i++) {
-		const row = [];
-		for (let k = 0; k < tasks.length; k++) {
-			row.push(tasks[k].shifts[i]);
-		}
-		rows.push(row);
-	}
 	return (
 		<div className={style.app}>
-			<table className={style.table}>
-				<thead>
-					<tr>
-						{tasks.map((task) => (
-							<th>{task.name}</th>
-						))}
-					</tr>
-				</thead>
-				<tbody>
-					{rows.map((row) => (
-						<tr>
-							{row.map((cell) => (
-								<td>{cell?.person.name}</td>
-							))}
-						</tr>
+			<div className={style.table}>
+				<header className={style.tableHeaders}>
+					{tasks.map((task) => (
+						<span>{task.name}</span>
 					))}
-				</tbody>
-			</table>
+				</header>
+				<main className={style.tableView}>
+					{tasks.map((task) => (
+						<div>
+							{task.shifts.map((shift) => (
+								<div
+									className={style.taskView}
+									style={{ height: task.shift_duration / 3 + "rem" }}
+								>
+									{shift.people.map((person) => (
+										<p>{person.name}</p>
+									))}
+								</div>
+							))}
+						</div>
+					))}
+				</main>
+			</div>
 		</div>
 	);
 }

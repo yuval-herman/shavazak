@@ -5,9 +5,28 @@ body {
 .app {
 	color: white;
 }
-.table {
-	td,
-	th {
+
+.tableHeaders {
+	width: 100wh;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	font-size: 2rem;
+	text-transform: capitalize;
+}
+
+.tableView {
+	width: 100wh;
+	display: flex;
+	flex-direction: row;
+	text-align: center;
+	div {
+		flex-grow: 1;
+	}
+	.taskView {
 		border: solid white 1px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
 }
