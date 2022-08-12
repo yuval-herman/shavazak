@@ -38,7 +38,7 @@
 				}
 			],
 			"score": 0.1,
-			"shift_duration": 15,
+			"shift_duration": 480,
 			"team_id": 0
 		},
 		{
@@ -63,7 +63,7 @@
 				}
 			],
 			"score": 0.8,
-			"shift_duration": 0,
+			"shift_duration": 240,
 			"team_id": 0
 		},
 		{
@@ -76,7 +76,7 @@
 				}
 			],
 			"score": 0.9,
-			"shift_duration": 0,
+			"shift_duration": 480,
 			"team_id": 0
 		},
 		{
@@ -89,7 +89,7 @@
 				}
 			],
 			"score": 0.5,
-			"shift_duration": 0,
+			"shift_duration": 60,
 			"team_id": 0
 		}
 	],
