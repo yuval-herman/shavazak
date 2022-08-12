@@ -1,3 +1,8 @@
+export interface RequiredPeoplePerShift {
+	num: number;
+	role: string;
+}
+
 export interface Person {
 	id: number;
 	name: string;
@@ -7,9 +12,9 @@ export interface Person {
 	team_id: number;
 }
 
-export interface RequiredPeoplePerShift {
-	num: number;
-	role: string;
+export interface Shift {
+	date: number;
+	person: Person;
 }
 
 export interface Task {
@@ -18,9 +23,6 @@ export interface Task {
 	required_people_per_shift: RequiredPeoplePerShift[];
 	score: number;
 	shift_duration: number;
-	shifts: {
-		date: number;
-		person: Person;
-	}[];
+	shifts: Shift[];
 	team_id: number;
 }

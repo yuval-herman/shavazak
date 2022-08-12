@@ -1,49 +1,51 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import style from "./App.module.scss";
-import { PropsBasicWithKey } from "./components/baseComponentsTypes";
-import List from "./components/List";
 import { Task } from "./interface";
-
-const server = "http://localhost:5000";
 
 function App() {
 	const firstRender = useRef(true);
-	const [state, setState] = useState<Task[]>([]);
+	const [tasks, setState] = useState<Task[]>([]);
 	useEffect(() => {
 		if (firstRender.current) {
 			firstRender.current = false;
-
-			fetch(server + "/randomtable")
+			fetch("/randomtable")
 				.then((res) => res.json().then(setState))
 				.catch(console.log);
 		}
 	}, []);
 
-	/*
-	[[0,1,2,3],
-	 [0,1,2,3],
-	 [0,1,2,3],
-	 [0,1,2,3],]
-	*/
-	const tableTasks: JSX.Element[] = [];
-	const longestTask = Math.max(...state.map((task) => task.shifts.length));
+	console.log(tasks);
 
-	for (let i = 0; i < state.length; i++) {
-		const tableRow = [];
-		for (let k = 0; k < longestTask; k++) {
-			if (state[i].shifts.length <= k) {
-				tableRow.push(<td></td>);
-				break;
-			}
-			tableRow.push(<td>{state[i].shifts[k].person.name}</td>);
+	const rows = [];
+	const maxLength = Math.max(...tasks.map((task) => task.shifts.length));
+	for (let i = 0; i < maxLength; i++) {
+		const row = [];
+		for (let k = 0; k < tasks.length; k++) {
+			row.push(tasks[k].shifts[i]);
 		}
-		tableTasks.push(<tr>{tableRow}</tr>);
+		rows.push(row);
 	}
-
 	return (
 		<div className={style.app}>
-			<table className={style.table}>{tableTasks}</table>
+			<table className={style.table}>
+				<thead>
+					<tr>
+						{tasks.map((task) => (
+							<th>{task.name}</th>
+						))}
+					</tr>
+				</thead>
+				<tbody>
+					{rows.map((row) => (
+						<tr>
+							{row.map((cell) => (
+								<td>{cell?.person.name}</td>
+							))}
+						</tr>
+					))}
+				</tbody>
+			</table>
 		</div>
 	);
 }

@@ -1,3 +1,4 @@
+from json import JSONEncoder
 from database_types import *
 from typing import Dict, List, Tuple
 from datetime import datetime, timedelta
@@ -8,12 +9,14 @@ from pprint import pprint
 from copy import deepcopy
 import multiprocessing
 
+from fake_data import fake_person, fake_task
+
 
 START_TIME = datetime.today().replace(hour=10)
 
 
 class Shift(TypedDict):
-    person: Person
+    people: Person
     date: int
 
 
@@ -33,6 +36,29 @@ creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
+
+
+def has_duplicates(individual: individual_type) -> bool:
+    pips_ids = [shift["person"]["id"]
+                for task in individual for shift in task["shifts"]]
+    return len(pips_ids) != len(set(pips_ids))
+
+
+def choose_random_pip(individual: individual_type) -> Tuple[int, int]:
+    """returns random task index and shift index"""
+    task_index = randrange(len(individual))
+    while not len(individual[task_index]["shifts"]):
+        task_index = randrange(len(individual))
+    pip_index = randrange(len(individual[task_index]["shifts"]))
+    return task_index, pip_index
+
+
+def find_pip_index(individual: individual_type, pip: Person) -> Tuple[int, int]:
+    for i, task in enumerate(individual):
+        for k, shift in enumerate(task['shifts']):
+            if shift["person"]["id"] == pip["id"]:
+                return i, k
+    raise ValueError("Person not found in table")
 
 
 def generate_random_table(tasks: List[Task], people: List[Person]):
@@ -95,16 +121,20 @@ def mate(a: individual_type, b: individual_type, indpb):
     '''
     ind_a = deepcopy(a)
     ind_b = deepcopy(b)
-    for task_index in range(len(a)):
-        if random() > indpb:
-            continue
-        try:
-            pip_a_index = randrange(len(a[task_index]["shifts"]))
-            pip_b_index = randrange(len(b[task_index]["shifts"]))
-        except ValueError:
-            continue
-        ind_a[task_index]["shifts"][pip_a_index], ind_b[task_index]["shifts"][pip_b_index] = \
-            ind_b[task_index]["shifts"][pip_b_index], ind_a[task_index]["shifts"][pip_a_index]
+    if has_duplicates(ind_a) or has_duplicates(ind_b):
+        print('before')
+    task_a, pip_a = choose_random_pip(ind_a)
+    task_b, pip_b = choose_random_pip(ind_b)
+    task_a_2, pip_a_2 = find_pip_index(
+        ind_a, ind_b[task_b]['shifts'][pip_b]["person"])
+    task_b_2, pip_b_2 = find_pip_index(
+        ind_b, ind_a[task_a]['shifts'][pip_a]["person"])
+    ind_a[task_a]['shifts'][pip_a], ind_b[task_b]['shifts'][pip_b] = \
+        ind_b[task_b]['shifts'][pip_b], ind_a[task_a]['shifts'][pip_a]
+    ind_a[task_a_2]['shifts'][pip_a_2], ind_b[task_b_2]['shifts'][pip_b_2] = \
+        ind_b[task_b_2]['shifts'][pip_b_2], ind_a[task_a_2]['shifts'][pip_a_2]
+    if has_duplicates(ind_a) or has_duplicates(ind_b):
+        print('after')
     return ind_a, ind_b
 
 
@@ -158,178 +188,184 @@ def generate_time_table(tasks: List[Task], people: List[Person]) -> individual_t
 
 
 if __name__ == "__main__":
-    json_dict = {
-        "tasks": [
-            {
-                "id": 0,
-                "name": "free time",
-                        "required_people_per_shift": [],
-                        "score": 0,
-                        "shift_duration": 480
-            },
-            {
-                "id": 1,
-                "name": "gate guard",
-                        "required_people_per_shift": [
-                            {
-                                "num": 1,
-                                "role": "any"
-                            },
-                            {
-                                "num": 1,
-                                "role": "commander"
-                            }
-                        ],
-                "score": 0.2,
-                "shift_duration": 60
-            },
-            {
-                "id": 2,
-                "name": "hamal",
-                        "required_people_per_shift": [
-                            {
-                                "num": 1,
-                                "role": "any"
-                            }
-                        ],
-                "score": 0.1,
-                "shift_duration": 15,
-                "team_id": 0
-            },
-            {
-                "id": 3,
-                "name": "patrol",
-                        "required_people_per_shift": [
-                            {
-                                "num": 4,
-                                "role": "any"
-                            },
-                            {
-                                "num": 2,
-                                "role": "driver"
-                            },
-                            {
-                                "num": 1,
-                                "role": "commander"
-                            },
-                            {
-                                "num": 1,
-                                "role": "officer"
-                            }
-                        ],
-                "score": 0.8,
-                "shift_duration": 0,
-                "team_id": 0
-            },
-            {
-                "id": 4,
-                "name": "kitchen",
-                        "required_people_per_shift": [
-                            {
-                                "num": 1,
-                                "role": "any"
-                            }
-                        ],
-                "score": 0.9,
-                "shift_duration": 0,
-                "team_id": 0
-            },
-            {
-                "id": 5,
-                "name": "back station guard",
-                        "required_people_per_shift": [
-                            {
-                                "num": 1,
-                                "role": "any"
-                            }
-                        ],
-                "score": 0.5,
-                "shift_duration": 0,
-                "team_id": 0
-            }
-        ],
-        "people": [
-            {
-                "id": 1,
-                "name": "Miss Alice Mercer PhD",
-                        "roles": ["driver"],
-                        "score": 0.318216062949257,
-                        "status": 1,
-                        "team_id": 0
-            },
-            {
-                "id": 2,
-                "name": "Ms. Jessica Shah",
-                        "roles": ["driver"],
-                        "score": 0.665692016982983,
-                        "status": 1,
-                        "team_id": 0
-            },
-            {
-                "id": 3,
-                "name": "Dr. Alejandra Sexton DVM",
-                        "roles": [],
-                        "score": 0.00370913597463762,
-                        "status": 1,
-                        "team_id": 0
-            },
-            {
-                "id": 4,
-                "name": "Dr. Kyle Lewis V",
-                        "roles": [],
-                        "score": 0.415131436874766,
-                        "status": 1,
-                        "team_id": 0
-            },
-            {
-                "id": 5,
-                "name": "Mr. Brett Sanford",
-                        "roles": ["medic", "driver"],
-                        "score": 0.041852390234935,
-                        "status": 1,
-                        "team_id": 0
-            },
-            {
-                "id": 6,
-                "name": "Ms. Autumn Luna DVM",
-                        "roles": ["officer"],
-                        "score": 0.230133750065382,
-                        "status": 1,
-                        "team_id": 0
-            },
-            {
-                "id": 7,
-                "name": "Heidi Pearson",
-                        "roles": ["commander", "medic"],
-                        "score": 0.825495590114626,
-                        "status": 1,
-                        "team_id": 0
-            },
-            {
-                "id": 8,
-                "name": "Brendan Mclaughlin DVM",
-                        "roles": [],
-                        "score": 0.01075060176758,
-                        "status": 1,
-                        "team_id": 0
-            },
-            {
-                "id": 9,
-                "name": "Dr. Laurie Edwards",
-                        "roles": [],
-                        "score": 0.847217900872276,
-                        "status": 1,
-                        "team_id": 0
-            },
-            {
-                "id": 10,
-                "name": "Dr. Jose Gay PhD",
-                        "roles": ["officer"],
-                        "score": 0.133447254818105,
-                        "status": 1,
-                        "team_id": 0
-            }
-        ]
-    }
+    # json_dict = {
+    #     "tasks": [
+    #         {
+    #             "id": 0,
+    #             "name": "free time",
+    #                     "required_people_per_shift": [],
+    #                     "score": 0,
+    #                     "shift_duration": 480
+    #         },
+    #         {
+    #             "id": 1,
+    #             "name": "gate guard",
+    #                     "required_people_per_shift": [
+    #                         {
+    #                             "num": 1,
+    #                             "role": "any"
+    #                         },
+    #                         {
+    #                             "num": 1,
+    #                             "role": "commander"
+    #                         }
+    #                     ],
+    #             "score": 0.2,
+    #             "shift_duration": 60
+    #         },
+    #         {
+    #             "id": 2,
+    #             "name": "hamal",
+    #                     "required_people_per_shift": [
+    #                         {
+    #                             "num": 1,
+    #                             "role": "any"
+    #                         }
+    #                     ],
+    #             "score": 0.1,
+    #             "shift_duration": 15,
+    #             "team_id": 0
+    #         },
+    #         {
+    #             "id": 3,
+    #             "name": "patrol",
+    #                     "required_people_per_shift": [
+    #                         {
+    #                             "num": 4,
+    #                             "role": "any"
+    #                         },
+    #                         {
+    #                             "num": 2,
+    #                             "role": "driver"
+    #                         },
+    #                         {
+    #                             "num": 1,
+    #                             "role": "commander"
+    #                         },
+    #                         {
+    #                             "num": 1,
+    #                             "role": "officer"
+    #                         }
+    #                     ],
+    #             "score": 0.8,
+    #             "shift_duration": 0,
+    #             "team_id": 0
+    #         },
+    #         {
+    #             "id": 4,
+    #             "name": "kitchen",
+    #                     "required_people_per_shift": [
+    #                         {
+    #                             "num": 1,
+    #                             "role": "any"
+    #                         }
+    #                     ],
+    #             "score": 0.9,
+    #             "shift_duration": 0,
+    #             "team_id": 0
+    #         },
+    #         {
+    #             "id": 5,
+    #             "name": "back station guard",
+    #                     "required_people_per_shift": [
+    #                         {
+    #                             "num": 1,
+    #                             "role": "any"
+    #                         }
+    #                     ],
+    #             "score": 0.5,
+    #             "shift_duration": 0,
+    #             "team_id": 0
+    #         }
+    #     ],
+    #     "people": [
+    #         {
+    #             "id": 1,
+    #             "name": "Miss Alice Mercer PhD",
+    #                     "roles": ["driver"],
+    #                     "score": 0.318216062949257,
+    #                     "status": 1,
+    #                     "team_id": 0
+    #         },
+    #         {
+    #             "id": 2,
+    #             "name": "Ms. Jessica Shah",
+    #                     "roles": ["driver"],
+    #                     "score": 0.665692016982983,
+    #                     "status": 1,
+    #                     "team_id": 0
+    #         },
+    #         {
+    #             "id": 3,
+    #             "name": "Dr. Alejandra Sexton DVM",
+    #                     "roles": [],
+    #                     "score": 0.00370913597463762,
+    #                     "status": 1,
+    #                     "team_id": 0
+    #         },
+    #         {
+    #             "id": 4,
+    #             "name": "Dr. Kyle Lewis V",
+    #                     "roles": [],
+    #                     "score": 0.415131436874766,
+    #                     "status": 1,
+    #                     "team_id": 0
+    #         },
+    #         {
+    #             "id": 5,
+    #             "name": "Mr. Brett Sanford",
+    #                     "roles": ["medic", "driver"],
+    #                     "score": 0.041852390234935,
+    #                     "status": 1,
+    #                     "team_id": 0
+    #         },
+    #         {
+    #             "id": 6,
+    #             "name": "Ms. Autumn Luna DVM",
+    #                     "roles": ["officer"],
+    #                     "score": 0.230133750065382,
+    #                     "status": 1,
+    #                     "team_id": 0
+    #         },
+    #         {
+    #             "id": 7,
+    #             "name": "Heidi Pearson",
+    #                     "roles": ["commander", "medic"],
+    #                     "score": 0.825495590114626,
+    #                     "status": 1,
+    #                     "team_id": 0
+    #         },
+    #         {
+    #             "id": 8,
+    #             "name": "Brendan Mclaughlin DVM",
+    #                     "roles": [],
+    #                     "score": 0.01075060176758,
+    #                     "status": 1,
+    #                     "team_id": 0
+    #         },
+    #         {
+    #             "id": 9,
+    #             "name": "Dr. Laurie Edwards",
+    #                     "roles": [],
+    #                     "score": 0.847217900872276,
+    #                     "status": 1,
+    #                     "team_id": 0
+    #         },
+    #         {
+    #             "id": 10,
+    #             "name": "Dr. Jose Gay PhD",
+    #                     "roles": ["officer"],
+    #                     "score": 0.133447254818105,
+    #                     "status": 1,
+    #                     "team_id": 0
+    #         }
+    #     ]
+    # }
 
-    pprint(generate_time_table(json_dict["tasks"], json_dict["people"]))
+    # pprint(generate_time_table(json_dict["tasks"], json_dict["people"]))
+    NUM_OF_TASKS = 3
+    NUM_OF_PIPS = 15
+    best = generate_time_table([fake_task() for i in range(NUM_OF_TASKS)], [
+        fake_person() for i in range(NUM_OF_PIPS)])
+    json = JSONEncoder().encode(best)
+    print(json)
