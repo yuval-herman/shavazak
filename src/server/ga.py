@@ -4,7 +4,7 @@ from typing import Dict, List, Tuple
 from datetime import datetime, timedelta
 from deap import algorithms, base, creator, tools
 from statistics import mean
-from random import random, seed, randrange, shuffle
+from random import choice, random, seed, randrange, shuffle
 from pprint import pprint
 from copy import deepcopy
 import multiprocessing
@@ -16,7 +16,7 @@ START_TIME = datetime.today().replace(hour=10)
 
 
 class Shift(TypedDict):
-    people: Person
+    people: List[Person]
     date: int
 
 
@@ -39,25 +39,32 @@ toolbox = base.Toolbox()
 
 
 def has_duplicates(individual: individual_type) -> bool:
-    pips_ids = [shift["person"]["id"]
-                for task in individual for shift in task["shifts"]]
+    pips_ids = [pip["id"] for task in individual for shift in task["shifts"]
+                for pip in shift["people"]]
     return len(pips_ids) != len(set(pips_ids))
 
 
-def choose_random_pip(individual: individual_type) -> Tuple[int, int]:
+def choose_random_pip(individual: individual_type) -> Tuple[Shift, int]:
     """returns random task index and shift index"""
     task_index = randrange(len(individual))
-    while not len(individual[task_index]["shifts"]):
+    while True:
         task_index = randrange(len(individual))
-    pip_index = randrange(len(individual[task_index]["shifts"]))
-    return task_index, pip_index
+        if not len(individual[task_index]["shifts"]):
+            continue
+        shift = choice(individual[task_index]["shifts"])
+        if len(shift['people']):
+            break
+    pip_index = randrange(
+        len(shift["people"]))
+    return shift, pip_index
 
 
-def find_pip_index(individual: individual_type, pip: Person) -> Tuple[int, int]:
-    for i, task in enumerate(individual):
-        for k, shift in enumerate(task['shifts']):
-            if shift["person"]["id"] == pip["id"]:
-                return i, k
+def find_pip_index(individual: individual_type, person: Person) -> Tuple[Shift, int]:
+    for task in individual:
+        for shift in task['shifts']:
+            for i, pip in enumerate(shift["people"]):
+                if pip["id"] == person["id"]:
+                    return shift, i
     raise ValueError("Person not found in table")
 
 
@@ -68,12 +75,17 @@ def generate_random_table(tasks: List[Task], people: List[Person]):
         task['shifts'] = []
     while True:
         for task in tasks:
-            if not remaining_people:
-                return creator.Individual(tasks)
-            rand_pip = remaining_people.pop(
-                randrange(len(remaining_people)))
             task['shifts'].append(
-                {"person": rand_pip, "date": curr_time[task["id"]].timestamp()})
+                {"people": [], "date": curr_time[task["id"]].timestamp()})
+            needed_pips = sum([i["num"]
+                              for i in task["required_people_per_shift"]])
+            while needed_pips:
+                if not remaining_people:
+                    return creator.Individual(tasks)
+                rand_pip = remaining_people.pop(
+                    randrange(len(remaining_people)))
+                task['shifts'][-1]["people"].append(rand_pip)
+                needed_pips -= 1
             curr_time[task["id"]] = curr_time[task["id"]] + \
                 timedelta(minutes=task["shift_duration"])
 
@@ -85,15 +97,16 @@ def calc_required_roles_fulfilled(individual: individual_type, tasks: List[Task]
             role_num = role["num"]
             if role_num == 0:
                 continue
-            pips_roles = [shift["person"]["roles"] for shift in task["shifts"]]
-            for pip_roles in pips_roles:
-                if role["role"] == 'any' or \
-                        role["role"] in pip_roles:
-                    if role_num < 1:
-                        continue
-                    pips_roles.remove(pip_roles)
-                    role_num -= 1
-            roles_nums.append(role_num)
+            for shift in task["shifts"]:
+                pips_roles = [pip["roles"] for pip in shift["people"]]
+                for pip_roles in pips_roles:
+                    if role["role"] == 'any' or \
+                            role["role"] in pip_roles:
+                        if role_num < 1:
+                            continue
+                        pips_roles.remove(pip_roles)
+                        role_num -= 1
+                roles_nums.append(role_num)
     return 1/(sum(roles_nums)+1), not bool([i for i in roles_nums if float(i) != 0.0])
 
 
@@ -101,9 +114,10 @@ def calc_score_difference(individual: individual_type):
     scores = []
     for task in individual:
         for shift in task["shifts"]:
-            # calculate difference between scores, higher is better
-            scores.append(
-                abs(shift["person"]["score"] - task["score"]))
+            for pip in shift['people']:
+                # calculate difference between scores, higher is better
+                scores.append(
+                    abs(pip["score"] - task["score"]))
     return sum(scores)/len(scores)
 
 
@@ -123,16 +137,14 @@ def mate(a: individual_type, b: individual_type, indpb):
     ind_b = deepcopy(b)
     if has_duplicates(ind_a) or has_duplicates(ind_b):
         print('before')
-    task_a, pip_a = choose_random_pip(ind_a)
-    task_b, pip_b = choose_random_pip(ind_b)
-    task_a_2, pip_a_2 = find_pip_index(
-        ind_a, ind_b[task_b]['shifts'][pip_b]["person"])
-    task_b_2, pip_b_2 = find_pip_index(
-        ind_b, ind_a[task_a]['shifts'][pip_a]["person"])
-    ind_a[task_a]['shifts'][pip_a], ind_b[task_b]['shifts'][pip_b] = \
-        ind_b[task_b]['shifts'][pip_b], ind_a[task_a]['shifts'][pip_a]
-    ind_a[task_a_2]['shifts'][pip_a_2], ind_b[task_b_2]['shifts'][pip_b_2] = \
-        ind_b[task_b_2]['shifts'][pip_b_2], ind_a[task_a_2]['shifts'][pip_a_2]
+    shift_a, pip_a = choose_random_pip(ind_a)
+    shift_b, pip_b = choose_random_pip(ind_b)
+    shift_a_2, pip_a_2 = find_pip_index(ind_a, shift_b["people"][pip_b])
+    shift_b_2, pip_b_2 = find_pip_index(ind_b, shift_a["people"][pip_a])
+    shift_a["people"][pip_a], shift_b["people"][pip_b] = \
+        shift_b["people"][pip_b], shift_a["people"][pip_a]
+    shift_a_2["people"][pip_a_2], shift_b_2["people"][pip_b_2] = \
+        shift_b_2["people"][pip_b_2], shift_a_2["people"][pip_a_2]
     if has_duplicates(ind_a) or has_duplicates(ind_b):
         print('after')
     return ind_a, ind_b
@@ -140,28 +152,12 @@ def mate(a: individual_type, b: individual_type, indpb):
 
 def mutate(individual: individual_type, indpb: float, tasks: List[Task]):
     for i in range(len(individual)):
-        for shiftI in range(len(individual[i]["shifts"])):
-            if random() > indpb:
-                continue
-            tasks_index = list(range(len(individual)))
-            shuffle(tasks_index)
-            while tasks_index:
-                k = tasks_index.pop()
-                if len(individual[k]["shifts"]):
-                    shiftK = randrange(
-                        len(individual[k]["shifts"]))
-                    break
-            else:  # if there are people there is nothing to do
-                individual
-            if random() < 0.5:
-                individual[i]["shifts"][shiftI]["person"], individual[k]["shifts"][shiftK]["person"] = \
-                    individual[k]["shifts"][shiftK]["person"], individual[i]["shifts"][shiftI]["person"]
-            else:
-                new_time = (datetime.fromtimestamp(individual[i]["shifts"][-1]["date"]) +
-                            timedelta(minutes=individual[i]["shift_duration"])).timestamp()
-                person = individual[k]["shifts"].pop(shiftK)["person"]
-                individual[i]["shifts"].append(
-                    {"date": new_time, "person": person})
+        if random() > indpb:
+            continue
+        shift_a, pip_a = choose_random_pip(individual)
+        shift_b, pip_b = choose_random_pip(individual)
+        shift_a['people'][pip_a], shift_b['people'][pip_b] = \
+            shift_b['people'][pip_b], shift_a['people'][pip_a]
     return individual,
 
 
