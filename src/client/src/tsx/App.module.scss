@@ -24,9 +24,13 @@ body {
 		flex-grow: 1;
 	}
 	.taskView {
-		border: solid white 1px;
+		border: solid white 2px;
 		display: flex;
+		flex-wrap: wrap;
 		flex-direction: column;
 		justify-content: center;
+		div {
+			border: dotted white 1px;
+		}
 	}
 }

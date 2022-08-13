@@ -34,7 +34,10 @@ function App() {
 									style={{ height: task.shift_duration / 3 + "rem" }}
 								>
 									{shift.people.map((person) => (
-										<p>{person.name}</p>
+										<div>
+											<p>{person.name}</p>
+											<span>{person.roles.join(", ")}</span>
+										</div>
 									))}
 								</div>
 							))}
