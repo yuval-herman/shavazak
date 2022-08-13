@@ -75,6 +75,13 @@ def generate_random_table(tasks: List[Task], people: List[Person]):
         task['shifts'] = []
     while True:
         for task in tasks:
+            add_shift = True
+            for time in curr_time.values():
+                if curr_time[task["id"]] > time:
+                    add_shift = False
+                    break
+            if not add_shift:
+                continue
             task['shifts'].append(
                 {"people": [], "date": curr_time[task["id"]].timestamp()})
             needed_pips = sum([i["num"]
