@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { fetchJSON } from "../helpers";
 
 import style from "./App.module.scss";
 import { Task } from "./interface";
@@ -7,17 +8,17 @@ function App() {
 	const firstRender = useRef(true);
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [zoomLevel, setZoom] = useState<number>(1);
+
 	useEffect(() => {
 		if (firstRender.current) {
 			firstRender.current = false;
-			fetch("/randomtable")
-				.then((res) => res.json().then((tasks) => setTasks(() => tasks)))
+			fetchJSON("/randomtable")
+				.then((tasks) => setTasks(() => tasks))
 				.catch(console.log);
+			// this is here because react does not natively support "{ passive: false }"
 			window.addEventListener("wheel", zoomHandler, { passive: false });
 		}
 	});
-
-	console.log(tasks);
 
 	return (
 		<div className={style.app}>
@@ -52,6 +53,10 @@ function App() {
 		</div>
 	);
 
+	/**
+	 * handles window wheel events.
+	 * increases or decreases table zoom.
+	 */
 	function zoomHandler(e: WheelEvent) {
 		if (e.ctrlKey) {
 			e.preventDefault();
