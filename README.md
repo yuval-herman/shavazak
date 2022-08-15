@@ -15,3 +15,5 @@ In every new terminal before any work run `source env/bin/activate`
 To run server, `cd` into `src/server` and run `./build serve`
 
 After work end run `deactivate`
+
+[Github projects page](https://github.com/users/yuval-herman/projects/1/views/2)
