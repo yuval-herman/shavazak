@@ -24,7 +24,7 @@ def fake_task() -> Task:
     fake_task.id_counter += 1
     return {'id': fake_task.id_counter,
             'name': choice(tasks),
-            'required_people_per_shift': [{'role': 'any', 'num': 1}, {'role': choice(roles), 'num': randint(1, 2)}],
+            'required_people_per_shift': [{'role': 'any', 'amount': 1}, {'role': choice(roles), 'amount': randint(1, 2)}],
             'score': random(),
             'shift_duration': randrange(0, 61, 5),
             'team_id': 0}

@@ -1,13 +1,11 @@
 from json import JSONEncoder
 from database_types import *
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 from datetime import datetime, timedelta
 from deap import algorithms, base, creator, tools
 from statistics import mean
-from random import choice, random, seed, randrange, shuffle
-from pprint import pprint
+from random import choice, seed, randrange
 from copy import deepcopy
-import multiprocessing
 
 from fake_data import fake_person, fake_task
 
@@ -23,7 +21,7 @@ class Shift(TypedDict):
 class Task(TypedDict):
     id: int
     name: str
-    required_people_per_shift: List[RoleNum]
+    required_people_per_shift: List[RoleAmount]
     score: float  # Lower means task is easier
     shift_duration: int  # in minutes
     shifts: List[Shift]
@@ -84,7 +82,7 @@ def generate_random_table(tasks: List[Task], people: List[Person]):
                 continue
             task['shifts'].append(
                 {"people": [], "date": curr_time[task["id"]].timestamp()})
-            needed_pips = sum([i["num"]
+            needed_pips = sum([i["amount"]
                               for i in task["required_people_per_shift"]])
             while needed_pips:
                 if not remaining_people:
@@ -101,7 +99,7 @@ def calc_required_roles_fulfilled(individual: individual_type, tasks: List[Task]
     roles_nums = []
     for task in individual:
         for role in task["required_people_per_shift"]:
-            role_num = role["num"]
+            role_num = role["amount"]
             if role_num == 0:
                 continue
             for shift in task["shifts"]:
@@ -156,6 +154,7 @@ def mate(a: individual_type, b: individual_type, swap_amount: int):
 
 
 def mutate(individual: individual_type, swap_amount: int):
+    """"""
     for _ in range(swap_amount):
         shift_a, pip_a = choose_random_pip(individual)
         shift_b, pip_b = choose_random_pip(individual)

@@ -1,3 +1,4 @@
+from json import JSONDecoder, JSONEncoder
 from typing import List, TypedDict
 
 
@@ -10,15 +11,15 @@ class Person(TypedDict):
     team_id: int
 
 
-class RoleNum(TypedDict):
+class RoleAmount(TypedDict):
     role: str
-    num: int
+    amount: int
 
 
 class Task(TypedDict):
     id: int
     name: str
-    required_people_per_shift: List[RoleNum]
+    required_people_per_shift: List[RoleAmount]
     score: float  # Lower means task is easier
     shift_duration: int  # in minutes
     team_id: int

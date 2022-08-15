@@ -5,7 +5,7 @@
 			"name": "free time",
 			"required_people_per_shift": [
 				{
-					"num": 0,
+					"amount": 0,
 					"role": "any"
 				}
 			],
@@ -17,11 +17,11 @@
 			"name": "gate guard",
 			"required_people_per_shift": [
 				{
-					"num": 1,
+					"amount": 1,
 					"role": "any"
 				},
 				{
-					"num": 1,
+					"amount": 1,
 					"role": "commander"
 				}
 			],
@@ -33,7 +33,7 @@
 			"name": "hamal",
 			"required_people_per_shift": [
 				{
-					"num": 1,
+					"amount": 1,
 					"role": "any"
 				}
 			],
@@ -46,19 +46,19 @@
 			"name": "patrol",
 			"required_people_per_shift": [
 				{
-					"num": 4,
+					"amount": 4,
 					"role": "any"
 				},
 				{
-					"num": 2,
+					"amount": 2,
 					"role": "driver"
 				},
 				{
-					"num": 1,
+					"amount": 1,
 					"role": "commander"
 				},
 				{
-					"num": 1,
+					"amount": 1,
 					"role": "officer"
 				}
 			],
@@ -71,7 +71,7 @@
 			"name": "kitchen",
 			"required_people_per_shift": [
 				{
-					"num": 1,
+					"amount": 1,
 					"role": "any"
 				}
 			],
@@ -84,7 +84,7 @@
 			"name": "back station guard",
 			"required_people_per_shift": [
 				{
-					"num": 1,
+					"amount": 1,
 					"role": "any"
 				}
 			],
