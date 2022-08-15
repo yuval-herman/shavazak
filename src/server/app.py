@@ -10,20 +10,6 @@ app = Flask(__name__)
 CORS(app)
 
 
-def sql_table_to_json(time_table: List[Time_table_nosql]):
-    tasks: List[Task] = []
-    for table_row in time_table:
-        if table_row["task"] not in tasks:
-            tasks.append(table_row["task"])
-            tasks[-1]['shifts'] = []
-    for i, task in enumerate(tasks):
-        for table_row in time_table:
-            if task["id"] == table_row["task"]["id"]:
-                tasks[i]['shifts'].append(
-                    {'person': table_row["person"], 'date': table_row["date"]})
-    return tasks
-
-
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
