@@ -14,13 +14,22 @@ body {
 	margin: 5rem;
 }
 
+.header {
+	font-size: 2rem;
+	text-transform: capitalize;
+}
+
 .tableHeaders {
-	width: 100wh;
+	width: 100vw;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
-	font-size: 2rem;
-	text-transform: capitalize;
+	:first-child {
+		flex-grow: 1;
+	}
+	* {
+		flex-grow: 2;
+	}
 }
 
 .tableView {
@@ -34,7 +43,7 @@ body {
 		flex-grow: 1;
 	}
 	.shiftView {
-		border: solid $mid-dark 2px;
+		outline: solid $mid-dark 2px;
 		display: flex;
 		flex-wrap: wrap;
 		flex-direction: column;
@@ -45,6 +54,24 @@ body {
 			border: solid $lightest 0.2rem;
 			border-radius: 1rem;
 			background-color: $mid-dark;
+		}
+	}
+}
+
+.timeLine {
+	display: flex;
+
+	hr {
+		background-color: $lightest;
+		border: none;
+		height: 0.2rem;
+		margin: calc(1rem - 0.2rem) 0;
+		width: 3rem;
+		&:nth-child(1) {
+			margin: 0;
+		}
+		&:nth-child(5n + 1) {
+			width: 8rem;
 		}
 	}
 }

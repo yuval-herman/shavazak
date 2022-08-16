@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { fetchJSON } from "../helpers";
 
 import style from "./App.module.scss";
@@ -21,16 +21,28 @@ function App() {
 	});
 
 	console.log(JSON.stringify(tasks));
+	const timeline = [];
+	const hrStyle: React.CSSProperties = {
+		margin: `${zoomLevel - 0.2}rem 0`,
+	};
+	for (let i = 0; i < 200; i++) {
+		//TODO: set number according to tasks length
+		timeline.push(<hr key={i} style={i !== 0 ? hrStyle : undefined} />);
+	}
 
 	return (
 		<div className={style.app}>
 			<div className={style.table}>
-				<header className={style.tableHeaders}>
+				<header className={style.tableHeaders + " " + style.header}>
+					<span>minutes</span>
 					{tasks.map((task) => (
 						<span key={task.id}>{task.name}</span>
 					))}
 				</header>
 				<main className={style.tableView}>
+					<div className={style.timeLine}>
+						<div>{timeline}</div>
+					</div>
 					{tasks.map((task) => (
 						<div key={task.id} className={style.taskView}>
 							{task.shifts.map((shift) => (
