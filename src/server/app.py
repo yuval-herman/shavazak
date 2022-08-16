@@ -16,10 +16,8 @@ def random_table():
     """Return a random table made with fake data."""
     NUM_OF_TASKS = 3
     NUM_OF_PIPS = 20
-    time_table = ga.generate_time_table([fake_task() for i in range(NUM_OF_TASKS)], [
-                                        fake_person() for i in range(NUM_OF_PIPS)])
-
-    return time_table
+    return ga.generate_random_table([fake_task() for i in range(NUM_OF_TASKS)], [
+        fake_person() for i in range(NUM_OF_PIPS)])
 
 
 @app.route("/generate", methods=['POST'])
