@@ -8,12 +8,16 @@ class Person(TypedDict):
     roles: List[str]
     score: float  # Lower means life is easier :)
     status: int
-    team_id: int
 
 
 class RoleAmount(TypedDict):
     role: str
     amount: int
+
+
+class Shift(TypedDict):
+    people: List[Person]
+    date: float
 
 
 class Task(TypedDict):
@@ -22,7 +26,7 @@ class Task(TypedDict):
     required_people_per_shift: List[RoleAmount]
     score: float  # Lower means task is easier
     shift_duration: int  # in minutes
-    team_id: int
+    shifts: List[Shift]
 
 
 class Team(TypedDict):

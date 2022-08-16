@@ -37,20 +37,20 @@ toolbox = base.Toolbox()
 
 
 def has_duplicates(individual: individual_type) -> bool:
+    """Check if individual has duplicated people."""
     pips_ids = [pip["id"] for task in individual for shift in task["shifts"]
                 for pip in shift["people"]]
     return len(pips_ids) != len(set(pips_ids))
 
 
 def choose_random_pip(individual: individual_type) -> Tuple[Shift, int]:
-    """returns random task index and shift index"""
-    task_index = randrange(len(individual))
-    while True:
+    """Return random task index and shift index."""
+    while True:  # find a non empty task and shift
         task_index = randrange(len(individual))
-        if not len(individual[task_index]["shifts"]):
+        if not individual[task_index]["shifts"]:
             continue
         shift = choice(individual[task_index]["shifts"])
-        if len(shift['people']):
+        if shift['people']:
             break
     pip_index = randrange(
         len(shift["people"]))
@@ -58,6 +58,7 @@ def choose_random_pip(individual: individual_type) -> Tuple[Shift, int]:
 
 
 def find_pip_index(individual: individual_type, person: Person) -> Tuple[Shift, int]:
+    """Find person in individual, if not found raise ValueError."""
     for task in individual:
         for shift in task['shifts']:
             for i, pip in enumerate(shift["people"]):
@@ -67,12 +68,21 @@ def find_pip_index(individual: individual_type, person: Person) -> Tuple[Shift, 
 
 
 def generate_random_table(tasks: List[Task], people: List[Person]):
-    remaining_people = people[:]
-    curr_time = {task["id"]: START_TIME for task in tasks}
-    for task in tasks:
-        task['shifts'] = []
+    """Generate random table from tasks and people.
+
+    The method of generation could be roughly described as such:
+    1. Make a list of people to insert to the table.
+    2. Start looping over tasks.
+    3. Create a shift for the current task and fill it
+       with people from previously mentioned list.
+    4. Move to the next task, if this last shift end time is
+       greater then the rest, skip it. That will keep the shifts end times aligned roughly.
+    """
+    remaining_people = people.copy()
+    table = deepcopy(tasks)
+    curr_time = {task["id"]: START_TIME for task in table}
     while True:
-        for task in tasks:
+        for task in table:
             add_shift = True
             for time in curr_time.values():
                 if curr_time[task["id"]] > time:
@@ -86,7 +96,7 @@ def generate_random_table(tasks: List[Task], people: List[Person]):
                               for i in task["required_people_per_shift"]])
             while needed_pips:
                 if not remaining_people:
-                    return creator.Individual(tasks)
+                    return creator.Individual(table)
                 rand_pip = remaining_people.pop(
                     randrange(len(remaining_people)))
                 task['shifts'][-1]["people"].append(rand_pip)
@@ -96,6 +106,7 @@ def generate_random_table(tasks: List[Task], people: List[Person]):
 
 
 def calc_required_roles_fulfilled(individual: individual_type, tasks: List[Task]) -> Tuple[float, bool]:
+    """Calculate the amount of unfulfilled roles in tasks shift. Return a value between 1 to 0."""
     roles_nums = []
     for task in individual:
         for role in task["required_people_per_shift"]:
@@ -115,7 +126,8 @@ def calc_required_roles_fulfilled(individual: individual_type, tasks: List[Task]
     return 1/(sum(roles_nums)+1), not bool([i for i in roles_nums if float(i) != 0.0])
 
 
-def calc_score_difference(individual: individual_type):
+def calc_score_distance(individual: individual_type):
+    """Calculate the distance between each task score and it's assigned people."""
     scores = []
     for task in individual:
         for shift in task["shifts"]:
@@ -127,17 +139,15 @@ def calc_score_difference(individual: individual_type):
 
 
 def evaluate(individual: individual_type, tasks: List[Task]):
+    """Run all evaluation functions and calculate one merged score."""
     fitness, fulfilled = calc_required_roles_fulfilled(individual, tasks)
     if not fulfilled:  # ignore scores if rules are not fulfilled
         return fitness,
-    return fitness + calc_score_difference(individual),
+    return fitness + calc_score_distance(individual),
 
 
 def mate(a: individual_type, b: individual_type, swap_amount: int):
-    '''
-    There can be two types of exchanges between individuals.
-    Either you switch task, or you switch date
-    '''
+    """Create two new individuals by randomly swapping people between individuals a and b."""
     ind_a = deepcopy(a)
     ind_b = deepcopy(b)
     for _ in range(swap_amount):
@@ -154,7 +164,7 @@ def mate(a: individual_type, b: individual_type, swap_amount: int):
 
 
 def mutate(individual: individual_type, swap_amount: int):
-    """"""
+    """Randomly swap people inside an individual."""
     for _ in range(swap_amount):
         shift_a, pip_a = choose_random_pip(individual)
         shift_b, pip_b = choose_random_pip(individual)
@@ -164,8 +174,8 @@ def mutate(individual: individual_type, swap_amount: int):
 
 
 def generate_time_table(tasks: List[Task], people: List[Person]) -> individual_type:
+    """Calculate an optimized table from tasks and people."""
     seed(64)  # TODO: remove before deployment!
-    # toolbox.register("map", multiprocessing.Pool().map)
     toolbox.register("evaluate", evaluate, tasks=tasks)
     toolbox.register("mate", mate, swap_amount=len(people)//2)
     toolbox.register("mutate", mutate, swap_amount=len(people)//10)

@@ -11,46 +11,9 @@ CORS(app)
 
 
 @app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
-
-@app.route("/generate", methods=['POST'])
-def generate_table():
-    """
-    accepts json formatted as follows:
-    {
-        "tasks": [{
-            "name": string,
-            "required_people_per_shift": [
-                {
-                    "num": int,
-                    "role": string
-                }
-            ],
-            "score": float,
-            "shift_duration": int
-        }],
-        "people": [{
-            "date": float,
-            "person": {
-                "name": string,
-                "roles": [string],
-                "score": float,
-                "status": int,
-            }}]
-    }
-    """
-    if (not request.is_json):
-        abort(400, 'this endpoint can only accept json')
-    try:
-        return ga.generate_time_table(request.json['tasks'], request.json['people'])
-    except KeyError:
-        abort(400, 'json in incorrect format')
-
-
 @app.route('/randomtable')
 def random_table():
+    """Return a random table made with fake data."""
     NUM_OF_TASKS = 3
     NUM_OF_PIPS = 20
     time_table = ga.generate_time_table([fake_task() for i in range(NUM_OF_TASKS)], [
@@ -59,8 +22,20 @@ def random_table():
     return time_table
 
 
+@app.route("/generate", methods=['POST'])
+def generate_table():
+    """Get JSON string from client and return optimized table."""
+    if (not request.is_json):
+        abort(400, 'this endpoint can only accept json')
+    try:
+        return ga.generate_time_table(request.json['tasks'], request.json['people'])
+    except KeyError:
+        abort(400, 'json in incorrect format')
+
+
 @app.route('/test')
 def test_table():
+    """Return table constructed from our hand-made test data."""
     with open('../../test-data.json') as file:
         test_json = JSONDecoder().decode(file.read())
 
