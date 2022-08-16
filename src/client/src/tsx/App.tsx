@@ -6,6 +6,7 @@ import { Task } from "./interface";
 
 function App() {
 	const firstRender = useRef(true);
+	const mainDiv = useRef(null);
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [zoomLevel, setZoom] = useState<number>(1);
 
@@ -39,7 +40,7 @@ function App() {
 						<span key={task.id}>{task.name}</span>
 					))}
 				</header>
-				<main className={style.tableView}>
+				<main className={style.tableView} ref={mainDiv}>
 					<div className={style.timeLine}>
 						<div>{timeline}</div>
 					</div>
@@ -73,6 +74,15 @@ function App() {
 	 * increases or decreases table zoom.
 	 */
 	function zoomHandler(e: WheelEvent) {
+		// if mouse is not on table component
+		if (
+			!(mainDiv.current as unknown as HTMLDivElement).contains(
+				e.target as HTMLElement
+			)
+		) {
+			return;
+		}
+
 		if (e.ctrlKey) {
 			e.preventDefault();
 			setZoom((prevState) => prevState * (e.deltaY > 0 ? 0.75 : 1.5));
