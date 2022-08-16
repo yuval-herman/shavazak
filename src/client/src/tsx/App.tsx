@@ -30,10 +30,10 @@ function App() {
 				</header>
 				<main className={style.tableView}>
 					{tasks.map((task) => (
-						<div>
+						<div className={style.taskView}>
 							{task.shifts.map((shift) => (
 								<div
-									className={style.taskView}
+									className={style.shiftView}
 									style={{
 										height: task.shift_duration * zoomLevel + "rem",
 									}}

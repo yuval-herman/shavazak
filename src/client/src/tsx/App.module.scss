@@ -1,9 +1,17 @@
 @use "../style/style.scss" as *;
+
+$white: #ffffff;
+$lightest: #9ab8da;
+$mid-tone: #4e82be;
+$mid-dark: #2d527b;
+$darkest: #142437;
+
 body {
-	background-color: black;
+	background-color: $darkest;
 }
 .app {
-	color: white;
+	color: $lightest;
+	margin: 5rem;
 }
 
 .tableHeaders {
@@ -20,17 +28,23 @@ body {
 	display: flex;
 	flex-direction: row;
 	text-align: center;
-	div {
+	border: solid $mid-dark 5px;
+	border-radius: 5px;
+	.taskView {
 		flex-grow: 1;
 	}
-	.taskView {
-		border: solid white 2px;
+	.shiftView {
+		border: solid $mid-dark 2px;
 		display: flex;
 		flex-wrap: wrap;
 		flex-direction: column;
 		justify-content: center;
 		div {
-			border: dotted white 1px;
+			flex-grow: 1;
+			margin: 0.5rem;
+			border: solid $lightest 0.2rem;
+			border-radius: 1rem;
+			background-color: $mid-dark;
 		}
 	}
 }
