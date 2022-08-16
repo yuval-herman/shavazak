@@ -20,26 +20,29 @@ function App() {
 		}
 	});
 
+	console.log(JSON.stringify(tasks));
+
 	return (
 		<div className={style.app}>
 			<div className={style.table}>
 				<header className={style.tableHeaders}>
 					{tasks.map((task) => (
-						<span>{task.name}</span>
+						<span key={task.id}>{task.name}</span>
 					))}
 				</header>
 				<main className={style.tableView}>
 					{tasks.map((task) => (
-						<div className={style.taskView}>
+						<div key={task.id} className={style.taskView}>
 							{task.shifts.map((shift) => (
 								<div
+									key={shift.date}
 									className={style.shiftView}
 									style={{
 										height: task.shift_duration * zoomLevel + "rem",
 									}}
 								>
 									{shift.people.map((person) => (
-										<div>
+										<div key={person.id}>
 											<p>{person.name}</p>
 											<span>{person.roles.join(", ")}</span>
 										</div>
