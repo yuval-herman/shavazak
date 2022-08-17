@@ -11,6 +11,7 @@ from fake_data import fake_person, fake_task
 
 
 START_TIME = datetime.today().replace(hour=10)
+END_TIME = datetime.today().replace(hour=22)
 
 
 class Shift(TypedDict):
@@ -83,6 +84,7 @@ def generate_random_table(tasks: List[Task], people: List[Person]):
     curr_time = {task["id"]: START_TIME for task in table}
     while True:
         for task in table:
+            # check if the current task last shift is past the other tasks, if so, skip it
             add_shift = True
             for time in curr_time.values():
                 if curr_time[task["id"]] > time:
@@ -95,8 +97,10 @@ def generate_random_table(tasks: List[Task], people: List[Person]):
             needed_pips = sum([i["amount"]
                               for i in task["required_people_per_shift"]])
             while needed_pips:
-                if not remaining_people:
+                if time+timedelta(minutes=task["shift_duration"]) >= END_TIME:
                     return creator.Individual(table)
+                if not remaining_people:
+                    remaining_people = people.copy()
                 rand_pip = remaining_people.pop(
                     randrange(len(remaining_people)))
                 task['shifts'][-1]["people"].append(rand_pip)
