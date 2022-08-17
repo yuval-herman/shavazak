@@ -28,7 +28,7 @@ def fake_task() -> Task:
             'name': choice(tasks),
             'required_people_per_shift': [{'role': 'any', 'amount': 1}, {'role': choice(roles), 'amount': randint(1, 2)}],
             'score': random(),
-            'shift_duration': randrange(5, 61, 5),
+            'shift_duration': randrange(30, 601, 5),
             'shifts': []}
 
 
