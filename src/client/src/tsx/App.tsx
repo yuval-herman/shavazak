@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { fetchJSON } from "../helpers";
-
+import { Link } from "react-router-dom";
 import style from "./App.module.scss";
 import { Task } from "./interface";
 
@@ -33,6 +33,7 @@ function App() {
 
 	return (
 		<div className={style.app}>
+			<Link to="/test">test</Link>
 			<div className={style.table}>
 				<header className={style.tableHeaders + " " + style.header}>
 					<span>minutes</span>
