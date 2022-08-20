@@ -1,3 +1,4 @@
+from datetime import datetime
 from json import JSONDecoder
 from typing import List
 from flask import Flask, request, abort
@@ -16,8 +17,10 @@ def random_table():
     """Return a random table made with fake data."""
     NUM_OF_TASKS = 3
     NUM_OF_PIPS = 20
+    START_TIME = datetime.today().replace(hour=10)
+    END_TIME = datetime.today().replace(hour=22)
     return ga.generate_random_table([fake_task() for i in range(NUM_OF_TASKS)], [
-        fake_person() for i in range(NUM_OF_PIPS)])
+        fake_person() for i in range(NUM_OF_PIPS)], START_TIME, END_TIME)
 
 
 @app.route("/generate", methods=['POST'])
@@ -26,7 +29,10 @@ def generate_table():
     if (not request.is_json):
         abort(400, 'this endpoint can only accept json')
     try:
-        return ga.generate_time_table(request.json['tasks'], request.json['people'])
+        return ga.generate_time_table(request.json['tasks'], request.json['people'],
+                                      datetime.fromtimestamp(
+                                          request.json['start_time']/1000),
+                                      datetime.fromtimestamp(request.json['end_time']/1000))
     except KeyError:
         abort(400, 'json in incorrect format')
 
@@ -38,6 +44,9 @@ def test_table():
         test_json = JSONDecoder().decode(file.read())
 
     time_table = ga.generate_time_table(
-        test_json["tasks"], test_json["people"])
+        test_json["tasks"], test_json["people"],
+        datetime.fromtimestamp(
+            request.json['start_time']/1000),
+        datetime.fromtimestamp(request.json['end_time']/1000))
 
     return time_table
