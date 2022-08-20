@@ -11,10 +11,6 @@ from copy import deepcopy
 from fake_data import fake_person, fake_task
 
 
-START_TIME = datetime.today().replace(hour=10)
-END_TIME = datetime.today().replace(hour=22)
-
-
 class Shift(TypedDict):
     people: List[Person]
     date: int
@@ -69,7 +65,7 @@ def find_pip_index(individual: individual_type, person: Person) -> Tuple[Shift, 
     raise ValueError("Person not found in table")
 
 
-def generate_random_table(tasks: List[Task], people: List[Person]):
+def generate_random_table(tasks: List[Task], people: List[Person], start_time: datetime, end_time: datetime):
     """Generate random table from tasks and people.
 
     The method of generation could be roughly described as such:
@@ -82,7 +78,7 @@ def generate_random_table(tasks: List[Task], people: List[Person]):
     """
     remaining_people = people.copy()
     table = deepcopy(tasks)
-    curr_time = {task["id"]: START_TIME for task in table}
+    curr_time = {task["id"]: start_time for task in table}
     while True:
         for task in table:
             # check if the current task last shift is past the other tasks, if so, skip it
@@ -98,7 +94,7 @@ def generate_random_table(tasks: List[Task], people: List[Person]):
             needed_pips = sum([i["amount"]
                               for i in task["required_people_per_shift"]])
             while needed_pips:
-                if time+timedelta(minutes=task["shift_duration"]) >= END_TIME:
+                if time+timedelta(minutes=task["shift_duration"]) >= end_time:
                     return creator.Individual(table)
                 if not remaining_people:
                     remaining_people = deepcopy(people)
@@ -185,7 +181,7 @@ def mutate(individual: individual_type, swap_amount: int):
     return individual,
 
 
-def generate_time_table(tasks: List[Task], people: List[Person]) -> individual_type:
+def generate_time_table(tasks: List[Task], people: List[Person], start_time: datetime, end_time: datetime) -> individual_type:
     """Calculate an optimized table from tasks and people."""
     seed(64)  # TODO: remove before deployment!
     toolbox.register("evaluate", evaluate, tasks=tasks)
@@ -193,7 +189,7 @@ def generate_time_table(tasks: List[Task], people: List[Person]) -> individual_t
     toolbox.register("mutate", mutate, swap_amount=len(people)//10)
     toolbox.register("select", tools.selTournament, tournsize=3)
     toolbox.register("population", tools.initRepeat, list,
-                     lambda: generate_random_table(tasks, people))
+                     lambda: generate_random_table(tasks, people, start_time, end_time))
 
     pop = toolbox.population(n=100)
     hof = tools.HallOfFame(1)
@@ -208,9 +204,11 @@ def generate_time_table(tasks: List[Task], people: List[Person]) -> individual_t
 
 
 if __name__ == "__main__":
+    START_TIME = datetime.today().replace(hour=10)
+    END_TIME = datetime.today().replace(hour=22)
     NUM_OF_TASKS = 3
     NUM_OF_PIPS = 15
     best = generate_time_table([fake_task() for i in range(NUM_OF_TASKS)], [
-        fake_person() for i in range(NUM_OF_PIPS)])
+        fake_person() for i in range(NUM_OF_PIPS)], START_TIME, END_TIME)
     json = JSONEncoder().encode(best)
     print(json)
