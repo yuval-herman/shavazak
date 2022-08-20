@@ -1,4 +1,5 @@
 from json import JSONEncoder
+from pprint import pprint
 from database_types import *
 from typing import List, Tuple
 from datetime import datetime, timedelta
@@ -100,7 +101,7 @@ def generate_random_table(tasks: List[Task], people: List[Person]):
                 if time+timedelta(minutes=task["shift_duration"]) >= END_TIME:
                     return creator.Individual(table)
                 if not remaining_people:
-                    remaining_people = people.copy()
+                    remaining_people = deepcopy(people)
                 rand_pip = remaining_people.pop(
                     randrange(len(remaining_people)))
                 task['shifts'][-1]["people"].append(rand_pip)
@@ -155,10 +156,17 @@ def mate(a: individual_type, b: individual_type, swap_amount: int):
     ind_a = deepcopy(a)
     ind_b = deepcopy(b)
     for _ in range(swap_amount):
-        shift_a, pip_a = choose_random_pip(ind_a)
-        shift_b, pip_b = choose_random_pip(ind_b)
-        shift_a_2, pip_a_2 = find_pip_index(ind_a, shift_b["people"][pip_b])
-        shift_b_2, pip_b_2 = find_pip_index(ind_b, shift_a["people"][pip_a])
+        while True:
+            shift_a, pip_a = choose_random_pip(ind_a)
+            shift_b, pip_b = choose_random_pip(ind_b)
+            try:
+                shift_a_2, pip_a_2 = find_pip_index(
+                    ind_a, shift_b["people"][pip_b])
+                shift_b_2, pip_b_2 = find_pip_index(
+                    ind_b, shift_a["people"][pip_a])
+                break
+            except ValueError:
+                pass
         shift_a["people"][pip_a], shift_b["people"][pip_b] = \
             shift_b["people"][pip_b], shift_a["people"][pip_a]
         shift_a_2["people"][pip_a_2], shift_b_2["people"][pip_b_2] = \
@@ -193,7 +201,7 @@ def generate_time_table(tasks: List[Task], people: List[Person]) -> individual_t
     stats.register("mean", mean)
     stats.register("max", max)
     pop, _ = algorithms.eaSimple(
-        pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=100, halloffame=hof, stats=stats, verbose=False)
+        pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=100, halloffame=hof, stats=stats, verbose=__name__ == "__main__")
 
     best = pop[-1]
     return best
