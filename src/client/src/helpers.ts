@@ -9,3 +9,7 @@ export async function fetchJSON(
 ) {
 	return (await fetch(input, init)).json();
 }
+
+export function fetchRandomTable() {
+	return fetchJSON("http://localhost:5000/randomtable");
+}

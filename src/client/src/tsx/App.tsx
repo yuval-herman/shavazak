@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { fetchJSON } from "../helpers";
+import { fetchJSON, fetchRandomTable } from "../helpers";
 import { Link } from "react-router-dom";
 import style from "./App.module.scss";
 import { Task } from "./interface";
@@ -13,7 +13,7 @@ function App() {
 	useEffect(() => {
 		if (firstRender.current) {
 			firstRender.current = false;
-			fetchJSON("/randomtable")
+			fetchRandomTable() // TODO: in deployment make sure to change links
 				.then((tasks) => setTasks(() => tasks))
 				.catch(console.log);
 			// this is here because react does not natively support "{ passive: false }"
