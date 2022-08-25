@@ -16,11 +16,11 @@ export interface Task {
 	id: number;
 	name: string;
 	required_people_per_shift: {
-		num: number;
+		amount: number;
 		role: string;
 	}[];
 	score: number;
 	shift_duration: number;
-	shifts: Shift[];
+	shifts?: Shift[];
 	team_id: number;
 }

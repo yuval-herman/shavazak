@@ -2,12 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { fetchJSON, fetchRandomTable } from "../helpers";
 import { Link } from "react-router-dom";
 import style from "./App.module.scss";
-import { Task } from "./interface";
+import { Shift, Task } from "./interface";
+
+interface TaskWithShifts extends Task {
+	shifts: Shift[];
+}
 
 function App() {
 	const firstRender = useRef(true);
 	const mainDiv = useRef(null);
-	const [tasks, setTasks] = useState<Task[]>([]);
+	const [tasks, setTasks] = useState<TaskWithShifts[]>([]);
 	const [zoomLevel, setZoom] = useState<number>(1);
 
 	useEffect(() => {
