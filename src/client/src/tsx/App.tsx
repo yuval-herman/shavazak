@@ -37,7 +37,7 @@ function App() {
 
 	return (
 		<div className={style.app}>
-			<Link to="/test">test</Link>
+			<Link to="/settasks">change tasks and people</Link>
 			<div className={style.table}>
 				<header className={style.tableHeaders + " " + style.header}>
 					<span>minutes</span>

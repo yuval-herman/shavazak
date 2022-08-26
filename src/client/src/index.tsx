@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { store } from "./tsx/state/store";
 import App from "./tsx/App";
-import { Test } from "./tsx/components/test";
+import { TasksPeople } from "./tsx/components/tasksPeople";
 import { useAppDispatch, useAppSelector } from "./tsx/state/hooks";
 import dataJson from "./test-data.json";
 import { setPeople, setTasks } from "./tsx/state/slices/tasksSlice";
@@ -39,7 +39,7 @@ root.render(
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<App />} />
-					<Route path="test" element={<Test />} />
+					<Route path="settasks" element={<TasksPeople />} />
 				</Routes>
 			</BrowserRouter>
 		</Provider>
