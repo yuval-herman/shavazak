@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { store } from "./tsx/state/store";
 import App from "./tsx/App";
-import { TasksPeople } from "./tsx/components/tasksPeople";
+import { TasksPeople } from "./tsx/components/tasksPeople/tasksPeople";
 import { useAppDispatch, useAppSelector } from "./tsx/state/hooks";
 import dataJson from "./test-data.json";
 import { setPeople, setTasks } from "./tsx/state/slices/tasksSlice";

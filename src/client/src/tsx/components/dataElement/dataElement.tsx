@@ -1,4 +1,5 @@
 import { Person, Task } from "../../interface";
+import style from "./dataElement.module.scss";
 
 interface PersonProps {
 	person: Person;
@@ -14,7 +15,7 @@ export function DataElement(props: Props) {
 	if ("person" in props) {
 		const person = props.person;
 		return (
-			<div>
+			<div className={style.main}>
 				<h3>{person.name}</h3>
 				<p>
 					<strong>state</strong>: {person.status}
@@ -30,7 +31,7 @@ export function DataElement(props: Props) {
 	}
 	const task = props.task;
 	return (
-		<div>
+		<div className={style.main}>
 			<h3>{task.name}</h3>
 			<p>
 				<strong>score</strong>: {task.score}
