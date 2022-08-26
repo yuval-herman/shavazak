@@ -15,10 +15,20 @@ function Meta() {
 	const { people, tasks } = useAppSelector((state) => state.tasksAndPeople);
 	const dispatch = useAppDispatch();
 	useEffect(() => {
-		console.log(dataJson.tasks.map((task) => task.team_id));
-		dispatch(setPeople(dataJson.people));
-		dispatch(setTasks(dataJson.tasks));
+		dispatch(setPeople(JSON.parse(localStorage.getItem("people") ?? "[]")));
+		dispatch(setTasks(JSON.parse(localStorage.getItem("tasks") ?? "[]")));
 	}, []);
+	useEffect(() => {
+		// TODO: in production remove the mock data loaders
+		localStorage.setItem(
+			"people",
+			JSON.stringify(people.length ? people : dataJson.people)
+		);
+		localStorage.setItem(
+			"tasks",
+			JSON.stringify(tasks.length ? tasks : dataJson.tasks)
+		);
+	}, [people, tasks]);
 	return <></>;
 }
 
