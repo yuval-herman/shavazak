@@ -14,10 +14,13 @@
 	flex-direction: row;
 	gap: 1rem;
 	flex-wrap: wrap;
-	* {
+	.container {
+		border: solid 0.5rem;
+		border-radius: 1rem;
 		flex-grow: 0;
+		button {
+			margin: auto;
+			width: 100%;
+		}
 	}
-}
-
-.people {
 }

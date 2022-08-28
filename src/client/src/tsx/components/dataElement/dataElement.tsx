@@ -1,59 +1,68 @@
+import React, { useEffect, useState } from "react";
 import { Person, Task } from "../../interface";
 import style from "./dataElement.module.scss";
 
-interface PersonProps {
-	person: Person;
+interface Props {
+	data: Person | Task;
+	showEdit: boolean;
 }
-
-interface TaskProps {
-	task: Task;
-}
-
-type Props = PersonProps | TaskProps;
 
 export function DataElement(props: Props) {
-	if ("person" in props) {
-		const person = props.person;
-		return (
-			<div className={style.main}>
-				<h3>{person.name}</h3>
-				<p>
-					<strong>state</strong>: {person.status}
-				</p>
-				<p>
-					<strong>score</strong>: {person.score}
-				</p>
-				<p>
-					<strong>roles</strong>: {person.roles.join(", ")}
-				</p>
-			</div>
-		);
-	}
-	const task = props.task;
+	const data = props.data;
+
 	return (
 		<div className={style.main}>
-			<h3>{task.name}</h3>
-			<p>
-				<strong>score</strong>: {task.score}
-			</p>
-			<p>
-				<strong>shift duration</strong>: {task.shift_duration}
-			</p>
-			<p>
-				<strong>task people requirements</strong>:{" "}
-				<table>
-					<tr>
-						<td>role</td>
-						<td>amount</td>
-					</tr>
-					{task.required_people_per_shift.map(({ amount, role }) => (
-						<tr>
-							<td>{role}</td>
-							<td>{amount}</td>
-						</tr>
-					))}
-				</table>
-			</p>
+			<h3>{data.name}</h3>
+			{Object.entries(data).map(([key, value]) => {
+				if (Array.isArray(value)) {
+					if (typeof value[0] === "object") {
+						value = (
+							<table key={key}>
+								<thead>
+									<tr>
+										<td>role</td>
+										<td>amount</td>
+									</tr>
+								</thead>
+								<tbody>
+									{value.map(({ amount, role }, i) => (
+										<tr key={i}>
+											<td>
+												{props.showEdit ? (
+													<input placeholder={role} />
+												) : (
+													role
+												)}
+											</td>
+											<td>
+												{props.showEdit ? (
+													<input placeholder={amount} />
+												) : (
+													amount
+												)}
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						);
+					} else {
+						value = props.showEdit ? (
+							<input placeholder={value.join(", ")} />
+						) : (
+							value.join(", ")
+						);
+					}
+				} else if (props.showEdit) {
+					value = <input placeholder={value} />;
+				}
+
+				return (
+					<div key={key}>
+						<strong>{key.replaceAll("_", " ")}</strong>: {value}
+					</div>
+				);
+			})}
 		</div>
 	);
 }
