@@ -1,12 +1,34 @@
-import { SyntheticEvent } from "react";
+import { SyntheticEvent, useState } from "react";
 import { savePerson, saveTask } from "../api";
+import { formDataToObj } from "../helpers";
 import { Person, Task } from "../types";
+
+function MultiInput(props: { name: string }) {
+	const [inputsNumber, setInputsNumber] = useState<number>(1);
+
+	function addInput() {
+		setInputsNumber((num) => num + 1);
+	}
+
+	const inputs = [];
+	for (let i = 0; i < inputsNumber; i++) {
+		inputs.push(<input key={i} name={props.name} />);
+	}
+
+	return (
+		<>
+			<span>{inputs}</span>
+			<button onClick={addInput}>+</button>
+		</>
+	);
+}
 
 function AddPerson() {
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
 		const formData = new FormData(event.target as HTMLFormElement);
-		savePerson(Object.fromEntries(formData) as unknown as Person);
+
+		savePerson(formDataToObj(formData) as unknown as Person);
 	}
 
 	return (
@@ -18,7 +40,7 @@ function AddPerson() {
 				name <input name="name" />
 			</label>
 			<label>
-				roles <input name="id" />
+				roles <MultiInput name="roles" />
 			</label>
 			<label>
 				score <input name="score" />
