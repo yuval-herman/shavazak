@@ -26,13 +26,13 @@ def copyDir(src: str, dst: str):
 
 
 def build():
-    run(['npm', 'run', 'build'], cwd='src/client')
-    copyDir('src/client/build', 'deploy/client')
-    copyDir('src/server', 'deploy/server')
+    run(['npm', 'run', 'build'], cwd='client')
+    copyDir('client/build', 'deploy/client')
+    copyDir('server', 'deploy/server')
 
 
 def serve():
-    pass
+    run(['flask', '--debug', 'run'], cwd='server')
 
 
 if args.action == Actions.build.name:
@@ -40,4 +40,4 @@ if args.action == Actions.build.name:
     build()
 elif args.action == Actions.serve.name:
     print('serving')
-    run(['flask', '--debug', 'run'], cwd='src/server')
+    serve()

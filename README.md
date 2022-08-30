@@ -12,7 +12,7 @@ python3 -m pip install -r requirements.txt
 
 In every new terminal before any work run `source env/bin/activate`
 
-To run server, `cd` into `src/server` and run `./build serve`
+To run server, execute `./build serve`
 
 After work end run `deactivate`
 
