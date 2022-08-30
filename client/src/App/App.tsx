@@ -32,6 +32,7 @@ function TaskDiv(props: { task: Task; width: number }) {
 
 function TasksTable(props: Props) {
 	const tasks = props.tasks;
+
 	return (
 		<div>
 			<header className={style.headers}>
