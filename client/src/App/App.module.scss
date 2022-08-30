@@ -1,0 +1,18 @@
+.main {
+}
+
+.headers {
+	display: flex;
+	justify-content: space-around;
+}
+
+.tasks {
+	display: flex;
+	.shifts {
+		flex-grow: 1;
+	}
+}
+
+.shift {
+	border: solid black 1px;
+}
