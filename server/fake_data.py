@@ -15,6 +15,7 @@ def fake_person() -> Person:
     fake_person.id_counter += 1
     return {'id': fake_person.id_counter,
             'name': fake.name(),
+            'avatar': fake.image_url(2**9, 2**9),
             'roles': sample(roles, randint(0, 3)),
             'score': random(),
             'status': 1,
