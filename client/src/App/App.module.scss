@@ -2,17 +2,21 @@
 }
 
 .headers {
-	display: flex;
-	justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .tasks {
-	display: flex;
-	.shifts {
-		flex-grow: 1;
-	}
+  display: flex;
+  .shifts {
+    flex-grow: 1;
+  }
 }
 
 .shift {
-	border: solid black 1px;
+  border: solid black 1px;
+  margin: 10px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }

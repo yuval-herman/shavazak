@@ -5,9 +5,9 @@ from faker import Faker
 from database_types import *
 
 fake = Faker(use_weighting=False)
-roles = ['driver', 'medic', 'officer', 'commander']
-tasks = ['guard', 'kitchen', 'patrol',
-         'operation', 'pill box', 'free', 'rasar service', 'hamal']
+roles = ['Driver', 'Medic', 'Officer', 'Commander']
+tasks = ['Guard', 'Kitchen', 'Patrol',
+         'Operation', 'PillBox', 'Off Duty', 'Rasar Services', 'Hamal']
 
 
 def fake_person() -> Person:
