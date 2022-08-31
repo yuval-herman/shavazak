@@ -1,10 +1,19 @@
-import { ChangeEvent, ChangeEventHandler, SyntheticEvent, useState } from "react";
+import {
+	ChangeEvent,
+	ChangeEventHandler,
+	SyntheticEvent,
+	useState,
+} from "react";
 import { savePerson, saveTask } from "../api";
 import { formDataToObj } from "../helpers";
 import { Person, Task } from "../types";
 import uniqId from "uniqid";
 
-function MultiInput(props: { name: string; change: ChangeEventHandler<HTMLInputElement>; rows?: number }) {
+function MultiInput(props: {
+	name: string | string[];
+	change: ChangeEventHandler<HTMLInputElement>;
+	columns?: number;
+}) {
 	const [inputsNumber, setInputsNumber] = useState<number>(1);
 
 	function addInput() {
@@ -12,11 +21,27 @@ function MultiInput(props: { name: string; change: ChangeEventHandler<HTMLInputE
 	}
 
 	const inputs = [];
-	for (let i = 0; i < inputsNumber; i++) {
-		inputs.push(<input key={i} name={props.name} onChange={(event) => props.change(event)} />);
+	for (let j = 0; j < inputsNumber; j++) {
+		const row = [];
+		for (let j = 0; j < (props.columns ?? 1); j++) {
+			let name;
+			if (Array.isArray(props.name)) {
+				name = props.name[j];
+			} else {
+				name = props.name;
+			}
+			row.push(
+				<input
+					key={j}
+					name={name}
+					onChange={(event) => props.change(event)}
+				/>
+			);
+		}
+		inputs.push(<div>{row}</div>);
 	}
 
- 	return (
+	return (
 		<>
 			<span>{inputs}</span>
 			<button onClick={addInput}>+</button>
@@ -32,11 +57,13 @@ function AddPerson() {
 		status: "",
 	});
 
+
 	function handleChange(event:ChangeEvent<HTMLInputElement> ) {
 		 
 		const inputName = event.target.attributes[0].value    
-		if(inputName === inputs.name) setInputs() 
+		if(inputName === 'name') setInputs({... inputs, name: event.target.value}) 
 		
+ 
 	}
 
 	function submitHandler(event: SyntheticEvent) {
@@ -64,10 +91,16 @@ function AddPerson() {
 				roles <MultiInput change={handleChange} name="roles" />
 			</label>
 			<label>
-				score <input value={inputs.score} onChange={(event) => handleChange(event)} name="score" type={"number"} />
+				score{" "}
+				<input
+					onChange={(event) => handleChange(event)}
+					name="score"
+					type={"number"}
+				/>
 			</label>
 			<label>
-				status <input value={inputs.status} onChange={(event) => handleChange(event)} name="status" />
+				status{" "}
+				<input onChange={(event) => handleChange(event)} name="status" />
 				{/* TODO: I don't know what to do... */}
 			</label>
 			<input type="submit" value="add" />
@@ -79,7 +112,7 @@ function AddTask() {
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
 		const formData = new FormData(event.target as HTMLFormElement);
-		saveTask(Object.fromEntries(formData) as unknown as Task);
+		saveTask(formDataToObj(formData) as unknown as Task);
 	}
 
 	return (
@@ -92,8 +125,13 @@ function AddTask() {
 			</label>
 			<label>
 				required people per shift{" "}
-				{/* <MultiInput name="required_people_per_shift" />
-				<MultiInput name="required_people_per_shift" /> */} 
+				{/* <MultiInput
+					name={[
+						"required_people_per_shift/amount",
+						"required_people_per_shift/role",
+					]}
+					columns={2} change={(event)=>handleChange(event)}
+				/> */}
 			</label>
 			<label>
 				score <input name="score" type={"number"} />
