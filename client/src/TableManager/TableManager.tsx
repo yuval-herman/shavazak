@@ -21,7 +21,7 @@ function MultiInput(props: {
 	}
 
 	const inputs = [];
-	for (let j = 0; j < inputsNumber; j++) {
+	for (let i = 0; i < inputsNumber; i++) {
 		const row = [];
 		for (let j = 0; j < (props.columns ?? 1); j++) {
 			let name;
@@ -32,8 +32,9 @@ function MultiInput(props: {
 			}
 			row.push(
 				<input
-					key={j}
+					key={(j + 1) * (i + 1)}
 					name={name}
+					input-num={(j + 1) * (i + 1) - 1}
 					onChange={(event) => props.change(event)}
 				/>
 			);
@@ -52,20 +53,26 @@ function MultiInput(props: {
 function AddPerson() {
 	const [inputs, setInputs] = useState({
 		name: "",
-		roles: "",
+		roles: [""],
 		score: "",
 		status: "",
 	});
 
-
-	function handleChange(event:ChangeEvent<HTMLInputElement> ) {
-		 
-		const inputName = event.target.attributes[0].value    
-		if(inputName === 'name') setInputs({... inputs, name: event.target.value}) 
-		if(inputName === 'roles') setInputs({... inputs, roles: event.target.value})
-		if(inputName === 'score') setInputs({... inputs, score: event.target.value})
-		if(inputName === 'status') setInputs({... inputs, status: event.target.value})
-		console.log(inputs); 
+	function handleChange(event: ChangeEvent<HTMLInputElement>) {
+		const inputName = event.target.attributes[0].value;
+		if (inputName === "name")
+			setInputs({ ...inputs, name: event.target.value });
+		if (inputName === "score")
+			setInputs({ ...inputs, score: event.target.value });
+		if (inputName === "status")
+			setInputs({ ...inputs, status: event.target.value });
+		if (inputName === "roles") {
+			const prevRoles = [...inputs.roles];
+			const index = parseInt(event.target.getAttribute("input-num")!);
+			prevRoles[index] = event.target.value;
+			setInputs({ ...inputs, roles: prevRoles });
+		}
+		console.log(inputs);
 	}
 
 	function submitHandler(event: SyntheticEvent) {
@@ -87,7 +94,12 @@ function AddPerson() {
 				/>
 			</label>
 			<label>
-				name <input value={inputs.name} onChange={(event) => handleChange(event)} name="name" />
+				name{" "}
+				<input
+					value={inputs.name}
+					onChange={(event) => handleChange(event)}
+					name="name"
+				/>
 			</label>
 			<label>
 				roles <MultiInput change={handleChange} name="roles" />
