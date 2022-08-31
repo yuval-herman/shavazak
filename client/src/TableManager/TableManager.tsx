@@ -33,7 +33,9 @@ function AddPerson() {
 	});
 
 	function handleChange(event:ChangeEvent<HTMLInputElement> ) {
-		console.log(event);  
+		 
+		const inputName = event.target.attributes[0].value    
+		if(inputName === inputs.name) setInputs() 
 		
 	}
 
@@ -56,16 +58,16 @@ function AddPerson() {
 				/>
 			</label>
 			<label>
-				name <input onChange={(event) => handleChange(event)} name="name" />
+				name <input value={inputs.name} onChange={(event) => handleChange(event)} name="name" />
 			</label>
 			<label>
 				roles <MultiInput change={handleChange} name="roles" />
 			</label>
 			<label>
-				score <input onChange={(event) => handleChange(event)} name="score" type={"number"} />
+				score <input value={inputs.score} onChange={(event) => handleChange(event)} name="score" type={"number"} />
 			</label>
 			<label>
-				status <input onChange={(event) => handleChange(event)} name="status" />
+				status <input value={inputs.status} onChange={(event) => handleChange(event)} name="status" />
 				{/* TODO: I don't know what to do... */}
 			</label>
 			<input type="submit" value="add" />
