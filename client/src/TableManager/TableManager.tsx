@@ -62,8 +62,10 @@ function AddPerson() {
 		 
 		const inputName = event.target.attributes[0].value    
 		if(inputName === 'name') setInputs({... inputs, name: event.target.value}) 
-		
- 
+		if(inputName === 'roles') setInputs({... inputs, roles: event.target.value})
+		if(inputName === 'score') setInputs({... inputs, score: event.target.value})
+		if(inputName === 'status') setInputs({... inputs, status: event.target.value})
+		console.log(inputs); 
 	}
 
 	function submitHandler(event: SyntheticEvent) {
