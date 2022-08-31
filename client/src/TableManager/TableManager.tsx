@@ -1,10 +1,10 @@
-import { SyntheticEvent, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, SyntheticEvent, useState } from "react";
 import { savePerson, saveTask } from "../api";
 import { formDataToObj } from "../helpers";
 import { Person, Task } from "../types";
 import uniqId from "uniqid";
 
-function MultiInput(props: { name: string; rows?: number }) {
+function MultiInput(props: { name: string; change: ChangeEventHandler<HTMLInputElement>; rows?: number }) {
 	const [inputsNumber, setInputsNumber] = useState<number>(1);
 
 	function addInput() {
@@ -13,10 +13,10 @@ function MultiInput(props: { name: string; rows?: number }) {
 
 	const inputs = [];
 	for (let i = 0; i < inputsNumber; i++) {
-		inputs.push(<input key={i} name={props.name} />);
+		inputs.push(<input key={i} name={props.name} onChange={(event) => props.change(event)} />);
 	}
 
-	return (
+ 	return (
 		<>
 			<span>{inputs}</span>
 			<button onClick={addInput}>+</button>
@@ -32,8 +32,9 @@ function AddPerson() {
 		status: "",
 	});
 
-	function handleChange() {
-		console.log("changed");
+	function handleChange(event:ChangeEvent<HTMLInputElement> ) {
+		console.log(event);  
+		
 	}
 
 	function submitHandler(event: SyntheticEvent) {
@@ -48,23 +49,23 @@ function AddPerson() {
 			<label>
 				id{" "}
 				<input
-					onChange={handleChange}
+					onChange={(event) => handleChange(event)}
 					name="id"
 					value={uniqId()}
 					disabled
 				/>
 			</label>
 			<label>
-				name <input onChange={handleChange} name="name" />
+				name <input onChange={(event) => handleChange(event)} name="name" />
 			</label>
 			<label>
-				roles <MultiInput name="roles" />
+				roles <MultiInput change={handleChange} name="roles" />
 			</label>
 			<label>
-				score <input onChange={handleChange} name="score" type={"number"} />
+				score <input onChange={(event) => handleChange(event)} name="score" type={"number"} />
 			</label>
 			<label>
-				status <input onChange={handleChange} name="status" />
+				status <input onChange={(event) => handleChange(event)} name="status" />
 				{/* TODO: I don't know what to do... */}
 			</label>
 			<input type="submit" value="add" />
@@ -89,8 +90,8 @@ function AddTask() {
 			</label>
 			<label>
 				required people per shift{" "}
-				<MultiInput name="required_people_per_shift" />
-				<MultiInput name="required_people_per_shift" />
+				{/* <MultiInput name="required_people_per_shift" />
+				<MultiInput name="required_people_per_shift" /> */} 
 			</label>
 			<label>
 				score <input name="score" type={"number"} />
