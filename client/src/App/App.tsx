@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Shift, Task } from "../types";
 import style from "./App.module.scss";
 
@@ -56,9 +57,12 @@ function App() {
 	}, []);
 
 	return (
-		<div className={style.main}>
-			{tasks ? <TasksTable tasks={tasks} /> : "Loading tasks"}
-		</div>
+		<>
+			<Link to="/tablemanager">manager view</Link>
+			<div className={style.main}>
+				{tasks ? <TasksTable tasks={tasks} /> : "Loading tasks"}
+			</div>
+		</>
 	);
 }
 export default App;

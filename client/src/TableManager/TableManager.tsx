@@ -2,8 +2,9 @@ import { SyntheticEvent, useState } from "react";
 import { savePerson, saveTask } from "../api";
 import { formDataToObj } from "../helpers";
 import { Person, Task } from "../types";
+import uniqId from "uniqid";
 
-function MultiInput(props: { name: string }) {
+function MultiInput(props: { name: string; rows?: number }) {
 	const [inputsNumber, setInputsNumber] = useState<number>(1);
 
 	function addInput() {
@@ -24,6 +25,17 @@ function MultiInput(props: { name: string }) {
 }
 
 function AddPerson() {
+	const [inputs, setInputs] = useState({
+		name: "",
+		roles: "",
+		score: "",
+		status: "",
+	});
+
+	function handleChange() {
+		console.log("changed");
+	}
+
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
 		const formData = new FormData(event.target as HTMLFormElement);
@@ -34,19 +46,26 @@ function AddPerson() {
 	return (
 		<form onSubmit={submitHandler}>
 			<label>
-				id <input name="id" />
+				id{" "}
+				<input
+					onChange={handleChange}
+					name="id"
+					value={uniqId()}
+					disabled
+				/>
 			</label>
 			<label>
-				name <input name="name" />
+				name <input onChange={handleChange} name="name" />
 			</label>
 			<label>
 				roles <MultiInput name="roles" />
 			</label>
 			<label>
-				score <input name="score" />
+				score <input onChange={handleChange} name="score" type={"number"} />
 			</label>
 			<label>
-				status <input name="status" />
+				status <input onChange={handleChange} name="status" />
+				{/* TODO: I don't know what to do... */}
 			</label>
 			<input type="submit" value="add" />
 		</form>
@@ -63,22 +82,25 @@ function AddTask() {
 	return (
 		<form onSubmit={submitHandler}>
 			<label>
-				id <input name="id" />
+				id <input name="id" value={uniqId()} disabled />
 			</label>
 			<label>
 				name <input name="name" />
 			</label>
 			<label>
-				required people per shift <input name="required_people_per_shift" />
+				required people per shift{" "}
+				<MultiInput name="required_people_per_shift" />
+				<MultiInput name="required_people_per_shift" />
 			</label>
 			<label>
-				score <input name="score" />
+				score <input name="score" type={"number"} />
 			</label>
 			<label>
-				shift duration <input name="shift_duration" />
+				shift duration <input name="shift_duration" type={"number"} />
 			</label>
 			<label>
-				shifts <input name="shifts" />
+				shifts <input name="shifts" value={[]} disabled />
+				{/* TODO: special component */}
 			</label>
 			<input type="submit" value="add" />
 		</form>
