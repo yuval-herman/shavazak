@@ -4,7 +4,7 @@ import { formDataToObj } from "../helpers";
 import { Person, Task } from "../types";
 import uniqId from "uniqid";
 
-function MultiInput(props: { name: string; rows?: number }) {
+function MultiInput(props: { name: string | string[]; columns?: number }) {
 	const [inputsNumber, setInputsNumber] = useState<number>(1);
 
 	function addInput() {
@@ -12,8 +12,18 @@ function MultiInput(props: { name: string; rows?: number }) {
 	}
 
 	const inputs = [];
-	for (let i = 0; i < inputsNumber; i++) {
-		inputs.push(<input key={i} name={props.name} />);
+	for (let j = 0; j < inputsNumber; j++) {
+		const row = [];
+		for (let j = 0; j < (props.columns ?? 1); j++) {
+			let name;
+			if (Array.isArray(props.name)) {
+				name = props.name[j];
+			} else {
+				name = props.name;
+			}
+			row.push(<input key={j} name={name} />);
+		}
+		inputs.push(<div>{row}</div>);
 	}
 
 	return (
@@ -76,7 +86,7 @@ function AddTask() {
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
 		const formData = new FormData(event.target as HTMLFormElement);
-		saveTask(Object.fromEntries(formData) as unknown as Task);
+		saveTask(formDataToObj(formData) as unknown as Task);
 	}
 
 	return (
@@ -89,8 +99,13 @@ function AddTask() {
 			</label>
 			<label>
 				required people per shift{" "}
-				<MultiInput name="required_people_per_shift" />
-				<MultiInput name="required_people_per_shift" />
+				<MultiInput
+					name={[
+						"required_people_per_shift/amount",
+						"required_people_per_shift/role",
+					]}
+					columns={2}
+				/>
 			</label>
 			<label>
 				score <input name="score" type={"number"} />
