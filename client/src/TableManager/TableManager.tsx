@@ -20,22 +20,27 @@ function MultiInput(props: {
     setInputsNumber((num) => num + 1);
   }
 
-  const inputs = [];
-  for (let j = 0; j < inputsNumber; j++) {
-    const row = [];
-    for (let j = 0; j < (props.columns ?? 1); j++) {
-      let name;
-      if (Array.isArray(props.name)) {
-        name = props.name[j];
-      } else {
-        name = props.name;
-      }
-      row.push(
-        <input key={j} name={name} onChange={(event) => props.change(event)} />
-      );
-    }
-    inputs.push(<div>{row}</div>);
-  }
+	const inputs = [];
+	for (let i = 0; i < inputsNumber; i++) {
+		const row = [];
+		for (let j = 0; j < (props.columns ?? 1); j++) {
+			let name;
+			if (Array.isArray(props.name)) {
+				name = props.name[j];
+			} else {
+				name = props.name;
+			}
+			row.push(
+				<input
+					key={(j + 1) * (i + 1)}
+					name={name}
+					input-num={(j + 1) * (i + 1) - 1}
+					onChange={(event) => props.change(event)}
+				/>
+			);
+		}
+		inputs.push(<div>{row}</div>);
+	}
 
   return (
     <>
@@ -46,30 +51,33 @@ function MultiInput(props: {
 }
 
 function AddPerson() {
-  const [inputs, setInputs] = useState({
-    name: "",
-    roles: "",
-    score: "",
-    status: "",
-  });
+const [inputs, setInputs] = useState({
+  name: "",
+  roles: [""],
+  score: "",
+  status: "",
+});
 
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    const inputName = event.target.attributes[0].value;
-    if (inputName === "name")
-       setInputs({ ...inputs, name: event.target.value });
-    if (inputName === "roles")
-       setInputs({ ...inputs, roles: event.target.value });
-    if (inputName === "score")
-       setInputs({ ...inputs, score: event.target.value });
-    if (inputName === "status")
-       setInputs({ ...inputs, status: event.target.value });
-    console.log(inputs);
+function handleChange(event: ChangeEvent<HTMLInputElement>) {
+  const inputName = event.target.attributes[0].value;
+  if (inputName === "name")
+    setInputs({ ...inputs, name: event.target.value });
+  if (inputName === "score")
+    setInputs({ ...inputs, score: event.target.value });
+  if (inputName === "status")
+    setInputs({ ...inputs, status: event.target.value });
+  if (inputName === "roles") {
+    const prevRoles = [...inputs.roles];
+    const index = parseInt(event.target.getAttribute("input-num")!);
+    prevRoles[index] = event.target.value;
+    setInputs({ ...inputs, roles: prevRoles });
   }
+  console.log(inputs);
+}
 
   function submitHandler(event: SyntheticEvent) {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
-
     savePerson(formDataToObj(formData) as unknown as Person);
   }
 
