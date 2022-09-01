@@ -85,7 +85,7 @@ function AddPerson() {
       <label>
         id{" "}
         <input
-          onChange={(event) => handleChange(event)}
+          onChange={handleChange}
           name="id"
           value={inputs.id}
           disabled
@@ -95,7 +95,7 @@ function AddPerson() {
         name{" "}
         <input
           value={inputs.name}
-          onChange={(event) => handleChange(event)}
+          onChange={handleChange}
           name="name"
         />
       </label>
@@ -105,16 +105,16 @@ function AddPerson() {
       <label>
         score{" "}
         <input
-          onChange={(event) => handleChange(event)}
+          onChange={handleChange}
           name="score"
           type={"number"} //TODO: allow only numbers
         />
       </label>
       <label>
-        status <input onChange={(event) => handleChange(event)} name="status" />
+        status <input onChange={handleChange} name="status" />
       </label>
       <label>
-        avatar <input onChange={(event) => handleChange(event)} name="avatar" />
+        avatar <input onChange={handleChange} name="avatar" />
       </label>
       <input type="submit" value="add" />
     </form>
