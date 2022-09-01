@@ -8,6 +8,8 @@ import { savePerson, saveTask } from "../api";
 import { formDataToObj } from "../helpers";
 import { Person, Task } from "../types";
 import uniqId from "uniqid";
+import { Link, Outlet } from "react-router-dom";
+import style from "./TableManager.module.scss";
 
 function MultiInput(props: {
 	name: string | string[];
@@ -53,7 +55,7 @@ function MultiInput(props: {
 	);
 }
 
-function AddPerson() {
+export function AddPerson() {
 	const [inputs, setInputs] = useState<Person>({
 		id: uniqId(),
 		name: "",
@@ -135,7 +137,7 @@ function AddPerson() {
 	);
 }
 
-function AddTask() {
+export function AddTask() {
 	const [inputs, setInputs] = useState<Task>({
 		id: uniqId(),
 		name: "",
@@ -212,10 +214,14 @@ function AddTask() {
 
 function TableManager() {
 	return (
-		<div>
-			<AddPerson />
-			<hr />
-			<AddTask />
+		<div className={style.main}>
+			<nav className={style.sidebar}>
+				<Link to={"addperson"}>add person</Link>{" "}
+				<Link to={"addtask"}>add task</Link>
+			</nav>
+			<div>
+				<Outlet />
+			</div>
 		</div>
 	);
 }

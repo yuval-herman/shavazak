@@ -1,0 +1,11 @@
+.main {
+	border: solid black;
+	display: flex;
+	gap: 1rem;
+}
+
+.sidebar {
+	border: solid black;
+	display: flex;
+	flex-direction: column;
+}
