@@ -6,6 +6,7 @@ export interface RequiredPeoplePerShift {
 export interface Person {
 	id: string;
 	name: string;
+	avatar: string;
 	roles: string[];
 	score: number;
 	status: string;

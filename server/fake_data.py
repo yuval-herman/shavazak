@@ -5,9 +5,9 @@ from faker import Faker
 from database_types import *
 
 fake = Faker(use_weighting=False)
-roles = ['driver', 'medic', 'officer', 'commander']
-tasks = ['guard', 'kitchen', 'patrol',
-         'operation', 'pill box', 'free', 'rasar service', 'hamal']
+roles = ['Driver', 'Medic', 'Officer', 'Commander']
+tasks = ['Guard', 'Kitchen', 'Patrol',
+         'Operation', 'PillBox', 'Off Duty', 'Rasar Services', 'Hamal']
 
 
 def fake_person() -> Person:
@@ -15,6 +15,7 @@ def fake_person() -> Person:
     fake_person.id_counter += 1
     return {'id': fake_person.id_counter,
             'name': fake.name(),
+            'avatar': fake.image_url(2**9, 2**9),
             'roles': sample(roles, randint(0, 3)),
             'score': random(),
             'status': 1,
