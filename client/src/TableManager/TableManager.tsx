@@ -58,6 +58,7 @@ function AddPerson() {
     roles: [""],
     score: 0,
     status: "",
+    avatar: ""
   });
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -111,7 +112,9 @@ function AddPerson() {
       </label>
       <label>
         status <input onChange={(event) => handleChange(event)} name="status" />
-        {/* TODO: I don't know what to do... */}
+      </label>
+      <label>
+        avatar <input onChange={(event) => handleChange(event)} name="avatar" />
       </label>
       <input type="submit" value="add" />
     </form>
