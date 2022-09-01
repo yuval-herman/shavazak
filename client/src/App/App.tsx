@@ -64,7 +64,7 @@ function App() {
 		<>
 			<Link to="/tablemanager">manager view</Link>
 			<div className={style.main}>
-				{tasks ? <TasksTable tasks={tasks} /> : "Loading tasks"}
+				{tasks ? <TasksTable tasks={tasks} /> : "Loading tasks..."}
 			</div>
 		</>
 	);
