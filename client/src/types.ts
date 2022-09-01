@@ -4,12 +4,23 @@ export interface RequiredPeoplePerShift {
 }
 
 export interface Person {
-	id: number;
+	id: string;
 	name: string;
 	roles: string[];
 	score: number;
-	status: number;
+	status: string;
 }
+
+export function isPerson(obj: any): obj is Person {
+	return (
+	  typeof obj.id === "string" &&
+	  typeof obj.name === "string" &&
+	  Array.isArray(obj.roles) &&
+	  obj.roles.every((item: any) => typeof item === "string") &&
+	  typeof obj.score === "number" &&
+	  typeof obj.status === "string"
+	);
+  }
 
 export interface Shift {
 	date: number;
@@ -17,7 +28,7 @@ export interface Shift {
 }
 
 export interface Task {
-	id: number;
+	id: string;
 	name: string;
 	required_people_per_shift: RequiredPeoplePerShift[];
 	score: number;

@@ -25,7 +25,7 @@ function TaskDiv(props: { task: Task; width: number }) {
 			style={{ width: props.width }}
 		>
 			{props.task.shifts.map((shift) => (
-				<ShiftDiv shift={shift} />
+				<ShiftDiv key={shift.date} shift={shift} />
 			))}
 		</div>
 	);
@@ -43,7 +43,7 @@ function TasksTable(props: Props) {
 			</header>
 			<main className={style.tasks}>
 				{tasks.map((task) => (
-					<TaskDiv task={task} width={100 / tasks.length} />
+					<TaskDiv key={task.id} task={task} width={100 / tasks.length} />
 				))}
 			</main>
 		</div>

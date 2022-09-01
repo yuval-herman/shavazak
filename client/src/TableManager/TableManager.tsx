@@ -16,31 +16,32 @@ function MultiInput(props: {
 }) {
   const [inputsNumber, setInputsNumber] = useState<number>(1);
 
-  function addInput() {
+  function addInput(event: SyntheticEvent) {
+    event.preventDefault()
     setInputsNumber((num) => num + 1);
   }
 
-	const inputs = [];
-	for (let i = 0; i < inputsNumber; i++) {
-		const row = [];
-		for (let j = 0; j < (props.columns ?? 1); j++) {
-			let name;
-			if (Array.isArray(props.name)) {
-				name = props.name[j];
-			} else {
-				name = props.name;
-			}
-			row.push(
-				<input
-					key={(j + 1) * (i + 1)}
-					name={name}
-					input-num={(j + 1) * (i + 1) - 1}
-					onChange={(event) => props.change(event)}
-				/>
-			);
-		}
-		inputs.push(<div>{row}</div>);
-	}
+  const inputs = [];
+  for (let i = 0; i < inputsNumber; i++) {
+    const row = [];
+    for (let j = 0; j < (props.columns ?? 1); j++) {
+      let name;
+      if (Array.isArray(props.name)) {
+        name = props.name[j];
+      } else {
+        name = props.name;
+      }
+      row.push(
+        <input
+          key={(j + 1) * (i + 1)}
+          name={name}
+          input-num={(j + 1) * (i + 1) - 1}
+          onChange={(event) => props.change(event)}
+        />
+      );
+    }
+    inputs.push(<div key={i}>{row}</div>);
+  }
 
   return (
     <>
@@ -51,34 +52,31 @@ function MultiInput(props: {
 }
 
 function AddPerson() {
-const [inputs, setInputs] = useState({
-  name: "",
-  roles: [""],
-  score: "",
-  status: "",
-});
+  const [inputs, setInputs] = useState({
+    id: uniqId(),
+    name: "",
+    roles: [""],
+    score: 0,
+    status: "",
+  });
 
-function handleChange(event: ChangeEvent<HTMLInputElement>) {
-  const inputName = event.target.attributes[0].value;
-  if (inputName === "name")
-    setInputs({ ...inputs, name: event.target.value });
-  if (inputName === "score")
-    setInputs({ ...inputs, score: event.target.value });
-  if (inputName === "status")
-    setInputs({ ...inputs, status: event.target.value });
-  if (inputName === "roles") {
-    const prevRoles = [...inputs.roles];
-    const index = parseInt(event.target.getAttribute("input-num")!);
-    prevRoles[index] = event.target.value;
-    setInputs({ ...inputs, roles: prevRoles });
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const inputName = event.target.attributes[0].value;
+    if (inputName === "roles") {
+      const index = parseInt(event.target.getAttribute("input-num")!);
+      const prevRoles = [...inputs.roles];
+      prevRoles[index] = event.target.value;
+      setInputs({ ...inputs, roles: prevRoles });
+    } else if (inputName === "score"){
+      setInputs({ ...inputs, score: parseInt(event.target.value) });
+    } else {
+      setInputs({ ...inputs, [inputName]: event.target.value });
+    }
   }
-  console.log(inputs);
-}
 
   function submitHandler(event: SyntheticEvent) {
     event.preventDefault();
-    const formData = new FormData(event.target as HTMLFormElement);
-    savePerson(formDataToObj(formData) as unknown as Person);
+    savePerson(inputs);
   }
 
   return (
@@ -88,7 +86,7 @@ function handleChange(event: ChangeEvent<HTMLInputElement>) {
         <input
           onChange={(event) => handleChange(event)}
           name="id"
-          value={uniqId()}
+          value={inputs.id}
           disabled
         />
       </label>
@@ -108,7 +106,7 @@ function handleChange(event: ChangeEvent<HTMLInputElement>) {
         <input
           onChange={(event) => handleChange(event)}
           name="score"
-          type={"number"}
+          type={"number"} //TODO: allow only numbers
         />
       </label>
       <label>
