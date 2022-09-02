@@ -38,9 +38,9 @@ function MultiInput(props: {
 				<input
 					key={(j + 1) * (i + 1)}
 					name={name}
-					input-num={(j + 1) * (i + 1) - 1}
-					value={props.values[i][j]}
-					onChange={(event) => props.change(event)}
+					input-num={i}
+					value={(props.values[i] ?? [])[j] ?? ""}
+					onChange={props.change}
 				/>
 			);
 		}
@@ -102,7 +102,7 @@ export function AddPerson() {
 			<label>
 				roles{" "}
 				<MultiInput
-					values={[inputs.roles]}
+					values={inputs.roles.map((item) => [item])}
 					change={handleChange}
 					name="roles"
 				/>
@@ -153,9 +153,18 @@ export function AddTask() {
 	}
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
-		const inputName = event.target.attributes[0].value;
-		setInputs({ ...inputs, [inputName]: event.target.value });
-		console.log(inputs);
+		const inputName = event.target.getAttribute("name")!;
+		if (inputName === "amount" || inputName === "role") {
+			const index = parseInt(event.target.getAttribute("input-num")!);
+			const prevArr = [...inputs.required_people_per_shift];
+			prevArr[index] = {
+				...prevArr[index],
+				[inputName]: event.target.value,
+			};
+			setInputs({ ...inputs, required_people_per_shift: prevArr });
+		} else {
+			setInputs({ ...inputs, [inputName]: event.target.value });
+		}
 	}
 
 	return (
@@ -175,15 +184,15 @@ export function AddTask() {
 			</label>
 			<label>
 				required people per shift{" "}
-				{/* <MultiInput
-					name={[
-						"required_people_per_shift/amount",
-						"required_people_per_shift/role",
-					]}
+				<MultiInput
+					name={["amount", "role"]}
 					columns={2}
-					change={(event) => handleChange(event)}
-					values={inputs.required_people_per_shift}
-				/> */}
+					change={handleChange}
+					values={inputs.required_people_per_shift.map((item) => [
+						item.amount.toString(),
+						item.role,
+					])}
+				/>
 			</label>
 			<label>
 				score{" "}
