@@ -28,8 +28,8 @@ function TaskDiv(props: { task: Task; width: number }) {
 			className={style.shifts}
 			style={{ width: props.width }}
 		>
-			{props.task.shifts.map((shift) => (
-				<ShiftDiv key={shift.date} shift={shift} />
+			{props.task.shifts.map((shift, i) => (
+				<ShiftDiv key={i} shift={shift} />
 			))}
 		</div>
 	);
