@@ -66,7 +66,7 @@ export function AddPerson() {
 	});
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
-		const inputName = event.target.attributes[0].value;
+		const inputName = event.target.getAttribute("name")!;
 		if (inputName === "roles") {
 			const index = parseInt(event.target.getAttribute("input-num")!);
 			const prevRoles = [...inputs.roles];
