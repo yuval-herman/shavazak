@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import App from "./App/App";
 import TableManager, { AddPerson, AddTask } from "./TableManager/TableManager";
 
@@ -13,6 +13,7 @@ root.render(
 			<Routes>
 				<Route index element={<App />} />
 				<Route path="tablemanager" element={<TableManager />}>
+					<Route index element={<Navigate to="addperson" />} />
 					<Route path="addperson" element={<AddPerson />} />
 					<Route path="addtask" element={<AddTask />} />
 				</Route>
