@@ -144,7 +144,7 @@ export function AddTask() {
 		required_people_per_shift: [{ amount: 0, role: "" }],
 		score: 0,
 		shift_duration: 0,
-		shifts: [{ date: 0, people: [] }],
+		shifts: [],
 	});
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
@@ -211,10 +211,6 @@ export function AddTask() {
 					onChange={handleChange}
 					type={"number"}
 				/>
-			</label>
-			<label>
-				shifts <input name="shifts" value={[]} disabled />
-				{/* TODO: special component */}
 			</label>
 			<input type="submit" value="add" />
 		</form>
