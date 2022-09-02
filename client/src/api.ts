@@ -1,5 +1,21 @@
 import { isPerson, Person, Task } from "./types";
 
+export async function fetchPOST(
+	input: RequestInfo | URL,
+	data: any,
+	init?: RequestInit
+) {
+	return (
+		await fetch(input, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: typeof data === "object" ? JSON.stringify(data) : data,
+		})
+	).json();
+}
+
 export function savePerson(person: Person) {
 	const people = getPeople();
 	const index = people.findIndex((pip) => pip.id === person.id);
@@ -13,7 +29,6 @@ export function saveTask(task: Task) {
 	const index = tasks.findIndex((t) => t.id === task.id);
 	if (index === -1) tasks.push(task);
 	else tasks[index] = task;
-	tasks.push(task);
 	localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
