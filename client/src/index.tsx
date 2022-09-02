@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import App from "./App/App";
 import TableManager, { AddPerson, AddTask } from "./TableManager/TableManager";
+import { ViewTasks } from "./ViewTasks/ViewTasks";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
@@ -16,6 +17,7 @@ root.render(
 					<Route index element={<Navigate to="addperson" />} />
 					<Route path="addperson" element={<AddPerson />} />
 					<Route path="addtask" element={<AddTask />} />
+					<Route path="viewtasks" element={<ViewTasks />} />
 				</Route>
 				<Route
 					path="*"

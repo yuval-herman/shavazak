@@ -224,6 +224,7 @@ function TableManager() {
 				<Link to={"/"}>home</Link>
 				<Link to={"addperson"}>add person</Link>{" "}
 				<Link to={"addtask"}>add task</Link>
+				<Link to={"viewtasks"}>show tasks</Link>
 			</nav>
 			<div>
 				<Outlet />
