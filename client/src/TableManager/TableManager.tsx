@@ -216,6 +216,7 @@ function TableManager() {
 	return (
 		<div className={style.main}>
 			<nav className={style.sidebar}>
+				<Link to={"/"}>home</Link>
 				<Link to={"addperson"}>add person</Link>{" "}
 				<Link to={"addtask"}>add task</Link>
 			</nav>
