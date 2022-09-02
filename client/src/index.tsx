@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import App from "./App/App";
 import TableManager, { AddPerson, AddTask } from "./TableManager/TableManager";
-import { ViewTasks } from "./ViewTasks/ViewTasks";
+import { DataTable } from "./DataTable/DataTable";
+import { getPeople, getTasks } from "./api";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
@@ -17,7 +18,14 @@ root.render(
 					<Route index element={<Navigate to="addperson" />} />
 					<Route path="addperson" element={<AddPerson />} />
 					<Route path="addtask" element={<AddTask />} />
-					<Route path="viewtasks" element={<ViewTasks />} />
+					<Route
+						path="viewtasks"
+						element={<DataTable data={getTasks() as any} />} //TODO fix
+					/>
+					<Route
+						path="viewpeople"
+						element={<DataTable data={getPeople() as any} />}
+					/>
 				</Route>
 				<Route
 					path="*"

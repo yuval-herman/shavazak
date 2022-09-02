@@ -1,19 +1,17 @@
-import { getTasks } from "../api";
-import style from "./ViewTask.module.scss";
+import style from "./DataTable.module.scss";
 
-export function ViewTasks() {
-	const tasks = getTasks();
+export function DataTable(props: { data: Record<string, string | number>[] }) {
 	return (
 		<table className={style.main}>
 			<thead>
 				<tr>
-					{Object.keys(tasks[0]).map((item, i) => (
+					{Object.keys(props.data[0]).map((item, i) => (
 						<td key={i}>{item}</td>
 					))}
 				</tr>
 			</thead>
 			<tbody>
-				{tasks.map((task, i) => (
+				{props.data.map((task, i) => (
 					<tr key={i}>
 						{Object.values(task).map((item, i) => (
 							<td key={i}>{item}</td>
