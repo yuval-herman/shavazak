@@ -148,8 +148,7 @@ export function AddTask() {
 	});
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
-		const formData = new FormData(event.target as HTMLFormElement);
-		saveTask(formDataToObj(formData) as unknown as Task);
+		saveTask(inputs);
 	}
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -159,9 +158,16 @@ export function AddTask() {
 			const prevArr = [...inputs.required_people_per_shift];
 			prevArr[index] = {
 				...prevArr[index],
-				[inputName]: event.target.value,
+				[inputName]:
+					inputName === "amount"
+						? parseInt(event.target.value)
+						: event.target.value,
 			};
 			setInputs({ ...inputs, required_people_per_shift: prevArr });
+		} else if (inputName === "shift_duration") {
+			setInputs({ ...inputs, [inputName]: parseInt(event.target.value) });
+		} else if (inputName === "score") {
+			setInputs({ ...inputs, [inputName]: parseInt(event.target.value) });
 		} else {
 			setInputs({ ...inputs, [inputName]: event.target.value });
 		}
