@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { fetchPOST, getPeople, getTasks } from "../api";
 import { Shift, Task } from "../types";
 import style from "./App.module.scss";
 
@@ -12,7 +13,7 @@ function ShiftDiv(props: { shift: Shift }) {
 		<div className={style.shift}>
 			{props.shift.people.map((person) => (
 				<span key={person.id}>
-					<img width={50} alt="avatar" src={person.avatar} />
+					<img width={50} alt="avatar" src={person.avatar} />{" "}
 					<span key={person.id}>{person.name}</span>
 					<hr />
 				</span>
@@ -56,8 +57,22 @@ function TasksTable(props: Props) {
 
 function App() {
 	const [tasks, setTasks] = useState<Task[]>();
+	const firstRender = useRef(true);
+	const end_time = new Date();
+	end_time.setHours(end_time.getHours() + 5);
+	const table = {
+		people: getPeople(),
+		tasks: getTasks(),
+		start_time: new Date().getTime(),
+		end_time: end_time.getTime(),
+	};
+	console.log(table);
+
 	useEffect(() => {
-		fetch("/randomtable").then((res) => res.json().then(setTasks));
+		if (firstRender.current) {
+			fetchPOST("/generate", table).then(setTasks).catch(console.error);
+			firstRender.current = false;
+		}
 	}, []);
 
 	return (
