@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchJSON, fetchPOST, getPeople, getTasks } from "../api";
+import { MainNavbar } from "../MainNavbar/MainNavbar";
 import { Shift, Task } from "../types";
 import style from "./App.module.scss";
 
@@ -77,7 +78,7 @@ function App() {
 
 	return (
 		<>
-			<Link to="/tablemanager">manager view</Link>
+			<MainNavbar />
 			<div className={style.main}>
 				{tasks ? <TasksTable tasks={tasks} /> : "Loading tasks..."}
 			</div>
