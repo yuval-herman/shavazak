@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchPOST, getPeople, getTasks } from "../api";
+import { fetchJSON, fetchPOST, getPeople, getTasks } from "../api";
 import { Shift, Task } from "../types";
 import style from "./App.module.scss";
 
@@ -70,7 +70,7 @@ function App() {
 
 	useEffect(() => {
 		if (firstRender.current) {
-			fetchPOST("/generate", table).then(setTasks).catch(console.error);
+			fetchJSON("/randomtable").then(setTasks).catch(console.error);
 			firstRender.current = false;
 		}
 	}, []);
