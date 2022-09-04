@@ -2,9 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import App from "./App/App";
-import TableManager, { AddPerson, AddTask } from "./TableManager/TableManager";
+import TableManager from "./TableManager/TableManager";
 import { DataTable } from "./DataTable/DataTable";
 import { deletePerson, deleteTask, getPeople, getTasks } from "./api";
+import AddPerson from "./components/AddPerson/AddPerson";
+import AddTask from "./components/AddTask/AddTask";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
