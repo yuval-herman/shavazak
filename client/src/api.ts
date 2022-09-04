@@ -16,6 +16,10 @@ export async function fetchPOST(
 	).json();
 }
 
+export async function fetchJSON(input: RequestInfo | URL, init?: RequestInit) {
+	return (await fetch(input, init)).json();
+}
+
 export function savePerson(person: Person) {
 	const people = getPeople();
 	const index = people.findIndex((pip) => pip.id === person.id);
