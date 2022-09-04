@@ -1,9 +1,7 @@
 .navbar {
-  background-color: aliceblue;
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
-  :nth-child(n) {
-    margin: 10px;
-  }
+	background-color: aliceblue;
+	display: flex;
+	flex-direction: row;
+	padding: 10px;
+	gap: 10px;
 }
