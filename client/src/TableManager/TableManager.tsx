@@ -8,21 +8,11 @@ function TableManager() {
 			<MainNavbar />
 			<div className={style.main}>
 				<nav className={style.sidebar}>
-					<span>
-						<Link to={"/"}>home</Link>
-					</span>
-					<span>
-						<Link to={"addperson"}>add person</Link>
-					</span>
-					<span>
-						<Link to={"addtask"}>add task</Link>
-					</span>
-					<span>
-						<Link to={"viewtasks"}>show tasks</Link>
-					</span>
-					<span>
-						<Link to={"viewpeople"}>show people</Link>
-					</span>
+					<Link to={"/"}>home</Link>
+					<Link to={"addperson"}>add person</Link>
+					<Link to={"addtask"}>add task</Link>
+					<Link to={"viewtasks"}>show tasks</Link>
+					<Link to={"viewpeople"}>show people</Link>
 				</nav>
 				<div>
 					<Outlet />
