@@ -1,6 +1,6 @@
 ## Beep Boop
 
-Welcome to R.Y.A.N Inc. Ⓒ Project.
+Welcome to Y.A.N Inc. Ⓒ Project.
 
 To install locally run:
 
