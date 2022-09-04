@@ -1,8 +1,9 @@
 import { useState, ChangeEvent, SyntheticEvent } from "react";
 import { savePerson } from "../../api";
 import { Person } from "../../types";
-import MultiInput from "../MultiInput";
+import MultiInput from "../MultiInput/MultiInput";
 import uniqId from "uniqid";
+import style from "./AddPerson.module.scss";
 
 export function AddPerson() {
   const [inputs, setInputs] = useState<Person>({
@@ -42,30 +43,32 @@ export function AddPerson() {
   }
 
   return (
-    <form onSubmit={submitHandler}>
-      <label>
-        id <input onChange={handleChange} name="id" value={inputs.id} disabled />
-      </label>
-      <label>
-        name <input value={inputs.name} onChange={handleChange} name="name" />
-      </label>
-      <label>
-        roles{" "}
-        <MultiInput
-          values={inputs.roles.map((item) => [item])}
-          change={handleChange}
-          name="roles"
-        />
-      </label>
-      <label>
-        score <input onChange={handleChange} value={inputs.score} name="score" type={"number"} />
-      </label>
-      <label>
-        status <input onChange={handleChange} value={inputs.status} name="status" />
-      </label>
-      <label>
-        avatar <input onChange={handleChange} value={inputs.avatar} name="avatar" />
-      </label>
+    <form onSubmit={submitHandler} className={style.main}>
+      <div className={style.inputs}>
+        <label>
+          id <input onChange={handleChange} name="id" value={inputs.id} disabled />
+        </label>
+        <label>
+          name <input value={inputs.name} onChange={handleChange} name="name" />
+        </label>
+        <label>
+          roles{" "}
+          <MultiInput
+            values={inputs.roles.map((item) => [item])}
+            change={handleChange}
+            name="roles"
+          />
+        </label>
+        <label>
+          score <input onChange={handleChange} value={inputs.score} name="score" type={"number"} />
+        </label>
+        <label>
+          status <input onChange={handleChange} value={inputs.status} name="status" />
+        </label>
+        <label>
+          avatar <input onChange={handleChange} value={inputs.avatar} name="avatar" />
+        </label>
+      </div>
       <input type="submit" value="add" />
     </form>
   );

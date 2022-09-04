@@ -1,7 +1,7 @@
 import { useState, SyntheticEvent, ChangeEvent } from "react";
 import { saveTask } from "../../api";
 import { Task } from "../../types";
-import MultiInput from "../MultiInput";
+import MultiInput from "../MultiInput/MultiInput";
 import uniqId from "uniqid";
 
 export function AddTask() {

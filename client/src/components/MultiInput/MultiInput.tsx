@@ -1,4 +1,5 @@
 import { ChangeEventHandler, useState, SyntheticEvent } from "react";
+import style from "./MultiInput.module.scss";
 
 function MultiInput(props: {
   name: string | string[];
@@ -37,10 +38,10 @@ function MultiInput(props: {
   }
 
   return (
-    <>
+    <span className={style.main}>
       <span>{inputs}</span>
       <button onClick={addInput}>+</button>
-    </>
+    </span>
   );
 }
 
