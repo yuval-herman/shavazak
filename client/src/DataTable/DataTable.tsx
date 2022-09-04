@@ -30,9 +30,7 @@ export function DataTable(props: {
 							</td>
 						))}
 						<td>
-							<button
-								onClick={() => props.delete(dataItem.id as string)}
-							>
+							<button onClick={() => props.delete(dataItem.id as string)}>
 								delete
 							</button>
 							<button
