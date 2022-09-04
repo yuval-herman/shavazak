@@ -4,7 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import App from "./App/App";
 import TableManager, { AddPerson, AddTask } from "./TableManager/TableManager";
 import { DataTable } from "./DataTable/DataTable";
-import { getPeople, getTasks } from "./api";
+import { deletePerson, deleteTask, getPeople, getTasks } from "./api";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
@@ -20,11 +20,18 @@ root.render(
 					<Route path="addtask" element={<AddTask />} />
 					<Route
 						path="viewtasks"
-						element={<DataTable data={getTasks() as any} />} //TODO fix
+						element={
+							<DataTable data={getTasks() as any} delete={deleteTask} />
+						} //TODO fix
 					/>
 					<Route
 						path="viewpeople"
-						element={<DataTable data={getPeople() as any} />}
+						element={
+							<DataTable
+								data={getPeople() as any}
+								delete={deletePerson}
+							/>
+						}
 					/>
 				</Route>
 				<Route

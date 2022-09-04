@@ -32,6 +32,20 @@ export function saveTask(task: Task) {
 	localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+export function deletePerson(id: string) {
+	const people = getPeople();
+	const index = people.findIndex((pip) => pip.id === id);
+	people.splice(index, 1);
+	localStorage.setItem("people", JSON.stringify(people));
+}
+
+export function deleteTask(id: string) {
+	const tasks = getTasks();
+	const index = tasks.findIndex((t) => t.id === id);
+	tasks.splice(index, 1);
+	localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
 export function getTasks(): Task[] {
 	return JSON.parse(localStorage.getItem("tasks") ?? "[]");
 }
