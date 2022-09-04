@@ -1,11 +1,15 @@
 .main {
-	border: solid black;
 	display: flex;
+	flex-direction: column;
 	gap: 1rem;
 }
 
 .sidebar {
-	border: solid black;
+	width: 100%;
+	padding: 10px;
 	display: flex;
-	flex-direction: column;
+	justify-content: space-around;
+	* {
+		border-color: black;
+	}
 }
