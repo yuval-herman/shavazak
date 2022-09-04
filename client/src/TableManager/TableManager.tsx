@@ -82,6 +82,14 @@ export function AddPerson() {
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
 		savePerson(inputs);
+		setInputs({
+			...inputs,
+			name: "",
+			roles: [""],
+			score: 0,
+			status: "",
+			avatar: "",
+		});
 	}
 
 	return (
@@ -149,6 +157,14 @@ export function AddTask() {
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
 		saveTask(inputs);
+		setInputs({
+			...inputs,
+			name: "",
+			required_people_per_shift: [{ amount: 0, role: "" }],
+			score: 0,
+			shift_duration: 0,
+			shifts: [],
+		});
 	}
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
