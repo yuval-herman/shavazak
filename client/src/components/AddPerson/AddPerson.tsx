@@ -66,16 +66,10 @@ export function AddPerson() {
 			<div className={style.inputs}>
 				<label>
 					id{" "}
-					<input
-						onChange={handleChange}
-						name="id"
-						value={inputs.id}
-						disabled
-					/>
+					<input onChange={handleChange} name="id" value={inputs.id} disabled />
 				</label>
 				<label>
-					name{" "}
-					<input value={inputs.name} onChange={handleChange} name="name" />
+					name <input value={inputs.name} onChange={handleChange} name="name" />
 				</label>
 				<label>
 					roles{" "}
@@ -83,6 +77,13 @@ export function AddPerson() {
 						values={inputs.roles.map((item) => [item])}
 						change={handleChange}
 						name="roles"
+						options={[
+							...new Set(
+								getPeople()
+									.map((person) => person.roles)
+									.flat()
+							),
+						]}
 					/>
 				</label>
 				<label>
@@ -96,19 +97,11 @@ export function AddPerson() {
 				</label>
 				<label>
 					status{" "}
-					<input
-						onChange={handleChange}
-						value={inputs.status}
-						name="status"
-					/>
+					<input onChange={handleChange} value={inputs.status} name="status" />
 				</label>
 				<label>
 					avatar{" "}
-					<input
-						onChange={handleChange}
-						value={inputs.avatar}
-						name="avatar"
-					/>
+					<input onChange={handleChange} value={inputs.avatar} name="avatar" />
 				</label>
 			</div>
 			<input type="submit" value="add" />

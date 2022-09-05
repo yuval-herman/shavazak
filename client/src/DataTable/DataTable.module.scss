@@ -1,9 +1,18 @@
 .main {
-  border-collapse: collapse;
-  text-transform: capitalize;
-  text-align: center;
-  td {
-    border: solid black;
-    padding: 0.5rem;
-  }
+	border-collapse: collapse;
+	text-transform: capitalize;
+	text-align: center;
+	td {
+		border: solid black;
+		padding: 0;
+	}
+	p {
+		padding: 1rem;
+	}
+}
+
+.innerTable {
+	@extend .main;
+	width: 100%;
+	height: 100%;
 }

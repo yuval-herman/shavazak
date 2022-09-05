@@ -13,11 +13,10 @@ function ShiftDiv(props: { shift: Shift }) {
 	return (
 		<div className={style.shift}>
 			{props.shift.people.map((person) => (
-				<span key={person.id}>
-					<img width={50} alt="avatar" src={person.avatar} />{" "}
+				<div key={person.id} className={style.person}>
+					<img alt="avatar" src={person.avatar} />
 					<span key={person.id}>{person.name}</span>
-					<hr />
-				</span>
+				</div>
 			))}
 		</div>
 	);
