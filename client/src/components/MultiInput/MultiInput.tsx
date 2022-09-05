@@ -34,6 +34,7 @@ function MultiInput(props: {
 					input-num={i}
 					value={(props.values[i] ?? [])[j] ?? ""}
 					onChange={props.change}
+					list={listID}
 				/>
 			);
 		}
