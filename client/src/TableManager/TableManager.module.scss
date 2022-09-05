@@ -5,13 +5,15 @@
 }
 
 .sidebar {
-	width: 100%;
-	padding: 10px;
 	display: flex;
+	width: 100%;
+	padding: 0.7rem;
 	justify-content: space-around;
-	margin-bottom: 0rem;
 	border-bottom: solid #ddd 1px;
+	gap: 1rem;
 	a {
+		text-align: center;
+		flex-grow: 1;
 		color: white;
 		border: solid #ddd 1;
 		border-radius: 0.5rem;
