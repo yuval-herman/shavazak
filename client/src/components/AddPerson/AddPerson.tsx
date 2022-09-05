@@ -77,6 +77,13 @@ export function AddPerson() {
 						values={inputs.roles.map((item) => [item])}
 						change={handleChange}
 						name="roles"
+						options={[
+							...new Set(
+								getPeople()
+									.map((person) => person.roles)
+									.flat()
+							),
+						]}
 					/>
 				</label>
 				<label>
