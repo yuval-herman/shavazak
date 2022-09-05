@@ -197,7 +197,7 @@ def generate_time_table(tasks: List[Task], people: List[Person], start_time: dat
     stats.register("mean", mean)
     stats.register("max", max)
     pop, _ = algorithms.eaSimple(
-        pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=100, halloffame=hof, stats=stats, verbose=__name__ == "__main__")
+        pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=50, halloffame=hof, stats=stats, verbose=__name__ == "__main__")
 
     best = pop[-1]
     return best
