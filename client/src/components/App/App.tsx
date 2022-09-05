@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchJSON, fetchPOST, getPeople, getTasks } from "../api";
+import { fetchJSON, fetchPOST, getPeople, getTasks } from "../../api";
 import { MainNavbar } from "../MainNavbar/MainNavbar";
-import { Shift, Task } from "../types";
+import { Shift, Task } from "../../types";
 import style from "./App.module.scss";
 
 interface Props {
@@ -70,7 +70,7 @@ function App() {
 
 	useEffect(() => {
 		if (firstRender.current) {
-			fetchJSON("/randomtable").then(setTasks).catch(console.error);
+			fetchPOST("generate", table).then(setTasks).catch(console.error);
 			firstRender.current = false;
 		}
 	}, []);
