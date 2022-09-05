@@ -23,7 +23,7 @@ export function DataTable(props: Props) {
 			<thead>
 				<tr>
 					{Object.keys(props.data[0]).map((dataItem, i) => (
-						<td key={i}>{dataItem}</td>
+						<th key={i}>{dataItem}</th>
 					))}
 				</tr>
 			</thead>

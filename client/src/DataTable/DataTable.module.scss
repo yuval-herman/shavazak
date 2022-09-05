@@ -1,13 +1,28 @@
 .main {
-	border-collapse: collapse;
+	border-radius: 1rem;
 	text-transform: capitalize;
 	text-align: center;
-	td {
-		border: solid black;
-		padding: 0;
-	}
+	border-collapse: collapse;
 	p {
 		padding: 1rem;
+	}
+	th {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		text-align: left;
+		background-color: #08778a;
+		color: white;
+	}
+	td,
+	th {
+		text-align: center;
+		border: 1px solid #ddd;
+	}
+	tr:nth-child(even) {
+		background-color: #f2f2f2;
+	}
+	tr:hover {
+		background-color: #ddd;
 	}
 }
 
