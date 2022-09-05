@@ -7,6 +7,7 @@ import { DataTable } from "./components/DataTable/DataTable";
 import { deletePerson, deleteTask, getPeople, getTasks } from "./api";
 import AddPerson from "./components/AddPerson/AddPerson";
 import AddTask from "./components/AddTask/AddTask";
+import "./style/main.scss";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement

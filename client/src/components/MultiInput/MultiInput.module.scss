@@ -1,21 +1,23 @@
+@use "../../style/base";
 .main {
+	width: 100%;
 	display: flex;
 	flex-direction: row;
-	button {
-		background-color: #08778a;
-		color: white;
-		padding: 14px 20px;
-		margin: 8px 0;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-		&:hover {
-			background-color: lighten($color: #1946d9, $amount: 10);
+	span {
+		flex-grow: 1;
+		.inputRow {
+			display: flex;
+			flex-direction: row;
+			input {
+				flex-grow: 1;
+			}
 		}
 	}
-}
-
-.inputRow {
-	display: flex;
-	flex-direction: row;
+	button {
+		@extend %button;
+		margin: unset;
+		width: unset;
+		flex-grow: 0;
+		height: 100%;
+	}
 }

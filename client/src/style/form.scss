@@ -1,0 +1,23 @@
+@use "base";
+* {
+	transition: all 0.5s ease;
+}
+.main {
+	margin: auto;
+	margin-top: 1rem;
+	width: 70%;
+	text-transform: capitalize;
+	font-size: medium;
+	label {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+	input {
+		@extend %input;
+	}
+	input[type="submit"] {
+		@extend %button;
+	}
+}
