@@ -38,7 +38,11 @@ function MultiInput(props: {
 				/>
 			);
 		}
-		inputs.push(<div key={i}>{row}</div>);
+		inputs.push(
+			<div key={i} className={style.inputRow}>
+				{row}
+			</div>
+		);
 	}
 
 	return (
