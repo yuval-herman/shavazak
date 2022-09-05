@@ -1,6 +1,18 @@
 .main {
 	display: flex;
 	flex-direction: row;
+	button {
+		background-color: #08778a;
+		color: white;
+		padding: 14px 20px;
+		margin: 8px 0;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		&:hover {
+			background-color: lighten($color: #1946d9, $amount: 10);
+		}
+	}
 }
 
 .inputRow {
