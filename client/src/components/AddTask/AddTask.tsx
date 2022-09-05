@@ -4,6 +4,7 @@ import { Task } from "../../types";
 import MultiInput from "../MultiInput/MultiInput";
 import uniqId from "uniqid";
 import { useSearchParams } from "react-router-dom";
+import style from "./AddTask.module.scss";
 
 export function AddTask() {
 	const [searchParamas] = useSearchParams();
@@ -22,9 +23,7 @@ export function AddTask() {
 			const id = searchParamas.get("id");
 			const task = getTasks().find((task) => task.id === id);
 			if (!task) {
-				setError(
-					"Horrible error occurred😖\ncan't find a task with that id!"
-				);
+				setError("Horrible error occurred😖\ncan't find a task with that id!");
 				return;
 			}
 			setInputs(task);
@@ -69,19 +68,13 @@ export function AddTask() {
 		return <div>{error}</div>;
 	}
 	return (
-		<form onSubmit={submitHandler}>
+		<form onSubmit={submitHandler} className={style.main}>
 			<label>
 				id{" "}
-				<input
-					name="id"
-					value={inputs.id}
-					onChange={handleChange}
-					disabled
-				/>
+				<input name="id" value={inputs.id} onChange={handleChange} disabled />
 			</label>
 			<label>
-				name{" "}
-				<input name="name" value={inputs.name} onChange={handleChange} />
+				name <input name="name" value={inputs.name} onChange={handleChange} />
 			</label>
 			<label>
 				required people per shift{" "}
