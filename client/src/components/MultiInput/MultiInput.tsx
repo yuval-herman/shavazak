@@ -1,4 +1,5 @@
 import { ChangeEventHandler, useState, SyntheticEvent } from "react";
+import uniqId from "uniqid";
 import style from "./MultiInput.module.scss";
 
 function MultiInput(props: {
@@ -6,8 +7,10 @@ function MultiInput(props: {
 	change: ChangeEventHandler<HTMLInputElement>;
 	columns?: number;
 	values: string[][];
+	options?: string[];
 }) {
 	const [inputsNumber, setInputsNumber] = useState<number>(1);
+	const [listID, setListID] = useState(uniqId());
 
 	function addInput(event: SyntheticEvent) {
 		event.preventDefault();
@@ -41,6 +44,11 @@ function MultiInput(props: {
 		<span className={style.main}>
 			<span>{inputs}</span>
 			<button onClick={addInput}>+</button>
+			<datalist id={listID}>
+				{props.options?.map((option) => (
+					<option value={option} />
+				))}
+			</datalist>
 		</span>
 	);
 }
