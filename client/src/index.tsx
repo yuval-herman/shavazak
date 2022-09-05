@@ -17,7 +17,7 @@ root.render(
 			<Routes>
 				<Route index element={<App />} />
 				<Route path="tablemanager" element={<TableManager />}>
-					<Route index element={<Navigate to="addperson" />} />
+					<Route index element={<Navigate to="viewpeople" />} />
 					<Route path="addperson" element={<AddPerson />} />
 					<Route path="addtask" element={<AddTask />} />
 					<Route
