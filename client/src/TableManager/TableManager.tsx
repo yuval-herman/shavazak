@@ -14,9 +14,7 @@ function TableManager() {
 					<Link to={"viewtasks"}>show tasks</Link>
 					<Link to={"viewpeople"}>show people</Link>
 				</nav>
-				<div>
-					<Outlet />
-				</div>
+				<Outlet />
 			</div>
 		</>
 	);

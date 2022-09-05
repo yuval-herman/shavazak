@@ -9,7 +9,16 @@
 	padding: 10px;
 	display: flex;
 	justify-content: space-around;
-	* {
-		border-color: black;
+	margin-bottom: 0rem;
+	border-bottom: solid #ddd 1px;
+	a {
+		color: white;
+		border: solid #ddd 1;
+		border-radius: 0.5rem;
+		background-color: #08778a;
+		padding: 0.7rem;
+		&:hover {
+			background-color: #0c9fb9;
+		}
 	}
 }
