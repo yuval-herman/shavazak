@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { fetchPOST, getPeople, getTasks } from "../../api";
-import { MainNavbar } from "../MainNavbar/MainNavbar";
+import { useContext, useEffect, useState } from "react";
+import { fetchPOST } from "../../api";
+import { PeopleContext } from "../../context/PeopleContext";
+import { TasksContext } from "../../context/TasksContext";
 import { Shift, Task } from "../../types";
+import { MainNavbar } from "../MainNavbar/MainNavbar";
 import style from "./App.module.scss";
 
 interface Props {
@@ -56,30 +58,60 @@ function TasksTable(props: Props) {
 
 function App() {
 	const [tasks, setTasks] = useState<Task[]>();
-	const firstRender = useRef(true);
+	const peopleContext = useContext(PeopleContext);
+	const tasksContext = useContext(TasksContext);
 
 	useEffect(() => {
-		if (!firstRender.current) return;
+		if (cacheUpToDate()) {
+			return;
+		}
+
 		const end_time = new Date();
 		end_time.setHours(end_time.getHours() + 5);
-		const table = {
-			people: getPeople(),
-			tasks: getTasks(),
+		const tasksPips = {
+			people: peopleContext.people,
+			tasks: tasksContext.tasks,
 			start_time: new Date().getTime(),
 			end_time: end_time.getTime(),
 		};
-		console.log(table);
-		fetchPOST("generate", table).then(setTasks).catch(console.error);
-		firstRender.current = false;
-	}, []);
+		fetchPOST("generate", tasksPips)
+			.then((res) => {
+				localStorage.setItem(
+					"cachedTable",
+					JSON.stringify({ table: res, ...tasksPips })
+				);
+				setTasks(res);
+			})
+			.catch(console.error);
+	}, [peopleContext.people, tasksContext.tasks]);
 
 	return (
 		<>
 			<MainNavbar />
 			<div className={style.main}>
-				{tasks ? <TasksTable tasks={tasks} /> : "Loading tasks..."}
+				{tasks ? (
+					<TasksTable tasks={tasks} />
+				) : cacheUpToDate() ? (
+					<TasksTable
+						tasks={JSON.parse(localStorage.getItem("cachedTable")!).table}
+					/>
+				) : (
+					"Loading tasks..."
+				)}
 			</div>
 		</>
 	);
+
+	function cacheUpToDate() {
+		const cachedTable = JSON.parse(
+			localStorage.getItem("cachedTable") ?? "null"
+		);
+		return (
+			cachedTable &&
+			JSON.stringify(cachedTable.people) ===
+				JSON.stringify(peopleContext.people) &&
+			JSON.stringify(cachedTable.tasks) === JSON.stringify(tasksContext.tasks)
+		);
+	}
 }
 export default App;
