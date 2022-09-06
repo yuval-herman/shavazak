@@ -1,4 +1,4 @@
-import { isPerson, Person, Task } from "./types";
+import { Person, Task } from "./types";
 
 export async function fetchPOST(
 	input: RequestInfo | URL,
@@ -26,7 +26,6 @@ export function savePerson(person: Person) {
 	if (index === -1) people.push(person);
 	else people[index] = person;
 	localStorage.setItem("people", JSON.stringify(people));
-	window.location.reload();
 }
 
 export function saveTask(task: Task) {
@@ -35,7 +34,6 @@ export function saveTask(task: Task) {
 	if (index === -1) tasks.push(task);
 	else tasks[index] = task;
 	localStorage.setItem("tasks", JSON.stringify(tasks));
-	window.location.reload();
 }
 
 export function deletePerson(id: string) {
@@ -43,7 +41,6 @@ export function deletePerson(id: string) {
 	const index = people.findIndex((pip) => pip.id === id);
 	people.splice(index, 1);
 	localStorage.setItem("people", JSON.stringify(people));
-	window.location.reload();
 }
 
 export function deleteTask(id: string) {
@@ -51,7 +48,6 @@ export function deleteTask(id: string) {
 	const index = tasks.findIndex((t) => t.id === id);
 	tasks.splice(index, 1);
 	localStorage.setItem("tasks", JSON.stringify(tasks));
-	window.location.reload();
 }
 
 export function getTasks(): Task[] {
