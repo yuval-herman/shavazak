@@ -1,13 +1,20 @@
-import { useState, SyntheticEvent, ChangeEvent, useEffect } from "react";
-import { getTasks, saveTask } from "../../api";
+import {
+	useState,
+	SyntheticEvent,
+	ChangeEvent,
+	useEffect,
+	useContext,
+} from "react";
 import { Task } from "../../types";
 import MultiInput from "../MultiInput/MultiInput";
 import uniqId from "uniqid";
 import { useSearchParams } from "react-router-dom";
 import style from "./AddTask.module.scss";
+import { TasksContext } from "../../context/TasksContext";
 
 export function AddTask() {
 	const [searchParamas] = useSearchParams();
+	const tasksContext = useContext(TasksContext);
 	const [error, setError] = useState<string>();
 	const [inputs, setInputs] = useState<Task>({
 		id: uniqId(),
@@ -21,7 +28,7 @@ export function AddTask() {
 	useEffect(() => {
 		if (searchParamas.has("id")) {
 			const id = searchParamas.get("id");
-			const task = getTasks().find((task) => task.id === id);
+			const task = tasksContext.tasks.find((task) => task.id === id);
 			if (!task) {
 				setError("Horrible error occurred😖\ncan't find a task with that id!");
 				return;
@@ -32,7 +39,7 @@ export function AddTask() {
 
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
-		saveTask(inputs);
+		tasksContext.add(inputs);
 		setInputs({
 			...inputs,
 			name: "",

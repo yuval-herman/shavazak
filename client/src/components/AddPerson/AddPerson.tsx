@@ -1,13 +1,20 @@
-import { useState, ChangeEvent, SyntheticEvent, useEffect } from "react";
-import { getPeople, savePerson } from "../../api";
+import {
+	useState,
+	ChangeEvent,
+	SyntheticEvent,
+	useEffect,
+	useContext,
+} from "react";
 import { Person } from "../../types";
 import MultiInput from "../MultiInput/MultiInput";
 import uniqId from "uniqid";
 import style from "./AddPerson.module.scss";
 import { useSearchParams } from "react-router-dom";
+import { PeopleContext } from "../../context/PeopleContext";
 
 export function AddPerson() {
 	const [searchParamas] = useSearchParams();
+	const peopleContext = useContext(PeopleContext);
 	const [error, setError] = useState<string>();
 	const [inputs, setInputs] = useState<Person>({
 		id: uniqId(),
@@ -21,7 +28,7 @@ export function AddPerson() {
 	useEffect(() => {
 		if (searchParamas.has("id")) {
 			const id = searchParamas.get("id");
-			const person = getPeople().find((person) => person.id === id);
+			const person = peopleContext.people.find((person) => person.id === id);
 			if (!person) {
 				setError(
 					"Horrible error occurred😖\ncan't find a person with that id!"
@@ -48,7 +55,7 @@ export function AddPerson() {
 
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
-		savePerson(inputs);
+		peopleContext.add(inputs);
 		setInputs({
 			...inputs,
 			name: "",
@@ -78,9 +85,7 @@ export function AddPerson() {
 					name="roles"
 					options={[
 						...new Set(
-							getPeople()
-								.map((person) => person.roles)
-								.flat()
+							peopleContext.people.map((person) => person.roles).flat()
 						),
 					]}
 				/>
