@@ -35,7 +35,7 @@ export function AddTask() {
 			}
 			setInputs(task);
 		}
-	}, []);
+	}, [searchParamas, tasksContext.tasks]);
 
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();

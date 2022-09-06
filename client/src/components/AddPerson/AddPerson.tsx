@@ -37,7 +37,7 @@ export function AddPerson() {
 			}
 			setInputs(person);
 		}
-	}, []);
+	}, [searchParamas, peopleContext.people]);
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
 		const inputName = event.target.getAttribute("name")!;

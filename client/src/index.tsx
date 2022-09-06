@@ -1,17 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import App from "./components/App/App";
-import TableManager from "./components/TableManager/TableManager";
-import { DataTable } from "./components/DataTable/DataTable";
-import { deleteTask, getTasks } from "./api";
 import AddPerson from "./components/AddPerson/AddPerson";
 import AddTask from "./components/AddTask/AddTask";
-import "./style/main.scss";
+import App from "./components/App/App";
 import PeopleView from "./components/PeopleView/PeopleView";
+import TableManager from "./components/TableManager/TableManager";
+import TasksView from "./components/TasksView/TasksView";
 import { PeopleProvider } from "./context/PeopleContext";
 import { TasksProvider } from "./context/TasksContext";
-import TasksView from "./components/TasksView/TasksView";
+import "./style/main.scss";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
