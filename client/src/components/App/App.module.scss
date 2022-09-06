@@ -1,44 +1,33 @@
+@use "../../style/base";
+
 .main {
 	margin-top: 1rem;
-}
-
-.box {
-	border: solid gray 1px;
-	border-radius: 0.5rem;
-	box-shadow: 5px 5px 20px -10px #000000;
-	margin: 10px;
-}
-
-.headers {
-	display: flex;
-	justify-content: space-around;
-	font-size: large;
-	text-decoration: underline;
-}
-
-.tasks {
-	display: flex;
-	.shifts {
-		flex-grow: 1;
+	.headers {
+		display: flex;
+		justify-content: space-around;
+		font-size: large;
+		text-decoration: underline;
 	}
-}
-
-.shift {
-	@extend .box;
-	text-align: center;
-	align-items: center;
-	justify-content: center;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-}
-
-.person {
-	@extend .box;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	img {
-		max-height: 70px;
+	.column {
+		display: flex;
+		.task {
+			flex-grow: 1;
+			.shift {
+				@extend %box;
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				text-align: center;
+				.person {
+					@extend %box;
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					img {
+						max-height: 70px;
+					}
+				}
+			}
+		}
 	}
 }
