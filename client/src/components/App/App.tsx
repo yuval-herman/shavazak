@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { fetchJSON, fetchPOST, getPeople, getTasks } from "../../api";
+import { fetchPOST, getPeople, getTasks } from "../../api";
 import { MainNavbar } from "../MainNavbar/MainNavbar";
 import { Shift, Task } from "../../types";
 import style from "./App.module.scss";
@@ -58,21 +57,20 @@ function TasksTable(props: Props) {
 function App() {
 	const [tasks, setTasks] = useState<Task[]>();
 	const firstRender = useRef(true);
-	const end_time = new Date();
-	end_time.setHours(end_time.getHours() + 5);
-	const table = {
-		people: getPeople(),
-		tasks: getTasks(),
-		start_time: new Date().getTime(),
-		end_time: end_time.getTime(),
-	};
-	console.log(table);
 
 	useEffect(() => {
-		if (firstRender.current) {
-			fetchPOST("generate", table).then(setTasks).catch(console.error);
-			firstRender.current = false;
-		}
+		if (!firstRender.current) return;
+		const end_time = new Date();
+		end_time.setHours(end_time.getHours() + 5);
+		const table = {
+			people: getPeople(),
+			tasks: getTasks(),
+			start_time: new Date().getTime(),
+			end_time: end_time.getTime(),
+		};
+		console.log(table);
+		fetchPOST("generate", table).then(setTasks).catch(console.error);
+		firstRender.current = false;
 	}, []);
 
 	return (
