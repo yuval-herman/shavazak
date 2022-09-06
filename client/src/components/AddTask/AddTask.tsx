@@ -11,6 +11,7 @@ import uniqId from "uniqid";
 import { useSearchParams } from "react-router-dom";
 import style from "./AddTask.module.scss";
 import { TasksContext } from "../../context/TasksContext";
+import { getRolesFromData } from "../../api";
 
 export function AddTask() {
 	const [searchParamas] = useSearchParams();
@@ -93,6 +94,7 @@ export function AddTask() {
 						item.amount.toString(),
 						item.role,
 					])}
+					options={getRolesFromData(undefined, tasksContext.tasks)}
 				/>
 			</label>
 			<label>

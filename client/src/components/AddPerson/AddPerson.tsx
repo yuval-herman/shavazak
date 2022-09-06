@@ -11,6 +11,7 @@ import uniqId from "uniqid";
 import style from "./AddPerson.module.scss";
 import { useSearchParams } from "react-router-dom";
 import { PeopleContext } from "../../context/PeopleContext";
+import { getRolesFromData } from "../../api";
 
 export function AddPerson() {
 	const [searchParamas] = useSearchParams();
@@ -83,11 +84,7 @@ export function AddPerson() {
 					values={inputs.roles.map((item) => [item])}
 					change={handleChange}
 					name="roles"
-					options={[
-						...new Set(
-							peopleContext.people.map((person) => person.roles).flat()
-						),
-					]}
+					options={getRolesFromData(peopleContext.people)}
 				/>
 			</label>
 			<label>

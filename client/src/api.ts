@@ -57,3 +57,24 @@ export function getTasks(): Task[] {
 export function getPeople(): Person[] {
 	return JSON.parse(localStorage.getItem("people") ?? "[]");
 }
+
+export function getRolesFromData(people?: Person[], tasks?: Task[]) {
+	if (!people) people = [];
+	if (!tasks) tasks = [];
+	return [
+		...new Set(
+			people
+				.map((person) => person.roles)
+				.flat()
+				.concat(
+					tasks
+						.map((task) =>
+							task.required_people_per_shift.map(
+								(requirment) => requirment.role
+							)
+						)
+						.flat()
+				)
+		),
+	];
+}
