@@ -83,11 +83,20 @@ function App() {
 				setTasks(res);
 			})
 			.catch(console.error);
+		// eslint-disable-next-line
 	}, [peopleContext.people, tasksContext.tasks]);
 
 	return (
 		<>
 			<MainNavbar />
+			<button
+				onClick={() => {
+					localStorage.removeItem("cachedTable");
+					setTasks(undefined);
+				}}
+			>
+				Reload
+			</button>
 			<div className={style.main}>
 				{tasks ? (
 					<TasksTable tasks={tasks} />
