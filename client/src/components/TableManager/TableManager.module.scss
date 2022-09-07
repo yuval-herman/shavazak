@@ -16,5 +16,9 @@
 	a {
 		@extend %button;
 		padding: 0.7rem;
+		&.activeLink {
+			filter: brightness(120%);
+			translate: 0 1rem;
+		}
 	}
 }
