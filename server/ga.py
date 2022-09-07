@@ -94,10 +94,8 @@ def generate_random_table(tasks: List[Task], people: List[Person], start_time: d
             needed_pips = sum([i["amount"]
                               for i in task["required_people_per_shift"]])
             while needed_pips:
-                if time+timedelta(minutes=task["shift_duration"]) >= end_time:
+                if time+timedelta(minutes=task["shift_duration"]) >= end_time or not remaining_people:
                     return creator.Individual(table)
-                if not remaining_people:
-                    remaining_people = deepcopy(people)
                 rand_pip = remaining_people.pop(
                     randrange(len(remaining_people)))
                 task['shifts'][-1]["people"].append(rand_pip)
@@ -197,7 +195,7 @@ def generate_time_table(tasks: List[Task], people: List[Person], start_time: dat
     stats.register("mean", mean)
     stats.register("max", max)
     pop, _ = algorithms.eaSimple(
-        pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=50, halloffame=hof, stats=stats, verbose=__name__ == "__main__")
+        pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=25, halloffame=hof, stats=stats, verbose=__name__ == "__main__")
 
     best = pop[-1]
     return best
