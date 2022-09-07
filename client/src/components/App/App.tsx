@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { fetchPOST } from "../../api";
 import { PeopleContext } from "../../context/PeopleContext";
 import { TasksContext } from "../../context/TasksContext";
@@ -104,8 +105,13 @@ function App() {
 					<TasksTable
 						tasks={JSON.parse(localStorage.getItem("cachedTable")!).table}
 					/>
-				) : (
+				) : peopleContext.people.length && tasksContext.tasks.length ? (
 					"Loading tasks..."
+				) : (
+					<div>
+						No tasks or people added, consider{" "}
+						<Link to={"/tablemanager/addperson"}>adding some</Link>
+					</div>
 				)}
 			</div>
 		</>
