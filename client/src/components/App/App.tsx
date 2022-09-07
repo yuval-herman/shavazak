@@ -90,14 +90,6 @@ function App() {
 	return (
 		<>
 			<MainNavbar />
-			<button
-				onClick={() => {
-					localStorage.removeItem("cachedTable");
-					setTasks(undefined);
-				}}
-			>
-				Reload
-			</button>
 			<div className={style.main}>
 				{tasks ? (
 					<TasksTable tasks={tasks} />
