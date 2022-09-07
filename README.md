@@ -1,8 +1,10 @@
-## Beep Boop
+# Shavzak.io
+![shavzak](https://user-images.githubusercontent.com/47389924/188946200-d7b4465e-dfb2-44b2-832c-081cd09adae4.png)
 
-Welcome to Y.A.N Inc. Ⓒ Project.
+## Shavzak.io is a progressive web app built with react and python
+It can be used to manage a large platoon's tasks and people. It uses a genetic algorithm to greatly reduce the effort needed from officers making the creation of time tables as easy as the press of a button.
 
-To install locally run:
+## Local installation
 
 ```bash
 python3 -m venv env
