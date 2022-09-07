@@ -12,6 +12,7 @@ import style from "./AddPerson.module.scss";
 import { useSearchParams } from "react-router-dom";
 import { PeopleContext } from "../../context/PeopleContext";
 import { getRolesFromData } from "../../api";
+import Snackbar from "../Snackbar/Snackbar";
 
 export function AddPerson() {
 	const [searchParamas] = useSearchParams();
@@ -25,6 +26,7 @@ export function AddPerson() {
 		status: "",
 		avatar: "",
 	});
+	const [snackbar, setSnackbar] = useState("");
 
 	useEffect(() => {
 		if (searchParamas.has("id")) {
@@ -65,6 +67,7 @@ export function AddPerson() {
 			status: "",
 			avatar: "",
 		});
+		setSnackbar("Person added");
 	}
 	if (error) {
 		return <div>{error}</div>;
@@ -105,6 +108,7 @@ export function AddPerson() {
 				<input onChange={handleChange} value={inputs.avatar} name="avatar" />
 			</label>
 			<input type="submit" value="add" />
+			<Snackbar value={snackbar} />
 		</form>
 	);
 }

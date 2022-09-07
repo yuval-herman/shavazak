@@ -12,6 +12,7 @@ import { useSearchParams } from "react-router-dom";
 import style from "./AddTask.module.scss";
 import { TasksContext } from "../../context/TasksContext";
 import { getRolesFromData } from "../../api";
+import Snackbar from "../Snackbar/Snackbar";
 
 export function AddTask() {
 	const [searchParamas] = useSearchParams();
@@ -25,6 +26,7 @@ export function AddTask() {
 		shift_duration: 0,
 		shifts: [],
 	});
+	const [snackbar, setSnackbar] = useState("");
 
 	useEffect(() => {
 		if (searchParamas.has("id")) {
@@ -49,6 +51,7 @@ export function AddTask() {
 			shift_duration: 0,
 			shifts: [],
 		});
+		setSnackbar("Task added");
 	}
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -116,6 +119,7 @@ export function AddTask() {
 				/>
 			</label>
 			<input type="submit" value="add" />
+			<Snackbar value={snackbar} />
 		</form>
 	);
 }
