@@ -15,17 +15,18 @@ import { getRolesFromData } from "../../api";
 import Snackbar from "../Snackbar/Snackbar";
 
 export function AddTask() {
+	const initialInputs = {
+		id: uniqId(),
+		name: "",
+		required_people_per_shift: [{ amount: 1, role: "any" }],
+		score: 0,
+		shift_duration: 30,
+		shifts: [],
+	};
 	const [searchParamas] = useSearchParams();
 	const tasksContext = useContext(TasksContext);
 	const [error, setError] = useState<string>();
-	const [inputs, setInputs] = useState<Task>({
-		id: uniqId(),
-		name: "",
-		required_people_per_shift: [{ amount: 0, role: "" }],
-		score: 0,
-		shift_duration: 0,
-		shifts: [],
-	});
+	const [inputs, setInputs] = useState<Task>(initialInputs);
 	const [snackbar, setSnackbar] = useState("");
 
 	useEffect(() => {
@@ -43,31 +44,22 @@ export function AddTask() {
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
 		tasksContext.add(inputs);
-		setInputs({
-			...inputs,
-			name: "",
-			required_people_per_shift: [{ amount: 0, role: "" }],
-			score: 0,
-			shift_duration: 0,
-			shifts: [],
-		});
+		setInputs(initialInputs);
 		setSnackbar("Task added");
 	}
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
 		const inputName = event.target.getAttribute("name")!;
+		let value: string | number = event.target.value;
 
 		if (inputName === "amount" || inputName === "role") {
 			const index = parseInt(event.target.getAttribute("input-num")!);
 			const prevArr = [...inputs.required_people_per_shift];
-			let value: string | number;
 			if (inputName === "amount") {
 				value = parseInt(event.target.value);
 				if (isNaN(value)) {
 					value = "";
 				}
-			} else {
-				value = event.target.value;
 			}
 			prevArr[index] = {
 				...prevArr[index],
@@ -75,11 +67,19 @@ export function AddTask() {
 			};
 			setInputs({ ...inputs, required_people_per_shift: prevArr });
 		} else if (inputName === "shift_duration") {
-			setInputs({ ...inputs, [inputName]: parseInt(event.target.value) });
+			value = parseInt(value);
+			if (isNaN(value) || value < 5) {
+				value = 5;
+			}
+			setInputs({ ...inputs, [inputName]: value });
 		} else if (inputName === "score") {
-			setInputs({ ...inputs, [inputName]: parseInt(event.target.value) });
+			value = parseInt(value);
+			if (isNaN(value)) {
+				value = 0;
+			}
+			setInputs({ ...inputs, [inputName]: value });
 		} else {
-			setInputs({ ...inputs, [inputName]: event.target.value });
+			setInputs({ ...inputs, [inputName]: value });
 		}
 	}
 	if (error) {

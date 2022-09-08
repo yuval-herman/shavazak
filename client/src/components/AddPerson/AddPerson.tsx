@@ -15,17 +15,18 @@ import { getRolesFromData } from "../../api";
 import Snackbar from "../Snackbar/Snackbar";
 
 export function AddPerson() {
-	const [searchParamas] = useSearchParams();
-	const peopleContext = useContext(PeopleContext);
-	const [error, setError] = useState<string>();
-	const [inputs, setInputs] = useState<Person>({
+	const initialInputs = {
 		id: uniqId(),
 		name: "",
 		roles: [""],
 		score: 0,
 		status: "",
 		avatar: "",
-	});
+	};
+	const [searchParamas] = useSearchParams();
+	const peopleContext = useContext(PeopleContext);
+	const [error, setError] = useState<string>();
+	const [inputs, setInputs] = useState<Person>(initialInputs);
 	const [snackbar, setSnackbar] = useState("");
 
 	useEffect(() => {
@@ -59,14 +60,7 @@ export function AddPerson() {
 	function submitHandler(event: SyntheticEvent) {
 		event.preventDefault();
 		peopleContext.add(inputs);
-		setInputs({
-			...inputs,
-			name: "",
-			roles: [""],
-			score: 0,
-			status: "",
-			avatar: "",
-		});
+		setInputs(initialInputs);
 		setSnackbar("Person added");
 	}
 	if (error) {
