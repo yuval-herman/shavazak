@@ -13,17 +13,6 @@ export interface Person {
 	[key: string]: string | number | string[];
 }
 
-export function isPerson(obj: any): obj is Person {
-	return (
-		typeof obj.id === "string" &&
-		typeof obj.name === "string" &&
-		Array.isArray(obj.roles) &&
-		obj.roles.every((item: any) => typeof item === "string") &&
-		typeof obj.score === "number" &&
-		typeof obj.status === "string"
-	);
-}
-
 export interface Shift {
 	date: number;
 	people: Person[];
