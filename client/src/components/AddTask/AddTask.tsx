@@ -56,15 +56,22 @@ export function AddTask() {
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
 		const inputName = event.target.getAttribute("name")!;
+
 		if (inputName === "amount" || inputName === "role") {
 			const index = parseInt(event.target.getAttribute("input-num")!);
 			const prevArr = [...inputs.required_people_per_shift];
+			let value: string | number;
+			if (inputName === "amount") {
+				value = parseInt(event.target.value);
+				if (isNaN(value)) {
+					value = "";
+				}
+			} else {
+				value = event.target.value;
+			}
 			prevArr[index] = {
 				...prevArr[index],
-				[inputName]:
-					inputName === "amount"
-						? parseInt(event.target.value)
-						: event.target.value,
+				[inputName]: value,
 			};
 			setInputs({ ...inputs, required_people_per_shift: prevArr });
 		} else if (inputName === "shift_duration") {
