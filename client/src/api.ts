@@ -1,5 +1,6 @@
 import { Person, Task } from "./types";
 
+// A wrapper around fetch that posts an object to the given url
 export async function fetchPOST(
 	input: RequestInfo | URL,
 	data: any,
@@ -16,10 +17,12 @@ export async function fetchPOST(
 	).json();
 }
 
+// A wrapper around fetch that returns an object from a url
 export async function fetchJSON(input: RequestInfo | URL, init?: RequestInit) {
 	return (await fetch(input, init)).json();
 }
 
+// Saves a person to localStorage or updates one if it already exists
 export function savePerson(person: Person) {
 	const people = getPeople();
 	const index = people.findIndex((pip) => pip.id === person.id);
@@ -28,6 +31,7 @@ export function savePerson(person: Person) {
 	localStorage.setItem("people", JSON.stringify(people));
 }
 
+// Saves a task to localStorage or updates one if it already exists
 export function saveTask(task: Task) {
 	const tasks = getTasks();
 	const index = tasks.findIndex((t) => t.id === task.id);
@@ -36,6 +40,7 @@ export function saveTask(task: Task) {
 	localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+// Removes a person from localStorage
 export function deletePerson(id: string) {
 	const people = getPeople();
 	const index = people.findIndex((pip) => pip.id === id);
@@ -43,6 +48,7 @@ export function deletePerson(id: string) {
 	localStorage.setItem("people", JSON.stringify(people));
 }
 
+// Removes a task from localStorage
 export function deleteTask(id: string) {
 	const tasks = getTasks();
 	const index = tasks.findIndex((t) => t.id === id);
@@ -58,6 +64,7 @@ export function getPeople(): Person[] {
 	return JSON.parse(localStorage.getItem("people") ?? "[]");
 }
 
+// Retrieves all roles saved in people and tasks
 export function getRolesFromData(people?: Person[], tasks?: Task[]) {
 	if (!people) people = [];
 	if (!tasks) tasks = [];
