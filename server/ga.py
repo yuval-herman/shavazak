@@ -1,13 +1,14 @@
+from copy import deepcopy
+from datetime import datetime, timedelta
 from json import JSONEncoder
 from pprint import pprint
-from database_types import *
-from typing import List, Tuple
-from datetime import datetime, timedelta
-from deap import algorithms, base, creator, tools
+from random import choice, randrange, seed
 from statistics import mean
-from random import choice, seed, randrange
-from copy import deepcopy
+from typing import List, Tuple
 
+from deap import algorithms, base, creator, tools
+
+from database_types import *
 from fake_data import fake_person, fake_task
 
 
