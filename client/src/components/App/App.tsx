@@ -72,13 +72,11 @@ function App() {
 			return;
 		}
 
-		const end_time = new Date();
-		end_time.setHours(end_time.getHours() + 5);
 		const tasksPips = {
 			people: peopleContext.people,
 			tasks: tasksContext.tasks,
-			start_time: new Date().getTime(),
-			end_time: end_time.getTime(),
+			start_time: tasksContext.start_time.getTime(),
+			end_time: tasksContext.end_time.getTime(),
 		};
 		fetchPOST("generate", tasksPips)
 			.then((res) => {
