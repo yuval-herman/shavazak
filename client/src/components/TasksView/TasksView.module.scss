@@ -1,0 +1,13 @@
+@use "../../style/form.scss";
+.times {
+	@extend %box;
+	display: flex;
+	padding: 1rem;
+	margin: 2rem;
+	justify-content: space-evenly;
+	// gap: 1rem;
+	input {
+		@extend %input;
+		width: auto;
+	}
+}
