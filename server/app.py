@@ -23,6 +23,15 @@ def random_table():
         fake_person() for i in range(NUM_OF_PIPS)], START_TIME, END_TIME)
 
 
+@app.route('/randomdata')
+def random_data():
+    """Return random tasks and people made with fake data."""
+    NUM_OF_TASKS = 3
+    NUM_OF_PIPS = 20
+    return {"tasks": [fake_task() for i in range(NUM_OF_TASKS)], "people": [
+        fake_person() for i in range(NUM_OF_PIPS)]}
+
+
 @app.route("/generate", methods=['POST'])
 def generate_table():
     """Get JSON string from client and return optimized table."""
