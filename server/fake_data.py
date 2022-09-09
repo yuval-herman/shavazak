@@ -13,7 +13,7 @@ tasks = ['Guard', 'Kitchen', 'Patrol',
 def fake_person() -> Person:
     """Create a random Person."""
     fake_person.id_counter += 1
-    return {'id': fake_person.id_counter,
+    return {'id': str(fake_person.id_counter),
             'name': fake.name(),
             'avatar': fake.image_url(2**9, 2**9),
             'roles': sample(roles, randint(0, 3)),
@@ -25,7 +25,7 @@ def fake_person() -> Person:
 def fake_task() -> Task:
     """Create a random Task."""
     fake_task.id_counter += 1
-    return {'id': fake_task.id_counter,
+    return {'id': str(fake_task.id_counter),
             'name': choice(tasks),
             'required_people_per_shift': [{'role': 'any', 'amount': 1}, {'role': choice(roles), 'amount': randint(1, 2)}],
             'score': random(),

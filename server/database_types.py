@@ -3,7 +3,7 @@ from typing import List, TypedDict
 
 
 class Person(TypedDict):
-    id: int
+    id: str
     name: str
     roles: List[str]
     score: float  # Lower means life is easier :)
@@ -21,7 +21,7 @@ class Shift(TypedDict):
 
 
 class Task(TypedDict):
-    id: int
+    id: str
     name: str
     required_people_per_shift: List[RoleAmount]
     score: float  # Lower means task is easier
@@ -30,18 +30,18 @@ class Task(TypedDict):
 
 
 class Team(TypedDict):
-    id: int
+    id: str
     name: str
 
 
 class Time_table(TypedDict):
-    id: int
+    id: str
     date: float
     person_id: int
     task_id: int
 
 
 class Time_table_nosql(TypedDict):
-    date: int
+    date: str
     person: Person
     task: Task
