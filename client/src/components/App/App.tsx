@@ -1,5 +1,5 @@
 import Avatar from "boring-avatars";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchPOST } from "../../api";
 import { PeopleContext } from "../../context/PeopleContext";
@@ -66,18 +66,23 @@ function App() {
 	const [tasks, setTasks] = useState<Task[]>();
 	const peopleContext = useContext(PeopleContext);
 	const tasksContext = useContext(TasksContext);
+	const fetched = useRef(false);
 
 	useEffect(() => {
 		if (cacheUpToDate()) {
 			return;
 		}
-
+		if (fetched.current) {
+			fetched.current = false;
+			return;
+		}
 		const tasksPips = {
 			people: peopleContext.people,
 			tasks: tasksContext.tasks,
 			start_time: tasksContext.start_time.getTime(),
 			end_time: tasksContext.end_time.getTime(),
 		};
+		fetched.current = true;
 		fetchPOST("generate", tasksPips)
 			.then((res) => {
 				localStorage.setItem(
