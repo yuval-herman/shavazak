@@ -29,10 +29,10 @@ export function TasksProvider(props: React.PropsWithChildren) {
 		setTasks({ ...tasks, tasks: getTasks() });
 	};
 	tasks.setStartTime = (date: Date) => {
-		setTasks({ ...tasks, start_time: date });
+		setTasks((tasks) => ({ ...tasks, start_time: date }));
 	};
 	tasks.setEndTime = (date: Date) => {
-		setTasks({ ...tasks, end_time: date });
+		setTasks((tasks) => ({ ...tasks, end_time: date }));
 	};
 	return (
 		<TasksContext.Provider value={tasks}>
