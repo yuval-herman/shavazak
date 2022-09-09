@@ -24,8 +24,14 @@ function TasksView() {
 			return time;
 		}
 		if (!start_time.current || !end_time.current) return;
-		tasks.setStartTime(getDate(start_time.current.value));
-		tasks.setEndTime(getDate(end_time.current.value));
+		const start = getDate(start_time.current.value);
+		const end = getDate(end_time.current.value);
+		isNaN(start.getTime())
+			? alert("start time is not in valid format!")
+			: tasks.setStartTime(start);
+		isNaN(end.getTime())
+			? alert("end time is not in valid format!")
+			: tasks.setEndTime(end);
 	}
 
 	return (
