@@ -104,7 +104,7 @@ def generate_random_table(tasks: List[Task], people: List[Person], start_time: d
             needed_pips = sum([i["amount"]
                               for i in task["required_people_per_shift"]])
             while needed_pips:
-                if time+timedelta(minutes=task["shift_duration"]) >= end_time and not remaining_people:
+                if not remaining_people:
                     return creator.Individual(table)
                 rand_pip = remaining_people.pop(
                     randrange(len(remaining_people)))
