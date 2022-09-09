@@ -64,6 +64,14 @@ export function getPeople(): Person[] {
 	return JSON.parse(localStorage.getItem("people") ?? "[]");
 }
 
+export function setPeople(people: Person[]) {
+	localStorage.setItem("people", JSON.stringify(people));
+}
+
+export function setTasks(tasks: Task[]) {
+	localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
 // Retrieves all roles saved in people and tasks
 export function getRolesFromData(people?: Person[], tasks?: Task[]) {
 	if (!people) people = [];
