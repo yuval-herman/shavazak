@@ -43,6 +43,15 @@ def has_duplicates(individual: individual_type) -> bool:
 
 def choose_random_pip(individual: individual_type) -> Tuple[Shift, int]:
     """Return random task index and shift index."""
+    hasPeople = False
+    for task in individual:
+        for shift in task['shifts']:
+            if shift['people']:
+                hasPeople = True
+                break
+    if not hasPeople:
+        raise ValueError("no people in table")
+
     while True:  # find a non empty task and shift
         task_index = randrange(len(individual))
         if not individual[task_index]["shifts"]:
@@ -94,7 +103,7 @@ def generate_random_table(tasks: List[Task], people: List[Person], start_time: d
             needed_pips = sum([i["amount"]
                               for i in task["required_people_per_shift"]])
             while needed_pips:
-                if time+timedelta(minutes=task["shift_duration"]) >= end_time or not remaining_people:
+                if time+timedelta(minutes=task["shift_duration"]) >= end_time and not remaining_people:
                     return creator.Individual(table)
                 rand_pip = remaining_people.pop(
                     randrange(len(remaining_people)))
@@ -181,7 +190,7 @@ def mutate(individual: individual_type, swap_amount: int):
 
 def generate_time_table(tasks: List[Task], people: List[Person], start_time: datetime, end_time: datetime) -> individual_type:
     """Calculate an optimized table from tasks and people."""
-    seed(64)  # TODO: remove before deployment!
+    # seed(64)
     toolbox.register("evaluate", evaluate, tasks=tasks)
     toolbox.register("mate", mate, swap_amount=len(people)//2)
     toolbox.register("mutate", mutate, swap_amount=len(people)//10)
