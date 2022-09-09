@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { deleteTask, getTasks, saveTask } from "../api";
+import {
+	deleteTask,
+	getTasks,
+	saveTask,
+	setTasks as setLocalTasks,
+} from "../api";
 import { Task } from "../types";
 
 const TaskContextInitial = {
@@ -14,6 +19,7 @@ const TaskContextInitial = {
 	delete: (id: string) => {},
 	setStartTime: (date: Date) => {},
 	setEndTime: (date: Date) => {},
+	set: (tasks: Task[]) => {},
 };
 
 export const TasksContext = React.createContext(TaskContextInitial);
@@ -33,6 +39,11 @@ export function TasksProvider(props: React.PropsWithChildren) {
 	};
 	tasks.setEndTime = (date: Date) => {
 		setTasks((tasks) => ({ ...tasks, end_time: date }));
+	};
+
+	tasks.set = (newTasks: Task[]) => {
+		setLocalTasks(newTasks);
+		setTasks((tasks) => ({ ...tasks, tasks: newTasks }));
 	};
 	return (
 		<TasksContext.Provider value={tasks}>
