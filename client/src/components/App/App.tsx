@@ -1,3 +1,4 @@
+import Avatar from "boring-avatars";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchPOST } from "../../api";
@@ -16,7 +17,11 @@ function ShiftDiv(props: { shift: Shift }) {
 		<div className={style.shift}>
 			{props.shift.people.map((person) => (
 				<div key={person.id} className={style.person}>
-					<img alt="avatar" src={person.avatar} />
+					<Avatar
+						name={person.id}
+						variant="beam"
+						colors={["#cfb590", "#9e9a41", "#758918", "#564334", "#49281f"]}
+					/>
 					<span key={person.id}>{person.name}</span>
 				</div>
 			))}
