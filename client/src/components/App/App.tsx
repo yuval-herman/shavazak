@@ -12,9 +12,9 @@ interface Props {
 	tasks: Task[];
 }
 
-function ShiftDiv(props: { shift: Shift }) {
+function ShiftDiv(props: { shift: Shift; height: string | number }) {
 	return (
-		<div className={style.shift}>
+		<div className={style.shift} style={{ height: props.height }}>
 			{props.shift.people.map((person) => (
 				<div key={person.id} className={style.person}>
 					<Avatar
@@ -37,7 +37,11 @@ function TaskDiv(props: { task: Task; width: number }) {
 			style={{ width: props.width }}
 		>
 			{props.task.shifts.map((shift, i) => (
-				<ShiftDiv key={i} shift={shift} />
+				<ShiftDiv
+					key={i}
+					shift={shift}
+					height={`${props.task.shift_duration / 4}rem`}
+				/>
 			))}
 		</div>
 	);
