@@ -1,18 +1,17 @@
 from datetime import datetime
 from json import JSONDecoder
 from typing import List
-from flask import Flask, request, abort
+from flask import Flask, request, abort, Blueprint
 from flask_cors import CORS
 import ga
 from fake_data import fake_person, fake_task
 from database_types import Task, Time_table_nosql
 
-app = Flask(__name__)
-CORS(app)
+apiBP = Blueprint("api", __name__, url_prefix="/api")
 
 
-@app.route("/")
-@app.route('/randomtable')
+@apiBP.route("/")
+@apiBP.route('/randomtable')
 def random_table():
     """Return a random table made with fake data."""
     NUM_OF_TASKS = 3
@@ -23,7 +22,7 @@ def random_table():
         fake_person() for i in range(NUM_OF_PIPS)], START_TIME, END_TIME)
 
 
-@app.route('/randomdata')
+@apiBP.route('/randomdata')
 def random_data():
     """Return random tasks and people made with fake data."""
     NUM_OF_TASKS = 3
@@ -32,7 +31,7 @@ def random_data():
         fake_person() for i in range(NUM_OF_PIPS)]}
 
 
-@app.route("/generate", methods=['POST'])
+@apiBP.route("/generate", methods=['POST'])
 def generate_table():
     """Get JSON string from client and return optimized table."""
     if (not request.is_json):
@@ -46,7 +45,7 @@ def generate_table():
         abort(400, 'json in incorrect format')
 
 
-@app.route('/test')
+@apiBP.route('/test')
 def test_table():
     """Return table constructed from our hand-made test data."""
     with open('../../test-data.json') as file:
@@ -59,3 +58,8 @@ def test_table():
         datetime.fromtimestamp(request.json['end_time']/1000))
 
     return time_table
+
+
+app = Flask(__name__)
+CORS(app)
+app.register_blueprint(apiBP)

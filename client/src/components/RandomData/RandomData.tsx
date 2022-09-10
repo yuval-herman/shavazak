@@ -9,7 +9,7 @@ function RandomData() {
 	const peopleContext = useContext(PeopleContext);
 	const navigate = useNavigate();
 	useEffect(() => {
-		fetchJSON("/randomdata").then((res) => {
+		fetchJSON("/api/randomdata").then((res) => {
 			tasksContext.set(res.tasks);
 			peopleContext.set(res.people);
 			navigate(-1);

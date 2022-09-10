@@ -83,7 +83,7 @@ function App() {
 			end_time: tasksContext.end_time.getTime(),
 		};
 		fetched.current = true;
-		fetchPOST("generate", tasksPips)
+		fetchPOST("/api/generate", tasksPips)
 			.then((res) => {
 				localStorage.setItem(
 					"cachedTable",
