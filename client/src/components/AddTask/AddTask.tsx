@@ -48,7 +48,9 @@ export function AddTask() {
 		setSnackbar("Task added");
 	}
 
-	function handleChange(event: ChangeEvent<HTMLInputElement>) {
+	function handleChange(
+		event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+	) {
 		const inputName = event.target.getAttribute("name")!;
 		let value: string | number = event.target.value;
 
@@ -118,12 +120,17 @@ export function AddTask() {
 			</label>
 			<label>
 				shift duration{" "}
-				<input
+				<select
 					name="shift_duration"
 					value={inputs.shift_duration}
 					onChange={handleChange}
-					type={"number"}
-				/>
+				>
+					{[...Array(1440).keys()]
+						.filter((value) => 1440 % value === 0)
+						.map((value) => (
+							<option key={value}>{value}</option>
+						))}
+				</select>
 			</label>
 			<input type="submit" value="add" />
 			<Snackbar value={snackbar} />
