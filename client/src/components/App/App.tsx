@@ -110,7 +110,8 @@ function App() {
 				) : (
 					<div>
 						No tasks or people added, consider{" "}
-						<Link to={"/tablemanager/addperson"}>adding some</Link>
+						<Link to={"/tablemanager/addperson"}>adding some</Link> or{" "}
+						<Link to={"/randomdata"}>using random data</Link>
 					</div>
 				)}
 			</div>
