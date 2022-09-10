@@ -8,6 +8,7 @@ fake = Faker(use_weighting=False)
 roles = ['Driver', 'Medic', 'Officer', 'Commander']
 tasks = ['Guard', 'Kitchen', 'Patrol',
          'Operation', 'PillBox', 'Off Duty', 'Rasar Services', 'Hamal']
+possibleShiftDurations = [i for i in range(1, 1440) if 1440 % i == 0]
 
 
 def fake_person() -> Person:
@@ -29,7 +30,7 @@ def fake_task() -> Task:
             'name': choice(tasks),
             'required_people_per_shift': [{'role': 'any', 'amount': 1}, {'role': choice(roles), 'amount': randint(1, 2)}],
             'score': random(),
-            'shift_duration': randrange(30, 601, 5),
+            'shift_duration': choice(possibleShiftDurations),
             'shifts': []}
 
 
