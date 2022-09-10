@@ -9,10 +9,14 @@ import { Task } from "../types";
 
 const TaskContextInitial = {
 	tasks: getTasks(),
-	start_time: new Date(),
+	start_time: (() => {
+		const time = new Date();
+		time.setHours(0, 0, 0, 0);
+		return time;
+	})(),
 	end_time: (() => {
 		const time = new Date();
-		time.setHours(time.getHours() + 5);
+		time.setHours(24, 0, 0, 0);
 		return time;
 	})(),
 	add: saveTask,
