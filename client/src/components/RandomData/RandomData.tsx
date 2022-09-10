@@ -16,7 +16,7 @@ function RandomData() {
 		});
 	});
 
-	return <></>;
+	return <>fetching random data... this might take a few seconds</>;
 }
 
 export default RandomData;
