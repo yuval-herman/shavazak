@@ -1,15 +1,16 @@
+@use "../../style/base";
 .main {
 	visibility: hidden;
-	min-width: 5rem; /* Set a default minimum width */
-	background-color: #333; /* Black background color */
-	color: #fff; /* White text color */
-	text-align: center; /* Centered text */
-	border-radius: 1rem; /* Rounded borders */
-	padding: 1rem; /* Padding */
-	position: fixed; /* Sit on top of the screen */
-	bottom: 2rem; /* 30px from the bottom */
-	z-index: 1; /* Add a z-index if needed */
-	left: 50%; /* Center the snackbar */
+	min-width: 5rem;
+	background-color: base.$strong;
+	color: white;
+	text-align: center;
+	border-radius: 1rem;
+	padding: 1rem;
+	position: fixed;
+	bottom: 2rem;
+	z-index: 1;
+	left: 50%;
 	translate: -50%;
 }
 

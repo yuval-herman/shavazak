@@ -1,0 +1,41 @@
+@use "../../style/base";
+.main {
+	margin: auto;
+	min-width: 30%;
+	details {
+		border: 1px solid #aaa;
+		border-radius: 0.3rem;
+		padding: 0.5em 0.5em 0;
+		summary {
+			font-weight: bold;
+			margin: -0.5em -0.5em 0;
+			padding: 0.5em;
+		}
+		&[open] {
+			padding: 0.5em;
+			summary {
+				border-bottom: 1px solid #aaa;
+				margin-bottom: 0.5em;
+			}
+		}
+		ul {
+			padding: 0 2rem;
+		}
+	}
+	.buttons {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+		gap: 1rem;
+		button {
+			@extend %button;
+			padding: 0.5rem;
+			max-width: 10rem;
+		}
+	}
+}
+.row {
+	border: solid #aaa 1px;
+	border-radius: 0.3rem;
+	padding: 0.5rem;
+}

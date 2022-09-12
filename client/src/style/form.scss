@@ -1,9 +1,13 @@
 @use "base";
 .main {
+	@extend %box;
+	border: solid #ddd 1px;
+	border-radius: 0.5rem;
+	padding: 1rem;
+	max-width: 20rem;
 	text-transform: capitalize;
 	margin: auto;
 	margin-top: 1rem;
-	width: 70%;
 	text-transform: capitalize;
 	font-size: medium;
 	label {
@@ -17,5 +21,9 @@
 	}
 	input[type="submit"] {
 		@extend %button;
+	}
+	select {
+		@extend %input;
+		background-color: white;
 	}
 }

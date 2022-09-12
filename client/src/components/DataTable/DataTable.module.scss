@@ -14,19 +14,19 @@
 		padding-top: 12px;
 		padding-bottom: 12px;
 		text-align: left;
-		background-color: #08778a;
+		background-color: base.$strong;
 		color: white;
 	}
 	td,
 	th {
 		text-align: center;
-		border: 1px solid #ddd;
+		border: 1px solid base.$cream;
 	}
 	tr:nth-child(even) {
-		background-color: #f2f2f2;
+		background-color: darken($color: base.$cream, $amount: 10);
 	}
 	tr:hover {
-		background-color: #ddd;
+		background-color: base.$cream;
 	}
 	button {
 		@extend %button;

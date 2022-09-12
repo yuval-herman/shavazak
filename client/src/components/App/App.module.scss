@@ -1,5 +1,4 @@
 @use "../../style/base";
-
 .main {
 	margin-top: 1rem;
 	.headers {
@@ -13,19 +12,19 @@
 		.task {
 			flex-grow: 1;
 			.shift {
+				background-color: base.$light;
 				@extend %box;
 				display: flex;
 				flex-direction: row;
 				flex-wrap: wrap;
 				text-align: center;
+				overflow: hidden;
 				.person {
 					@extend %box;
+					background-color: white;
 					display: flex;
 					flex-direction: row;
 					align-items: center;
-					img {
-						max-height: 70px;
-					}
 				}
 			}
 		}

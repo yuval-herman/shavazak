@@ -51,7 +51,7 @@ function MultiInput(props: {
 			<button onClick={addInput}>+</button>
 			<datalist id={listID}>
 				{props.options?.map((option) => (
-					<option value={option} />
+					<option key={option} value={option} />
 				))}
 			</datalist>
 		</span>

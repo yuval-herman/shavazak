@@ -21,7 +21,6 @@ export function AddPerson() {
 		roles: [""],
 		score: 0,
 		status: "",
-		avatar: "",
 	};
 	const [searchParamas] = useSearchParams();
 	const peopleContext = useContext(PeopleContext);
@@ -69,10 +68,6 @@ export function AddPerson() {
 	return (
 		<form onSubmit={submitHandler} className={style.main}>
 			<label>
-				id{" "}
-				<input onChange={handleChange} name="id" value={inputs.id} disabled />
-			</label>
-			<label>
 				name <input value={inputs.name} onChange={handleChange} name="name" />
 			</label>
 			<label>
@@ -96,10 +91,6 @@ export function AddPerson() {
 			<label>
 				status{" "}
 				<input onChange={handleChange} value={inputs.status} name="status" />
-			</label>
-			<label>
-				avatar{" "}
-				<input onChange={handleChange} value={inputs.avatar} name="avatar" />
 			</label>
 			<input type="submit" value="add" />
 			<Snackbar value={snackbar} />
