@@ -4,6 +4,8 @@
 ## Shavzak.io is a progressive web app built with react and python
 It can be used to manage a large platoon's tasks and people. It uses a genetic algorithm to greatly reduce the effort needed from officers making the creation of time tables as easy as the press of a button.
 
+
+You can try a demo of the site at [shavzak.com](http://shavzak.com)
 ## Local installation
 
 ```bash
