@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import style from "./MainNavbar.module.scss";
-import helmet from "./helmet.jpg";
+import helmet from "../../media/icons/helmet.svg";
 
 export function MainNavbar() {
 	return (
