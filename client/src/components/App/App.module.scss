@@ -13,13 +13,16 @@
 		.task {
 			flex-grow: 1;
 			.shift {
+				background-color: #b49a67;
 				@extend %box;
 				display: flex;
 				flex-direction: row;
 				flex-wrap: wrap;
 				text-align: center;
+				overflow: hidden;
 				.person {
 					@extend %box;
+					background-color: white;
 					display: flex;
 					flex-direction: row;
 					align-items: center;

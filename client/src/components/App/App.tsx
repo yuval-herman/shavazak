@@ -102,6 +102,7 @@ function App() {
 	return (
 		<>
 			<MainNavbar />
+			<div className={style.timeline}></div>
 			<div className={style.main}>
 				{tasks ? (
 					<TasksTable tasks={tasks} />
