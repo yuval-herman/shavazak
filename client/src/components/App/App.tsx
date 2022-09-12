@@ -52,7 +52,7 @@ function TasksTable(props: Props) {
 	const tasks = props.tasks;
 
 	return (
-		<div>
+		<>
 			<header className={style.headers}>
 				{tasks.map((task) => (
 					<div key={task.id}>{task.name}</div>
@@ -63,7 +63,7 @@ function TasksTable(props: Props) {
 					<TaskDiv key={task.id} task={task} width={100 / tasks.length} />
 				))}
 			</main>
-		</div>
+		</>
 	);
 }
 
