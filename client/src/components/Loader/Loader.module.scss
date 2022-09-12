@@ -1,0 +1,48 @@
+@use "../../style/base";
+
+@mixin fill($width, $height) {
+	width: $width;
+	height: $height;
+}
+
+.ball {
+	border-radius: 50%;
+}
+
+.main {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	translate: -50% -50%;
+	margin-top: 5rem;
+	.one {
+		@include fill(1.5rem, 1.5rem);
+		@extend .ball;
+		background-color: base.$cream;
+		animation: rotate 1.5s linear infinite;
+	}
+	.two {
+		@include fill(1.5rem, 1.5rem);
+		@extend .ball;
+		background-color: base.$light;
+		animation: rotate 1.5s linear infinite;
+		animation-delay: 0.75s;
+	}
+}
+@keyframes rotate {
+	0% {
+		translate: -1.5rem 1.5rem;
+	}
+	25% {
+		translate: 1.5rem 1.5rem;
+	}
+	50% {
+		translate: 1.5rem -1.5rem;
+	}
+	75% {
+		translate: -1.5rem -1.5rem;
+	}
+	100% {
+		translate: -1.5rem 1.5rem;
+	}
+}

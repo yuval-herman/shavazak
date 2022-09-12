@@ -5,6 +5,7 @@ import { fetchPOST } from "../../api";
 import { PeopleContext } from "../../context/PeopleContext";
 import { TasksContext } from "../../context/TasksContext";
 import { Shift, Task } from "../../types";
+import Loader from "../Loader/Loader";
 import { MainNavbar } from "../MainNavbar/MainNavbar";
 import style from "./App.module.scss";
 
@@ -111,7 +112,7 @@ function App() {
 						tasks={JSON.parse(localStorage.getItem("cachedTable")!).table}
 					/>
 				) : peopleContext.people.length && tasksContext.tasks.length ? (
-					"Loading tasks..."
+					<Loader />
 				) : (
 					<div>
 						No tasks or people added, consider{" "}
