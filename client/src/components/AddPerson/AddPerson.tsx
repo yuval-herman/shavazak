@@ -69,10 +69,6 @@ export function AddPerson() {
 	return (
 		<form onSubmit={submitHandler} className={style.main}>
 			<label>
-				id{" "}
-				<input onChange={handleChange} name="id" value={inputs.id} disabled />
-			</label>
-			<label>
 				name <input value={inputs.name} onChange={handleChange} name="name" />
 			</label>
 			<label>

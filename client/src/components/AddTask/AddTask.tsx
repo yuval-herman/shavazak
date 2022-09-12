@@ -90,10 +90,6 @@ export function AddTask() {
 	return (
 		<form onSubmit={submitHandler} className={style.main}>
 			<label>
-				id{" "}
-				<input name="id" value={inputs.id} onChange={handleChange} disabled />
-			</label>
-			<label>
 				name <input name="name" value={inputs.name} onChange={handleChange} />
 			</label>
 			<label>
