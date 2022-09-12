@@ -40,7 +40,7 @@ function TaskDiv(props: { task: Task; width: number }) {
 				<ShiftDiv
 					key={i}
 					shift={shift}
-					height={`${props.task.shift_duration / 4}rem`}
+					height={`${props.task.shift_duration / 5}rem`}
 				/>
 			))}
 		</div>
