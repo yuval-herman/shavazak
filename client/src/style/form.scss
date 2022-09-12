@@ -1,6 +1,9 @@
 @use "base";
 .main {
-	// max-width: 70%;
+	border: solid #ddd 1px;
+	border-radius: 0.5rem;
+	padding: 1rem;
+	max-width: 20rem;
 	text-transform: capitalize;
 	margin: auto;
 	margin-top: 1rem;
