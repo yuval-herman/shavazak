@@ -11,13 +11,14 @@
 	width: 100%;
 	padding: 0.7rem;
 	justify-content: space-around;
-	border-bottom: solid #ddd 1px;
+	border-bottom: solid #aaa 1px;
 	gap: 1rem;
 	a {
 		@extend %button;
 		padding: 0.7rem;
 		&.activeLink {
 			filter: brightness(140%);
+			translate: 0 -0.2rem;
 		}
 	}
 }

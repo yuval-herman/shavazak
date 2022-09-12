@@ -1,5 +1,4 @@
 @use "../../style/base";
-
 .main {
 	margin-top: 1rem;
 	.headers {
@@ -13,7 +12,7 @@
 		.task {
 			flex-grow: 1;
 			.shift {
-				background-color: #b49a67;
+				background-color: base.$light;
 				@extend %box;
 				display: flex;
 				flex-direction: row;
