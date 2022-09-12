@@ -103,23 +103,36 @@ function App() {
 	return (
 		<>
 			<MainNavbar />
-			<div className={style.timeline}></div>
-			<div className={style.main}>
-				{tasks ? (
-					<TasksTable tasks={tasks} />
-				) : cacheUpToDate() ? (
-					<TasksTable
-						tasks={JSON.parse(localStorage.getItem("cachedTable")!).table}
-					/>
-				) : peopleContext.people.length && tasksContext.tasks.length ? (
-					<Loader />
-				) : (
-					<div>
-						No tasks or people added, consider{" "}
-						<Link to={"/tablemanager/addperson"}>adding some</Link> or{" "}
-						<Link to={"/randomdata"}>using random data</Link>
-					</div>
-				)}
+			<div className={style.container}>
+				<div className={style.timeline}>
+					{[...Array(96).keys()].map((i) => (
+						<div className={style.time}>
+							{(() => {
+								const time = new Date(0, 0, 0, 0, 0, 0, 0);
+								time.setMinutes(i * 15);
+								return time.toTimeString().split(":").slice(0, 2).join(":");
+							})()}
+							<hr />
+						</div>
+					))}
+				</div>
+				<div className={style.main}>
+					{tasks ? (
+						<TasksTable tasks={tasks} />
+					) : cacheUpToDate() ? (
+						<TasksTable
+							tasks={JSON.parse(localStorage.getItem("cachedTable")!).table}
+						/>
+					) : peopleContext.people.length && tasksContext.tasks.length ? (
+						<Loader />
+					) : (
+						<div>
+							No tasks or people added, consider{" "}
+							<Link to={"/tablemanager/addperson"}>adding some</Link> or{" "}
+							<Link to={"/randomdata"}>using random data</Link>
+						</div>
+					)}
+				</div>
 			</div>
 		</>
 	);

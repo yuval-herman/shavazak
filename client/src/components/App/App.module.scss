@@ -55,3 +55,27 @@
 		}
 	}
 }
+.container {
+	display: flex;
+	flex-direction: row;
+	.main {
+		flex-grow: 1;
+	}
+}
+.timeline {
+	margin-top: 3rem;
+	margin-left: 1rem;
+	width: 5rem;
+	height: 100vh;
+	.time {
+		height: 3rem;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		hr {
+			flex-grow: 1;
+			border: none;
+			border-bottom: solid #aaa 1px;
+		}
+	}
+}
