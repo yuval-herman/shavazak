@@ -1,6 +1,7 @@
 @use "base";
 .main {
 	@extend %box;
+	background-color: base.$light;
 	border: solid #ddd 1px;
 	border-radius: 0.5rem;
 	padding: 1rem;
