@@ -10,7 +10,7 @@ fake = Faker(use_weighting=False)
 roles = ['Driver', 'Medic', 'Officer', 'Commander']
 tasks = ['Guard', 'Kitchen', 'Patrol',
          'Operation', 'PillBox', 'Off Duty', 'Rasar Services', 'Hamal']
-possibleShiftDurations = [i for i in range(1, 1440) if 1440 % i == 0]
+possibleShiftDurations = [i for i in range(15, 1440) if 1440 % i == 0]
 
 
 def fake_person() -> Person:

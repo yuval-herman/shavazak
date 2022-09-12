@@ -122,7 +122,7 @@ export function AddTask() {
 					onChange={handleChange}
 				>
 					{[...Array(1440).keys()]
-						.filter((value) => 1440 % value === 0)
+						.filter((value) => 1440 % value === 0 && value >= 5)
 						.map((value) => (
 							<option key={value}>{value}</option>
 						))}
