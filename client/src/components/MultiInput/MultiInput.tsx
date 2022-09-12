@@ -47,8 +47,11 @@ function MultiInput(props: {
 
 	return (
 		<span className={style.main}>
-			<span>{inputs}</span>
-			<button onClick={addInput}>+</button>
+			<span>
+				{inputs}
+				<button onClick={addInput}>+</button>
+			</span>
+
 			<datalist id={listID}>
 				{props.options?.map((option) => (
 					<option key={option} value={option} />

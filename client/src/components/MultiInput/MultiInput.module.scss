@@ -15,9 +15,5 @@
 	}
 	button {
 		@extend %button;
-		margin: unset;
-		width: unset;
-		flex-grow: 0;
-		height: 100%;
 	}
 }
