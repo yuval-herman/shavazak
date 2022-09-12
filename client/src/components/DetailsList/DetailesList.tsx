@@ -23,7 +23,7 @@ function DetailsList(props: Props) {
 		return <div>no data...</div>;
 	}
 	return (
-		<div>
+		<div className={style.main}>
 			{props.data.map((item, i) => (
 				<details>
 					<summary>{props.names[i]}</summary>
@@ -36,12 +36,12 @@ function DetailsList(props: Props) {
 						))}
 					</ul>
 					{"delete" in props ? (
-						<td>
+						<div className={style.buttons}>
 							<button onClick={() => props.delete(item.id)}>delete</button>
 							<button onClick={() => navigate("../" + props.edit(item.id))}>
 								edit
 							</button>
-						</td>
+						</div>
 					) : undefined}
 				</details>
 			))}
@@ -58,12 +58,10 @@ function DetailsList(props: Props) {
 		if (typeof obj !== "object") {
 			return <>{obj}</>;
 		} else if (Array.isArray(obj)) {
-			console.log(obj);
-
 			return (
 				<>
 					{obj.map((pair) => (
-						<div className={style.row}>{renderPair(pair)}</div>
+						<div className={style.row}>{normalizeObj(pair)}</div>
 					))}
 				</>
 			);
