@@ -16,6 +16,9 @@
 		padding-right: 1rem;
 		border-right: solid gray 1px;
 		color: white;
+		&.activeLink {
+			text-shadow: 0 0 5px black;
+		}
 	}
 	p {
 		margin: 0;
