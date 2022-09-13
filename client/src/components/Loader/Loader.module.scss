@@ -18,7 +18,7 @@
 	.one {
 		@include fill(1.5rem, 1.5rem);
 		@extend .ball;
-		background-color: base.$cream;
+		background-color: base.$strong;
 		animation: rotate 1.5s linear infinite;
 	}
 	.two {
@@ -26,7 +26,7 @@
 		@extend .ball;
 		background-color: base.$light;
 		animation: rotate 1.5s linear infinite;
-		animation-delay: 0.75s;
+		animation-delay: -0.75s;
 	}
 }
 @keyframes rotate {
