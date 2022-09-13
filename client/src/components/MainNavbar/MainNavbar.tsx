@@ -5,7 +5,6 @@ import helmet from "../../media/icons/helmet.svg";
 export function MainNavbar() {
 	return (
 		<nav className={style.navbar}>
-			<img src={helmet} />
 			<span>
 				<NavLink
 					className={({ isActive }) => (isActive ? style.activeLink : "")}
@@ -30,7 +29,7 @@ export function MainNavbar() {
 					get random data
 				</NavLink>
 			</span>
-			<p>Shavzak</p>
+			<img src="https://user-images.githubusercontent.com/47389924/188946200-d7b4465e-dfb2-44b2-832c-081cd09adae4.png"></img>
 		</nav>
 	);
 }
