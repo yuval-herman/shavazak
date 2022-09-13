@@ -50,7 +50,7 @@ export function AddPerson() {
 			prevRoles[index] = event.target.value;
 			setInputs({ ...inputs, roles: prevRoles });
 		} else if (inputName === "score") {
-			setInputs({ ...inputs, score: parseInt(event.target.value) });
+			setInputs({ ...inputs, score: parseInt(event.target.value) / 10 });
 		} else {
 			setInputs({ ...inputs, [inputName]: event.target.value });
 		}
@@ -83,7 +83,7 @@ export function AddPerson() {
 				score{" "}
 				<input
 					onChange={handleChange}
-					value={inputs.score}
+					value={Math.floor(inputs.score * 10)}
 					name="score"
 					type={"number"}
 				/>

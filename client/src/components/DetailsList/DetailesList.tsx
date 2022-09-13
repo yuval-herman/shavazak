@@ -49,13 +49,10 @@ function DetailsList(props: Props) {
 	);
 
 	function normalizeObj(obj: string | number | object): JSX.Element {
-		const renderPair = (pair: object) =>
-			Object.entries(pair).map(([key, value]) => (
-				<p>
-					{key}: {value}
-				</p>
-			));
 		if (typeof obj !== "object") {
+			if (typeof obj === "number") {
+				return <>{obj.toPrecision(2)}</>;
+			}
 			return <>{obj}</>;
 		} else if (Array.isArray(obj)) {
 			return (
@@ -66,7 +63,15 @@ function DetailsList(props: Props) {
 				</>
 			);
 		}
-		return <>{renderPair(obj)}</>;
+		return (
+			<>
+				{Object.entries(obj).map(([key, value]) => (
+					<p>
+						{key}: {value}
+					</p>
+				))}
+			</>
+		);
 	}
 }
 
