@@ -17,12 +17,12 @@
 			display: flex;
 			justify-content: space-around;
 			font-size: large;
-			text-decoration: underline;
+			margin-bottom: 0.3rem;
 			div {
+				@extend %box;
 				background-color: base.$light;
 				padding: 0.8rem;
 				min-width: 20%;
-				border-radius: 0.3rem;
 				text-align: center;
 			}
 		}
@@ -57,7 +57,7 @@
 		}
 	}
 	.timeline {
-		margin-top: 3rem;
+		margin-top: 3.5rem;
 		margin-left: 1rem;
 		width: 5rem;
 		height: 100vh;
