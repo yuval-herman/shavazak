@@ -13,7 +13,7 @@ function RandomData() {
 		fetchJSON("/api/randomdata").then((res) => {
 			tasksContext.set(res.tasks);
 			peopleContext.set(res.people);
-			navigate(-1);
+			navigate("/");
 		});
 	});
 
