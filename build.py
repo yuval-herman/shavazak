@@ -9,6 +9,7 @@ class Actions(Enum):
     build = auto()
     serve = auto()
     deploy = auto()
+    bDeploy = auto()
 
 
 parser = argparse.ArgumentParser(description='Build project')
@@ -53,4 +54,8 @@ elif args.action == Actions.serve.name:
     serve()
 elif args.action == Actions.deploy.name:
     print("deploying")
+    deploy()
+elif args.action == Actions.bDeploy.name:
+    print("building then deploying")
+    build()
     deploy()
