@@ -18,11 +18,6 @@ function ShiftDiv(props: { shift: Shift; height: string | number }) {
 		<div className={style.shift} style={{ height: props.height }}>
 			{props.shift.people.map((person) => (
 				<div key={person.id} className={style.person}>
-					{/* <Avatar
-						name={person.id}
-						variant="beam"
-						colors={["#cfb590", "#9e9a41", "#758918", "#564334", "#49281f"]}
-					/> */}
 					<span key={person.id}>{person.name}</span>
 				</div>
 			))}
