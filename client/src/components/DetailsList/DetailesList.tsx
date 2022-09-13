@@ -30,7 +30,7 @@ function DetailsList(props: Props) {
 					<ul>
 						{Object.entries(item).map((dataField, i) => (
 							<li key={i}>
-								<h5>{dataField[0]}</h5>
+								<h5 className={style.field_title}>{dataField[0]}</h5>
 								{normalizeObj(dataField[1])}
 							</li>
 						))}

@@ -29,6 +29,11 @@
 		ul {
 			padding: 0 2rem;
 			margin: 0;
+			list-style: none;
+			.field_title {
+				border-bottom: solid #aaa 1px;
+				text-transform: capitalize;
+			}
 		}
 	}
 	.buttons {
@@ -47,4 +52,5 @@
 	border: solid #aaa 1px;
 	border-radius: 0.3rem;
 	padding: 0.5rem;
+	text-transform: capitalize;
 }
