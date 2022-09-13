@@ -6,24 +6,30 @@ export function MainNavbar() {
 	return (
 		<nav className={style.navbar}>
 			<img src={helmet} />
-			<NavLink
-				className={({ isActive }) => (isActive ? style.activeLink : "")}
-				to="/"
-			>
-				table view
-			</NavLink>
-			<NavLink
-				className={({ isActive }) => (isActive ? style.activeLink : "")}
-				to="/tablemanager"
-			>
-				manager view
-			</NavLink>
-			<NavLink
-				className={({ isActive }) => (isActive ? style.activeLink : "")}
-				to="/randomdata"
-			>
-				get random data
-			</NavLink>
+			<span>
+				<NavLink
+					className={({ isActive }) => (isActive ? style.activeLink : "")}
+					to="/"
+				>
+					table view
+				</NavLink>
+			</span>
+			<span>
+				<NavLink
+					className={({ isActive }) => (isActive ? style.activeLink : "")}
+					to="/tablemanager"
+				>
+					manager view
+				</NavLink>
+			</span>
+			<span>
+				<NavLink
+					className={({ isActive }) => (isActive ? style.activeLink : "")}
+					to="/randomdata"
+				>
+					get random data
+				</NavLink>
+			</span>
 			<p>Shavzak</p>
 		</nav>
 	);
