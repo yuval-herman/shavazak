@@ -1,6 +1,7 @@
 @use "../../style/base";
 .container {
 	.main {
+		position: relative;
 		margin-left: 4rem;
 		margin-top: 1rem;
 		overflow-x: scroll;
@@ -20,9 +21,13 @@
 			margin-bottom: 0.3rem;
 			div {
 				@extend %box;
+				display: flex;
+				justify-content: center;
+				align-items: center;
 				border: none;
 				background-color: base.$light;
-				padding: 0.8rem;
+				height: 2.8rem;
+				padding: 0 0.8rem;
 				min-width: 20%;
 				text-align: center;
 			}
@@ -34,7 +39,10 @@
 				.shift {
 					@extend %box;
 					background-color: base.$light;
-					margin: 0.2rem;
+					margin: 0rem;
+					&:not(:first-child) {
+						margin-top: 0.5rem;
+					}
 					display: flex;
 					flex-direction: column;
 					text-align: center;
@@ -61,19 +69,23 @@
 		}
 	}
 	.timeline {
-		margin-top: 4rem;
+		position: absolute;
+		translate: 0 calc(-1.5rem - 2px);
 		margin-left: 1rem;
 		width: 5rem;
 		height: 100vh;
 		width: 100vw;
-		position: absolute;
-		top: 3.3rem;
 		z-index: -1;
 		.time {
-			height: 3.1rem;
 			display: flex;
 			flex-direction: row;
 			align-items: center;
+			margin: 0;
+			padding: 0;
+			height: calc(3rem + 2px);
+			&:not(:first-child) {
+				margin-top: 0.5rem;
+			}
 			hr {
 				flex-grow: 1;
 				border: none;

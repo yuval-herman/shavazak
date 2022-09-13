@@ -15,7 +15,11 @@ interface Props {
 
 function ShiftDiv(props: { shift: Shift; height: string | number }) {
 	return (
-		<div className={style.shift} style={{ height: props.height }}>
+		<div
+			id="shift-div"
+			className={style.shift}
+			style={{ height: props.height }}
+		>
 			{props.shift.people.map((person) => (
 				<div key={person.id} className={style.person}>
 					<span key={person.id}>{person.name}</span>
@@ -64,6 +68,7 @@ function TasksTable(props: Props) {
 
 function App() {
 	const [tasks, setTasks] = useState<Task[]>();
+	const [timelineOffset, setTimelineOffset] = useState<number>(0);
 	const peopleContext = useContext(PeopleContext);
 	const tasksContext = useContext(TasksContext);
 	const fetched = useRef(false);
@@ -95,11 +100,26 @@ function App() {
 		// eslint-disable-next-line
 	}, [peopleContext.people, tasksContext.tasks]);
 
+	useEffect(() => {
+		const moveTimeline = () => {
+			const shiftDiv = document.getElementById("shift-div");
+			if (!shiftDiv) return;
+			setTimelineOffset(shiftDiv.getBoundingClientRect().top);
+		};
+		moveTimeline();
+		window.addEventListener("resize", moveTimeline);
+	});
+
 	return (
 		<>
 			<MainNavbar />
 			<div className={style.container}>
-				<div className={style.timeline}>
+				<div
+					className={style.timeline}
+					style={{
+						top: timelineOffset,
+					}}
+				>
 					{[...Array(96).keys()].map((i) => (
 						<div className={style.time}>
 							{(() => {
