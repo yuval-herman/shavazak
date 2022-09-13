@@ -7,11 +7,13 @@
 	}
 	details {
 		margin: 0.1rem;
-		background-color: base.$light;
 		border: 1px solid #aaa;
-		border-radius: 1rem;
 		padding: 0.5em 0.5em 0;
+		border-radius: 0.5rem;
 		summary {
+			border-top-left-radius: 0.5rem;
+			border-top-right-radius: 0.5rem;
+			background-color: base.$light;
 			font-weight: bold;
 			margin: -0.5em -0.5em 0;
 			padding: 0.5em;
