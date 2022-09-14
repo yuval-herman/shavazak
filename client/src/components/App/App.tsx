@@ -15,11 +15,7 @@ interface Props {
 
 function ShiftDiv(props: { shift: Shift; height: string | number }) {
 	return (
-		<div
-			id="shift-div"
-			className={style.shift}
-			style={{ height: props.height }}
-		>
+		<div className={style.shift} style={{ height: props.height }}>
 			{props.shift.people.map((person) => (
 				<div key={person.id} className={style.person}>
 					<span key={person.id}>{person.name}</span>
@@ -54,7 +50,9 @@ function TasksTable(props: Props) {
 		<>
 			<header className={style.headers}>
 				{tasks.map((task) => (
-					<div key={task.id}>{task.name}</div>
+					<div key={task.id} id="header-div">
+						{task.name}
+					</div>
 				))}
 			</header>
 			<main className={style.column}>
@@ -102,9 +100,9 @@ function App() {
 
 	useEffect(() => {
 		const moveTimeline = () => {
-			const shiftDiv = document.getElementById("shift-div");
-			if (!shiftDiv) return;
-			setTimelineOffset(shiftDiv.getBoundingClientRect().top);
+			const headerDiv = document.getElementById("header-div");
+			if (!headerDiv) return;
+			setTimelineOffset(headerDiv.getBoundingClientRect().height);
 		};
 		moveTimeline();
 		window.addEventListener("resize", moveTimeline);
@@ -139,7 +137,7 @@ function App() {
 							tasks={JSON.parse(localStorage.getItem("cachedTable")!).table}
 						/>
 					) : peopleContext.people.length && tasksContext.tasks.length ? (
-						<Loader />
+						<Loader className={style.loader} />
 					) : (
 						<div>
 							No tasks or people added, consider{" "}

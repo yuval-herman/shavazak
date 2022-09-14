@@ -1,7 +1,11 @@
 @use "../../style/base";
 .container {
+	position: relative;
+	.loader {
+		top: 50vh;
+		left: 50vw;
+	}
 	.main {
-		position: relative;
 		margin-left: 4rem;
 		margin-top: 1rem;
 		overflow-x: scroll;
@@ -70,7 +74,7 @@
 	}
 	.timeline {
 		position: absolute;
-		translate: 0 calc(-1.5rem - 2px);
+		translate: 0 calc(-1.2rem);
 		margin-left: 1rem;
 		width: 5rem;
 		height: 100vh;
