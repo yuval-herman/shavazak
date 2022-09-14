@@ -49,7 +49,7 @@ export function AddPerson() {
 			const prevRoles = [...inputs.roles];
 			prevRoles[index] = event.target.value;
 			setInputs({ ...inputs, roles: prevRoles });
-		} else if (inputName === "score") {
+		} else if (inputName === "score (0-10)") {
 			setInputs({ ...inputs, score: parseInt(event.target.value) / 10 });
 		} else {
 			setInputs({ ...inputs, [inputName]: event.target.value });
@@ -86,6 +86,8 @@ export function AddPerson() {
 					value={Math.floor(inputs.score * 10)}
 					name="score"
 					type={"number"}
+					min={0}
+					max={10}
 				/>
 			</label>
 			<label>

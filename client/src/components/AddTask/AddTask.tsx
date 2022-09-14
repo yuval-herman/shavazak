@@ -108,14 +108,16 @@ export function AddTask() {
 			<label>
 				score{" "}
 				<input
-					name="score"
+					name="score (0-10)"
 					value={Math.floor(inputs.score * 10)}
 					onChange={handleChange}
 					type={"number"}
+					min={0}
+					max={10}
 				/>
 			</label>
 			<label>
-				shift duration{" "}
+				shift duration (min.){" "}
 				<select
 					name="shift_duration"
 					value={inputs.shift_duration}
