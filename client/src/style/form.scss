@@ -23,7 +23,7 @@
 	}
 	input[type="submit"] {
 		@extend %button;
-		background-color: adjust-hue($color: base.$strong, $degrees: 180);
+		background-color: adjust-hue($color: base.$strong, $degrees: -90);
 	}
 	select {
 		@extend %input;
