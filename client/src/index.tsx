@@ -5,7 +5,6 @@ import AddPerson from "./components/AddPerson/AddPerson";
 import AddTask from "./components/AddTask/AddTask";
 import App from "./components/App/App";
 import PeopleView from "./components/PeopleView/PeopleView";
-import RandomData from "./components/RandomData/RandomData";
 import TableManager from "./components/TableManager/TableManager";
 import TasksView from "./components/TasksView/TasksView";
 import { PeopleProvider } from "./context/PeopleContext";
@@ -22,7 +21,6 @@ root.render(
 				<BrowserRouter>
 					<Routes>
 						<Route index element={<App />} />
-						<Route path="randomdata" element={<RandomData />} />
 						<Route path="tablemanager" element={<TableManager />}>
 							<Route index element={<Navigate to="viewpeople" />} />
 							<Route path="addperson" element={<AddPerson />} />

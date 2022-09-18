@@ -18,14 +18,13 @@
 		padding-right: 1rem;
 		border-right: solid gray 1px;
 		a {
+			cursor: pointer;
 			color: white;
 			padding: 0.5rem;
 			text-shadow: 1px 1px 2px #222;
 			&.activeLink {
 				background-color: lighten($color: base.$medium, $amount: 7);
 				border-radius: 0.5rem;
-				// box-shadow: inset 1px 1px 5px -2px #222;
-				// color: base.$;
 			}
 		}
 	}

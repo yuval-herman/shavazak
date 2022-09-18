@@ -1,8 +1,13 @@
-import { Link, NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import { fetchJSON } from "../../api";
+import { PeopleContext } from "../../context/PeopleContext";
+import { TasksContext } from "../../context/TasksContext";
 import style from "./MainNavbar.module.scss";
-import helmet from "../../media/icons/helmet.svg";
 
 export function MainNavbar() {
+	const tasksContext = useContext(TasksContext);
+	const peopleContext = useContext(PeopleContext);
 	return (
 		<nav className={style.navbar}>
 			<span>
@@ -22,12 +27,17 @@ export function MainNavbar() {
 				</NavLink>
 			</span>
 			<span>
-				<NavLink
-					className={({ isActive }) => (isActive ? style.activeLink : "")}
-					to="/randomdata"
+				<a
+					onClick={(event) => {
+						event.preventDefault();
+						fetchJSON("/api/randomdata").then((res) => {
+							tasksContext.set(res.tasks);
+							peopleContext.set(res.people);
+						});
+					}}
 				>
 					get random data
-				</NavLink>
+				</a>
 			</span>
 			<img src="https://user-images.githubusercontent.com/47389924/188946200-d7b4465e-dfb2-44b2-832c-081cd09adae4.png"></img>
 		</nav>
