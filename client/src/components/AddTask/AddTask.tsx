@@ -75,11 +75,9 @@ export function AddTask() {
 			}
 			setInputs({ ...inputs, [inputName]: value });
 		} else if (inputName === "score") {
-			value = parseInt(value) / 10;
-			if (isNaN(value)) {
-				value = 0;
-			}
-			setInputs({ ...inputs, [inputName]: value });
+			const value = parseInt(event.target.value);
+			if (value > 10) return;
+			setInputs({ ...inputs, score: value / 10 });
 		} else {
 			setInputs({ ...inputs, [inputName]: value });
 		}
@@ -106,9 +104,9 @@ export function AddTask() {
 				/>
 			</label>
 			<label>
-				score{" "}
+				score (0-10){" "}
 				<input
-					name="score (0-10)"
+					name="score"
 					value={Math.floor(inputs.score * 10)}
 					onChange={handleChange}
 					type={"number"}

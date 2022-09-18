@@ -49,8 +49,10 @@ export function AddPerson() {
 			const prevRoles = [...inputs.roles];
 			prevRoles[index] = event.target.value;
 			setInputs({ ...inputs, roles: prevRoles });
-		} else if (inputName === "score (0-10)") {
-			setInputs({ ...inputs, score: parseInt(event.target.value) / 10 });
+		} else if (inputName === "score") {
+			const value = parseInt(event.target.value);
+			if (value > 10) return;
+			setInputs({ ...inputs, score: value / 10 });
 		} else {
 			setInputs({ ...inputs, [inputName]: event.target.value });
 		}
@@ -80,7 +82,7 @@ export function AddPerson() {
 				/>
 			</label>
 			<label>
-				score{" "}
+				score (0-10){" "}
 				<input
 					onChange={handleChange}
 					value={Math.floor(inputs.score * 10)}
