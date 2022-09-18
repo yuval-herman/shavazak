@@ -5,6 +5,21 @@
 	font-family: "Open Sans", sans-serif;
 }
 
+::-webkit-scrollbar {
+	width: 0.25rem;
+	&:hover {
+		width: 1rem;
+	}
+}
+
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 5px;
+	&:hover {
+		background: #555;
+	}
+}
+
 body {
 	background: base.$cream;
 }
